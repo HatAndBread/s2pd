@@ -5,6 +5,6 @@ s2pd is a simple HTML5 canvas and web audio library for making art and 2D games 
 
 s2pd aims to be intuitive enough for be used by beginners and students.
 
-#API
+# API
 
 <h2>installation</h2>
