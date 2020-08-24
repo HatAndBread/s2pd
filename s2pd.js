@@ -69,8 +69,6 @@ function s2pd() {
     stillCanvas: function () {
       s2pd.canvas.style.touchAction = 'none';
     },
-    onCollision: function (obj1, obj2, callback) {},
-
     loop: function (game) {
       if (s2pd.clear) {
         s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
@@ -508,11 +506,6 @@ function s2pd() {
         this.holdableId = s2pd.holdableObjects.length;
         s2pd.holdableObjects.push(this);
       }
-
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
-      }
       jump(howMuch, howLong) {
         this.jumpHeight = howMuch;
         this.jumpLength = howLong;
@@ -863,11 +856,6 @@ function s2pd() {
           }
         }
       }
-
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
-      }
       jump(howMuch, howLong) {
         this.jumpHeight = howMuch;
         this.jumpLength = howLong;
@@ -1037,10 +1025,6 @@ function s2pd() {
         this.holdableId = s2pd.holdableObjects.length;
         s2pd.holdableObjects.push(this);
       }
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
-      }
       jump(howMuch, howLong) {
         this.jumpHeight = howMuch;
         this.jumpLength = howLong;
@@ -1205,10 +1189,6 @@ function s2pd() {
         this.draggable = false;
         this.holdableId = s2pd.holdableObjects.length;
         s2pd.holdableObjects.push(this);
-      }
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
       }
       moveTo(newX, newY) {
         this.xPos = newX;
@@ -1406,10 +1386,6 @@ function s2pd() {
         this.holdableId = s2pd.holdableObjects.length;
         s2pd.holdableObjects.push(this);
       }
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
-      }
       moveTo(newX, newY) {
         this.xPos = newX;
         this.yPos = newY;
@@ -1545,12 +1521,6 @@ function s2pd() {
         this.jumpFrames = 0;
         this.jumping = true;
       }
-      control(speedX, speedY) {
-        this.startX += speedX;
-        this.endX += speedX;
-        this.startY += speedY;
-        this.endY += speedY;
-      }
       makeClickable() {
         this.clickable = true;
         this.draggable = false;
@@ -1610,14 +1580,32 @@ function s2pd() {
         this.hitBoxWidth = this.radiusX * 2;
         this.hitBoxHeight = this.radiusY * 2;
         this.thickness = thickness;
+
         s2pd.finalize(this);
         this.make();
       }
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
-      }
       make() {
+        if (this.rotation >= Math.PI * 2) {
+          this.rotation = this.rotation % Math.PI;
+          console.log(this.rotation);
+        }
+        if (this.rotation > Math.PI * 0.25 && this.rotation < Math.PI * 0.75) {
+          this.hitBoxX = this.xPos - this.radiusY;
+          this.hitBoxY = this.yPos - this.radiusX;
+          this.hitBoxHeight = this.radiusX * 2;
+          this.hitBoxWidth = this.radiusY * 2;
+        } else if (this.rotation > Math.PI * 1.25 && this.rotation < Math.PI * 1.75) {
+          this.hitBoxX = this.xPos - this.radiusY;
+          this.hitBoxY = this.yPos - this.radiusX;
+          this.hitBoxHeight = this.radiusX * 2;
+          this.hitBoxWidth = this.radiusY * 2;
+        } else {
+          this.hitBoxWidth = this.radiusX * 2;
+          this.hitBoxHeight = this.radiusY * 2;
+          this.hitBoxX = this.xPos - this.radiusX;
+          this.hitBoxY = this.yPos - this.radiusY;
+        }
+
         if (typeof this.thickness === 'number') {
           s2pd.ctx.strokeStyle = this.color;
           s2pd.ctx.lineWidth = this.thickness;
@@ -1636,27 +1624,20 @@ function s2pd() {
       }
       updatePos() {
         s2pd.allGameObjects[this.id] = this;
-        console.log(this.rotation % 1);
 
-        if (this.dragging === true) {
+        if (this.dragging) {
+          console.log('yo how it going?');
           s2pd.dragArray[0] = this;
           if (s2pd.draggingWithMouse) {
-            this.xPos = s2pd.mouseX - this.width / 2;
-            this.yPos = s2pd.mouseY + this.size / 2;
+            this.xPos = s2pd.mouseX;
+            this.yPos = s2pd.mouseY;
           } else {
-            this.xPos = s2pd.touchMoveX - this.width / 2;
-            this.yPos = s2pd.touchMoveY + this.size / 2;
+            this.xPos = s2pd.touchMoveX;
+            this.yPos = s2pd.touchMoveY;
           }
         } else {
           this.xPos += this.velX;
           this.yPos += this.velY;
-          if (this.detectHit) {
-            this.hitBoxX = this.xPos;
-            this.hitBoxY = this.yPos - this.size;
-            this.hitBoxWidth = this.width;
-            this.hitBoxHeight = this.height;
-            s2pd.hitDetectObjects[this.hitBoxId] = this;
-          }
         }
       }
       jump(howMuch, howLong) {
@@ -1693,10 +1674,6 @@ function s2pd() {
         this.draggable = false;
         this.holdableId = s2pd.holdableObjects.length;
         s2pd.holdableObjects.push(this);
-      }
-      control(speedX, speedY) {
-        this.xPos += speedX;
-        this.yPos += speedY;
       }
       moveTo(newX, newY) {
         this.xPos = newX;
@@ -1903,9 +1880,8 @@ function s2pd() {
       }
       distortionCurve(howMuch) {
         let k = howMuch,
-          n_samples = typeof sampleRate === 'number' ? sampleRate : 44100,
+          n_samples = 44100,
           curve = new Float32Array(n_samples),
-          deg = Math.PI / 180,
           i = 0,
           x;
         for (; i < n_samples; ++i) {
@@ -1985,9 +1961,8 @@ function s2pd() {
       }
       distortionCurve(howMuch) {
         let k = howMuch,
-          n_samples = typeof sampleRate === 'number' ? sampleRate : 44100,
+          n_samples = 44100,
           curve = new Float32Array(n_samples),
-          deg = Math.PI / 180,
           i = 0,
           x;
         for (; i < n_samples; ++i) {
@@ -2033,6 +2008,7 @@ function s2pd() {
 
             if (draggableOrNot) {
               clickedObject = s2pd.draggableObjects[i];
+              console.log(clickedObject);
               clickedObject.dragging = true;
             }
           }
