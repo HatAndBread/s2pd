@@ -3,16 +3,16 @@ import loop from './loop.js';
 import { createCanvas, addCanvas, stillCanvas, backgroundColor, canvasOpacity } from './canvas.js';
 import { randomNumSetNoRepeat, getRandomColor, randomBetween, roundToDecimals, choose } from './methods.js';
 import Sprite from './sprite.js';
-import Circle from './circle.js';
-import Ellipse from './ellipse.js';
-import Rectangle from './rectangle.js';
-import Line from './line.js';
+import Circle from './shapes/circle.js';
+import Ellipse from './shapes/ellipse.js';
+import Rectangle from './shapes/rectangle.js';
+import Line from './shapes/line.js';
 import Text from './text.js';
 import Background from './background.js';
-import { mouseListeners, mouseClick, mouseUp, mouseDown, mouseMove } from './mouse.js';
-import { touchListeners } from './touch.js';
-import { keyboardListeners, keyDown, keyUp } from './keyboard.js';
-import { enableAudio, Sound, Synth } from './audio.js';
+import { mouseListeners, mouseClick, mouseUp, mouseDown, mouseMove } from './input/mouse.js';
+import { touchListeners } from './input/touch.js';
+import { keyboardListeners, keyDown, keyUp } from './input/keyboard.js';
+import { enableAudio, Sound, Synth } from './audio/audio.js';
 function clear() {
   s2pd.clear = true;
 }

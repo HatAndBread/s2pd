@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 export default class Line {
   constructor(startX, startY, endX, endY, color, thickness) {

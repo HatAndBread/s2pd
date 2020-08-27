@@ -1,5 +1,5 @@
 import s2pd from './core.js';
-import Shapes from './shapes.js';
+import Shapes from './shapes/shapes.js';
 
 export default class Text extends Shapes {
   constructor(color, xPos, yPos, text, font, size, thickness, innerColor) {

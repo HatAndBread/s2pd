@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 export function enableAudio() {
   s2pd.audioContext = new AudioContext();

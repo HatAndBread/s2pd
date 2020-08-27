@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 function returnKeyCode(key) {
   if (typeof key === 'number') {

@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 export function touchListeners() {
   document.addEventListener(

@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 import Shapes from './shapes.js';
 
 export default class Circle extends Shapes {

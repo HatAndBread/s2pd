@@ -1,4 +1,4 @@
-import s2pd from './s2pd.js';
+import s2pd from './core.js';
 
 export default class Background {
   constructor(xPos, yPos, numberOfFrames, source, animationSpeed, width, height) {

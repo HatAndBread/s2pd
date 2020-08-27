@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 export function mouseMove(event) {
   if (s2pd.dragStarted) {

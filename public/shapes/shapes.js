@@ -1,4 +1,4 @@
-import s2pd from './core.js';
+import s2pd from '../core.js';
 
 export default class Shapes {
   constructor(color, xPos, yPos) {
