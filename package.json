@@ -1,0 +1,22 @@
+{
+  "name": "s2pd",
+  "version": "1.0.0",
+  "description": "Hi! 👋🌈   s2pd is a simple HTML5 canvas and web audio library for making art and 2D games in JavaScript.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HatAndBread/s2pd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HatAndBread/s2pd/issues"
+  },
+  "homepage": "https://github.com/HatAndBread/s2pd#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
