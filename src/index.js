@@ -23,6 +23,38 @@ function dontClear() {
 touchListeners();
 mouseListeners();
 keyboardListeners();
+
+export {
+  clear,
+  dontClear,
+  s2pd,
+  loop,
+  createCanvas,
+  addCanvas,
+  stillCanvas,
+  backgroundColor,
+  canvasOpacity,
+  randomNumSetNoRepeat,
+  getRandomColor,
+  randomBetween,
+  roundToDecimals,
+  choose,
+  Sprite,
+  Circle,
+  Ellipse,
+  Rectangle,
+  Line,
+  Text,
+  Background,
+  keyDown,
+  keyUp,
+  enableAudio,
+  Sound,
+  Synth
+};
+
+/*
+
 console.log(Line);
 
 createCanvas('UYO', 500, 500);
@@ -64,3 +96,5 @@ loop(function () {
 });
 
 console.log(dog);
+
+*/

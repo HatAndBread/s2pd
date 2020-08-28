@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.use(express.static('src'));
+app.use(express.static('dist'));
 app.use(express.json({ limit: '1mb' })); // FIX LIMIT!
 app.use(express.urlencoded({ extended: false }));
 
