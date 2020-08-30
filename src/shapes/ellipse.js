@@ -1,7 +1,21 @@
 import s2pd from '../core.js';
 import Shapes from './shapes.js';
 
-export default class Ellipse extends Shapes {
+/**
+ * Ellipse
+ * @extends Shapes
+ */
+class Ellipse extends Shapes {
+  /**
+   * 
+   * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'.
+   * @param {number} xPos - x coordinate
+   * @param {number} yPos - y coordinate
+   * @param {number} radiusX -radius along the x axis
+   * @param {number} radiusY - radius along the y axis
+   * @param {number} rotation - rotation of ellipse
+   * @param {number=} thickness - Optional! If present will draw outline of ellipse. Thickness is line width in pixels.
+   */
   constructor(color, xPos, yPos, radiusX, radiusY, rotation, thickness) {
     super(color, xPos, yPos);
     this.radiusX = radiusX;
@@ -11,10 +25,15 @@ export default class Ellipse extends Shapes {
     this.velY = 0;
     this.opacity = 1;
     this.thickness = thickness;
+    this.loaded = true;
     this.timeStamp = Date.now();
     s2pd.finalize(this);
     this.updatePos();
   }
+  /**
+  * Update position.
+  * @method
+  */
   updatePos() {
     s2pd.allGameObjects[this.id] = this;
     if (this.rotation >= Math.PI * 2) {
@@ -66,3 +85,5 @@ export default class Ellipse extends Shapes {
     }
   }
 }
+
+export default Ellipse;

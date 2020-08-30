@@ -1,5 +1,8 @@
 import s2pd from '../core.js';
 
+const keyDownEvents = new Array(222);
+const keyUpEvents = new Array(222);
+
 function returnKeyCode(key) {
   if (typeof key === 'number') {
     key = key.toString();
@@ -103,8 +106,10 @@ function returnKeyCode(key) {
       return 48;
     case 'period':
       return 190;
-    case ',':
+    case '.':
       return 190;
+    case ',':
+      return 188;
     case 'comma':
       return 188;
     case 'backslash':
@@ -171,42 +176,54 @@ function returnKeyCode(key) {
   }
 }
 
-function keyAction(keyboardAction, code, callback) {
-  if (keyboardAction === 'up') {
-    if (s2pd.keyboardUp === code) {
-      callback();
-      s2pd.keyboardUp = null;
-    }
-  } else {
-    if (s2pd.keyboardDown === code) {
-      callback();
-    }
-  }
-}
-export function keyUp(key, callback) {
+/**
+ * Call a callback function when a certain keyboard key is released.
+ * @param {(string|number)} key - JS keycode (number) or a string. Example →　'space' for space key. ',' for comma.
+ * @param {function} callback -  function to be called on key up.
+ */
+function keyUp(key, callback) {
   if (typeof key === 'string') {
     let code = returnKeyCode(key);
-    keyAction('up', code, callback);
+    keyUpEvents[code] = callback;
   } else {
-    keyAction('up', key, callback);
+    keyUpEvents[key] = callback;
   }
 }
-export function keyDown(key, callback) {
+/**
+ * Call a callback function when a certain keyboard key is being held down.
+ * @param {(string|number)} key - JS keycode (number) or a string. Example →　'space' for space key. ',' for comma.
+ * @param {function} callback -  function to be called on key down.
+ */
+
+function keyDown(key, callback) {
   if (typeof key === 'string') {
     let code = returnKeyCode(key);
-    keyAction('down', code, callback);
+    keyDownEvents[code] = callback;
   } else {
-    keyAction('down', key, callback);
+    keyDownEvents[key] = callback;
   }
 }
 function keyDownHandler(event) {
-  s2pd.keyboardDown = event.keyCode;
+  if (keyDownEvents[event.keyCode] && !s2pd.looping) {
+    keyDownEvents[event.keyCode]()
+  }
+  if (keyDownEvents[event.keyCode] && s2pd.looping) {
+    s2pd.keyDown = event.keyCode;
+  }
 }
 function keyUpHandler(event) {
-  s2pd.keyboardDown = null;
-  s2pd.keyboardUp = event.keyCode;
+  if (keyUpEvents[event.keyCode] && !s2pd.looping) {
+    keyUpEvents[event.keyCode]()
+  }
+  if (keyDownEvents[event.keyCode] && s2pd.looping) {
+    s2pd.keyDown = null;
+    s2pd.keyUp = event.keyCode;
+  }
+
 }
-export function keyboardListeners() {
+function keyboardListeners() {
   document.addEventListener('keydown', keyDownHandler, false);
   document.addEventListener('keyup', keyUpHandler, false);
 }
+
+export { keyDown, keyUp, keyboardListeners, keyDownEvents, keyUpEvents };

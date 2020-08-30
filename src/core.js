@@ -1,8 +1,9 @@
-import Sprite from './sprite.js';
 import Background from './background.js';
+import Line from './shapes/line.js'
 
 const s2pd = {
   loadedAssets: 0,
+  looping: false,
   objectsToLoad: [],
   percentLoaded: 0,
   allAudioObjects: [],
@@ -27,8 +28,8 @@ const s2pd = {
   touchMoveY: null,
   touchEndX: null,
   touchEndY: null,
-  keyboardUp: null,
-  keyboardDown: null,
+  keyDown: null,
+  keyUp: null,
   orientation: undefined,
   exit: false,
   enableDragAndDrop: true,
@@ -36,9 +37,6 @@ const s2pd = {
   canvas: null,
   ctx: null,
   finalize: function (object) {
-    if (object instanceof Sprite) {
-      object.animations.shift();
-    }
     if (object instanceof Background) {
       this.allBackgrounds.push(object);
     } else {
@@ -46,30 +44,61 @@ const s2pd = {
     }
   },
   jump: function (who, howHigh, howLong) {
+
     if (howLong < 1) {
       howLong = 1;
     }
-
     who.jumpFrames += 1;
-    if (who.jumpFrames > 0 && who.jumpFrames <= howLong) {
-      who.yPos -= howHigh / 10 / howLong;
-    } else if (who.jumpFrames > howLong && who.jumpFrames <= howLong * 2) {
-      who.yPos -= howHigh / 20 / howLong;
-    } else if (who.jumpFrames > howLong * 2 && who.jumpFrames <= howLong * 3) {
-      who.yPos -= howHigh / 25 / howLong;
-    } else if (who.jumpFrames > howLong * 3 && who.jumpFrames <= howLong * 4) {
-      who.yPos -= howHigh / 50 / howLong;
-    } else if (who.jumpFrames > howLong * 4 && who.jumpFrames <= howLong * 5) {
-      who.yPos += howHigh / 50 / howLong;
-    } else if (who.jumpFrames > howLong * 5 && who.jumpFrames <= howLong * 6) {
-      who.yPos += howHigh / 25 / howLong;
-    } else if (who.jumpFrames > howLong * 6 && who.jumpFrames <= howLong * 7) {
-      who.yPos += howHigh / 20 / howLong;
-    } else if (who.jumpFrames > howLong * 7 && who.jumpFrames <= howLong * 8) {
-      who.yPos += howHigh / 10 / howLong;
+    if (!who instanceof Line) {
+      if (who.jumpFrames > 0 && who.jumpFrames <= howLong) {
+        who.yPos -= howHigh / 10 / howLong;
+      } else if (who.jumpFrames > howLong && who.jumpFrames <= howLong * 2) {
+        who.yPos -= howHigh / 20 / howLong;
+      } else if (who.jumpFrames > howLong * 2 && who.jumpFrames <= howLong * 3) {
+        who.yPos -= howHigh / 25 / howLong;
+      } else if (who.jumpFrames > howLong * 3 && who.jumpFrames <= howLong * 4) {
+        who.yPos -= howHigh / 50 / howLong;
+      } else if (who.jumpFrames > howLong * 4 && who.jumpFrames <= howLong * 5) {
+        who.yPos += howHigh / 50 / howLong;
+      } else if (who.jumpFrames > howLong * 5 && who.jumpFrames <= howLong * 6) {
+        who.yPos += howHigh / 25 / howLong;
+      } else if (who.jumpFrames > howLong * 6 && who.jumpFrames <= howLong * 7) {
+        who.yPos += howHigh / 20 / howLong;
+      } else if (who.jumpFrames > howLong * 7 && who.jumpFrames <= howLong * 8) {
+        who.yPos += howHigh / 10 / howLong;
+      } else {
+        who.jumping = false;
+        who.jumpFrames = 0;
+      }
     } else {
-      who.jumping = false;
-      who.jumpFrames = 0;
+      if (who.jumpFrames > 0 && who.jumpFrames <= howLong) {
+        who.startY -= howHigh / 10 / howLong;
+        who.endY -= howHigh / 10 / howLong;
+      } else if (who.jumpFrames > howLong && who.jumpFrames <= howLong * 2) {
+        who.startY -= howHigh / 20 / howLong;
+        who.endY -= howHigh / 20 / howLong;
+      } else if (who.jumpFrames > howLong * 2 && who.jumpFrames <= howLong * 3) {
+        who.startY -= howHigh / 25 / howLong;
+        who.endY -= howHigh / 25 / howLong;
+      } else if (who.jumpFrames > howLong * 3 && who.jumpFrames <= howLong * 4) {
+        who.startY -= howHigh / 50 / howLong;
+        who.endY -= howHigh / 50 / howLong;
+      } else if (who.jumpFrames > howLong * 4 && who.jumpFrames <= howLong * 5) {
+        who.startY += howHigh / 50 / howLong;
+        who.endY += howHigh / 50 / howLong;
+      } else if (who.jumpFrames > howLong * 5 && who.jumpFrames <= howLong * 6) {
+        who.startY += howHigh / 25 / howLong;
+        who.endY += howHigh / 25 / howLong;
+      } else if (who.jumpFrames > howLong * 6 && who.jumpFrames <= howLong * 7) {
+        who.startY += howHigh / 20 / howLong;
+        who.endY += howHigh / 20 / howLong;
+      } else if (who.jumpFrames > howLong * 7 && who.jumpFrames <= howLong * 8) {
+        who.startY += howHigh / 10 / howLong;
+        who.endY += howHigh / 10 / howLong;
+      } else {
+        who.jumping = false;
+        who.jumpFrames = 0;
+      }
     }
   }
 };

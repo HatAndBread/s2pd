@@ -1,7 +1,20 @@
 import s2pd from '../core.js';
 import Shapes from './shapes.js';
 
+/**
+ * Rectangle
+ * @extends Shapes
+ */
 export default class Rectangle extends Shapes {
+  /**
+   * 
+   * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'
+   * @param {number} xPos - x coordinate
+   * @param {number} yPos - y coordinate
+   * @param {number} width 
+   * @param {number} height
+   * @param {number=} thickness - Optional! If present will draw outline of rectangle. Thickness is line width in pixels.
+   */
   constructor(color, xPos, yPos, width, height, thickness) {
     super(color, xPos, yPos);
     this.width = width;
@@ -14,6 +27,7 @@ export default class Rectangle extends Shapes {
     this.hitBoxY = this.yPos;
     this.hitBoxWidth = this.width;
     this.hitBoxHeight = this.height;
+    this.loaded = true;
     this.timeStamp = Date.now();
     s2pd.finalize(this);
     this.updatePos();

@@ -1,9 +1,25 @@
 import s2pd from './core.js';
 import Shapes from './shapes/shapes.js';
 
-export default class Text extends Shapes {
+/**
+ * Text
+ * @extends Shapes
+ */
+class Text extends Shapes {
+  /**
+   * 
+   * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'.
+   * @param {number} xPos - x coordinate
+   * @param {number} yPos - y coordinate
+   * @param {string} text - Text to be displayed on the screen.
+   * @param {string} font - Any valid font.
+   * @param {number} size - Font size in pixels.
+   * @param {number=} thickness - Optional! Width of text outline. If thickness is present without innerColor an outline of the text will be displayed. 
+   * @param {string=} innerColor - Optional! Inner color of text if an outline is present. Any valid css color.
+   */
   constructor(color, xPos, yPos, text, font, size, thickness, innerColor) {
     super(color, xPos, yPos);
+    this.loaded = true;
     this.text = text;
     this.font = font;
     this.size = size;
@@ -13,48 +29,33 @@ export default class Text extends Shapes {
     this.velY = 0;
     this.opacity = 1;
     this.timeStamp = Date.now();
+    this.center = false;
+    this.longestLineLength = 0;
+    this.longestLine = 0;
+    this.leading = 1.1;
+
     s2pd.finalize(this);
     this.updatePos();
+
   }
+  /**
+   * Update position.
+   * @method
+   */
   updatePos() {
     s2pd.allGameObjects[this.id] = this;
-    this.hitBoxX = this.xPos;
-    this.hitBoxY = this.yPos - this.size;
-    if (typeof this.thickness === 'number') {
-      if (typeof this.innerColor === 'string') {
-        s2pd.ctx.globalAlpha = this.opacity;
-        s2pd.ctx.font = `${this.size}px ${this.font}`;
-        s2pd.ctx.strokeStyle = this.color;
-        s2pd.ctx.fillStyle = this.innerColor;
-        s2pd.ctx.lineWidth = this.thickness;
-        this.width = s2pd.ctx.measureText(this.text).width;
-        this.height = this.size;
-        this.hitBoxWidth = this.width;
-        this.hitBoxHeight = this.size;
-        s2pd.ctx.fillText(this.text, this.xPos, this.yPos);
-        s2pd.ctx.strokeText(this.text, this.xPos, this.yPos);
-        s2pd.ctx.globalAlpha = 1;
-      }
-      s2pd.ctx.globalAlpha = this.opacity;
-      s2pd.ctx.font = `${this.size}px ${this.font}`;
-      s2pd.ctx.strokeStyle = this.color;
-      s2pd.ctx.lineWidth = this.thickness;
-      this.width = s2pd.ctx.measureText(this.text).width;
-      this.height = this.size;
-      s2pd.ctx.strokeText(this.text, this.xPos, this.yPos);
-      s2pd.ctx.globalAlpha = 1;
-    } else {
-      s2pd.ctx.globalAlpha = this.opacity;
-      s2pd.ctx.fillStyle = this.color;
-      s2pd.ctx.font = `${this.size}px ${this.font}`;
-      s2pd.ctx.fillText(this.text, this.xPos, this.yPos);
-      this.width = s2pd.ctx.measureText(this.text).width;
-      this.height = this.size;
-      this.hitBoxWidth = this.width;
-      this.hitBoxHeight = this.size;
-      s2pd.ctx.globalAlpha = 1;
+    if (this.detectHit) {
+      s2pd.hitDetectObjects[this.hitBoxId] = this;
     }
+    this.lineBreaks = this.text.split('\n');
 
+    for (let i = 0; i < this.lineBreaks.length; i++) {
+      if (this.lineBreaks[i].length > this.longestLineLength) {
+        this.longestLineLength = this.lineBreaks[i].length;
+        this.longestLine = i;
+      }
+    }
+    this.draw()
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
@@ -70,13 +71,41 @@ export default class Text extends Shapes {
     } else {
       this.xPos += this.velX;
       this.yPos += this.velY;
-      if (this.detectHit) {
-        this.hitBoxX = this.xPos;
-        this.hitBoxY = this.yPos - this.size;
-        this.hitBoxWidth = this.width;
-        this.hitBoxHeight = this.height;
-        s2pd.hitDetectObjects[this.hitBoxId] = this;
-      }
     }
   }
+  /**
+   * Draw text on canvas
+   * @method
+   */
+  draw() {
+    s2pd.ctx.globalAlpha = this.opacity;
+    s2pd.ctx.fillStyle = this.color;
+    s2pd.ctx.font = `${this.size}px ${this.font}`;
+    s2pd.ctx.lineWidth = this.thickness;
+    if (typeof this.thickness !== 'number' || typeof this.thickness === 'number' && typeof this.innerColor === 'string') {
+      let increasingY = this.yPos;
+      for (let i = 0; i < this.lineBreaks.length; i++) {
+        let thisLineX = (s2pd.ctx.measureText(this.lineBreaks[this.longestLine]).width - s2pd.ctx.measureText(this.lineBreaks[i]).width) / 2;
+        this.center ? s2pd.ctx.fillText(this.lineBreaks[i], this.xPos + thisLineX, increasingY) : s2pd.ctx.fillText(this.lineBreaks[i], this.xPos, increasingY);
+        increasingY += this.size * this.leading;
+      }
+    }
+    if (typeof this.thickness === 'number') {
+      let increasingY = this.yPos;
+      for (let i = 0; i < this.lineBreaks.length; i++) {
+        let thisLineX = (s2pd.ctx.measureText(this.lineBreaks[this.longestLine]).width - s2pd.ctx.measureText(this.lineBreaks[i]).width) / 2;
+        this.center ? s2pd.ctx.strokeText(this.lineBreaks[i], this.xPos + thisLineX, increasingY) : s2pd.ctx.strokeText(this.lineBreaks[i], this.xPos, increasingY);
+        increasingY += this.size * this.leading;
+      }
+    }
+    this.width = s2pd.ctx.measureText(this.lineBreaks[this.longestLine]).width;
+    this.height = this.size * this.leading * (this.lineBreaks.length);
+    this.hitBoxX = this.xPos;
+    this.hitBoxY = this.yPos - this.size;
+    this.hitBoxWidth = this.width;
+    this.hitBoxHeight = this.height;
+    s2pd.ctx.globalAlpha = 1;
+  }
 }
+
+export default Text;

@@ -1,13 +1,29 @@
 import s2pd from '../core.js';
 import Shapes from './shapes.js';
-
-export default class Circle extends Shapes {
+/**
+ * Circle
+ * @extends Shapes
+ */
+class Circle extends Shapes {
+  /**
+   *
+   * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'.
+   * @param {number} xPos - x coordinate
+   * @param {number} yPos - y cooordinate
+   * @param {number} radius - radius of circle (distance from center to outer edge of circle)
+   * @param {number=} thickness - Optional! If present will draw outline of circle. Thickness is line width in pixels.
+   */
   constructor(color, xPos, yPos, radius, thickness) {
     super(color, xPos, yPos);
     this.radius = radius;
     this.thickness = thickness;
+    this.loaded = true;
     this.updatePos();
   }
+  /**
+  * Update position.
+  * @method
+  */
   updatePos() {
     s2pd.allGameObjects[this.id] = this;
     this.hitBoxWidth = this.radius * 2;
@@ -54,3 +70,5 @@ export default class Circle extends Shapes {
     }
   }
 }
+
+export { Circle };

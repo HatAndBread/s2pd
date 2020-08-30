@@ -6,31 +6,37 @@ export default class Sprite {
    * @constructor
    * @param {number} xPos
    * @param {number} yPos
-   * @param {number} numberOfFrames
    * @param {string} source
-   * @param {number} animationSpeed - number of ticks before the next frame is displayed
-   * @param {number} width
-   * @param {number} height
+   * @param {number=} numberOfFrames - (Only if sprite is an animation!)👉　Number of frames in the animation
+   * @param {number=} animationSpeed - (Only if sprite is an animation!)👉 Number of ticks before the next frame is displayed
    */
-  constructor(xPos, yPos, numberOfFrames, source, animationSpeed, width, height) {
+  constructor(xPos, yPos, source, numberOfFrames, animationSpeed) {
+    s2pd.objectsToLoad.push(this);
+    this.loaded = false;
     this.xPos = xPos;
     this.yPos = yPos;
-    this.numberOfFrames = numberOfFrames;
-    this.width = width;
-    this.height = height;
+    if (!numberOfFrames) {
+      this.numberOfFrames = 1;
+    } else {
+      this.numberOfFrames = numberOfFrames;
+    }
+    if (!animationSpeed) {
+      this.animationSpeed = 1;
+      this.refreshRate = 1;
+    } else {
+      this.animationSpeed = animationSpeed + (60 % animationSpeed) / Math.floor(60 / animationSpeed);
+      this.refreshRate = 60 / animationSpeed;
+    }
+
     this.velX = 0;
     this.velY = 0;
-    this.animationSpeed = animationSpeed + (60 % animationSpeed) / Math.floor(60 / animationSpeed);
-    this.refreshRate = 60 / animationSpeed;
     this.loopLength = 0;
     this.timeThroughLoop = 0;
     this.currentFrame = 0;
-    this.animations = [[0, 0, 0, 0, 0]];
+    this.animations = [{ name: 'default', startFrame: 0, numberOfFrames: this.numberOfFrames }];
     this.currentAnimation = 0;
-    this.currentAnimationName = '';
     this.opacity = 1;
     this.timeStamp = Date.now();
-    this.loaded = false;
     this.loader = new Promise((resolve, reject) => {
       this.theImage = new Image();
       this.theImage.src = source;
@@ -38,6 +44,8 @@ export default class Sprite {
       this.theImage.addEventListener('error', reject, { once: true });
     })
       .then(() => {
+        this.width = this.theImage.width / this.numberOfFrames;
+        this.height = this.theImage.height;
         this.loaded = true;
         s2pd.loadedAssets += 1;
         s2pd.finalize(this);
@@ -47,7 +55,7 @@ export default class Sprite {
         console.error(`Sprite was unable to load.`);
         console.error(err);
       });
-    s2pd.objectsToLoad.push(this);
+
   }
   updatePos() {
     s2pd.allGameObjects[this.id] = this;
@@ -58,14 +66,14 @@ export default class Sprite {
     let heightOfFrame = this.theImage.height;
     let widthOfFrame = this.theImage.width / this.numberOfFrames;
 
-    this.loopLength = this.refreshRate * this.animations[this.currentAnimation][2];
+    this.loopLength = this.refreshRate * this.animations[this.currentAnimation].numberOfFrames;
 
     if (this.timeThroughLoop === this.animationSpeed) {
       this.currentFrame += 1;
       this.timeThroughLoop = 0;
       if (
         this.currentFrame >=
-        this.animations[this.currentAnimation][2] /* **this is the number of frames in animation** */
+        this.animations[this.currentAnimation].numberOfFrames
       ) {
         this.currentFrame = 0;
       }
@@ -73,7 +81,7 @@ export default class Sprite {
     s2pd.ctx.globalAlpha = this.opacity;
     s2pd.ctx.drawImage(
       this.theImage,
-      this.animations[this.currentAnimation][1] * widthOfFrame + this.currentFrame * widthOfFrame,
+      this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
       0,
       widthOfFrame,
       heightOfFrame,
@@ -111,15 +119,13 @@ export default class Sprite {
     this.timeThroughLoop += 1;
   }
   addAnimation(name, startFrame, numberOfFrames) {
-    this.animations.push([name, startFrame, numberOfFrames]);
-    this.currentAnimationName = name;
+    this.animations.push({ name: name, startFrame: startFrame, numberOfFrames: numberOfFrames });
   }
   changeAnimationTo(name) {
     for (let i = 0; i < this.animations.length; i++) {
-      if (this.animations[i][0] === name) {
+      if (this.animations[i].name === name) {
         this.currentAnimation = i;
       }
-      this.currentAnimationName = name;
     }
   }
 
@@ -152,16 +158,6 @@ export default class Sprite {
     this.holdableId = s2pd.holdableObjects.length;
     s2pd.holdableObjects.push(this);
   }
-  jump(howMuch, howLong) {
-    this.jumpHeight = howMuch;
-    this.jumpLength = howLong;
-    this.jumpFrames = 0;
-    this.jumping = true;
-  }
-  moveTo(newX, newY) {
-    this.xPos = newX;
-    this.yPos = newY;
-  }
   updateSize(howMuch) {
     if (howMuch < 0) {
       if (this.width > howMuch * -1) {
@@ -178,18 +174,5 @@ export default class Sprite {
       this.hitBoxHeight = this.height;
       this.hitBoxWidth = this.width;
     }
-  }
-  destroy() {
-    if (this.clickable) {
-      s2pd.clickableObjects.splice(this.clickableId, 1);
-    }
-    if (this.detectHit) {
-      s2pd.hitDetectObjects.splice(this.hitBoxId, 1);
-      for (let i = 0; i < s2pd.hitDetectObjects.length; i++) {
-        s2pd.hitDetectObjects[i].hitBoxId = i;
-      }
-    }
-
-    s2pd.allGameObjects.splice(this.id, 1);
   }
 }

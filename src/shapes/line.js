@@ -1,20 +1,42 @@
 import s2pd from '../core.js';
+import Shapes from './shapes.js';
 
-export default class Line {
-  constructor(startX, startY, endX, endY, color, thickness) {
+/**
+ * Line
+ * @extends Shapes
+ */
+class Line extends Shapes {
+  /**
+   * 
+   * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'.
+   * @param {number} startX - Starting x coordinate.
+   * @param {number} startY - Starting y coordinate.
+   * @param {number} endX - Ending x coordinate.
+   * @param {number} endY - Ending y coordinate.
+   * @param {number} thickness - Width (stroke weight) of line in pixels. 
+   */
+  constructor(color, startX, startY, endX, endY, thickness) {
+    super(color);
     this.startX = startX;
     this.startY = startY;
     this.endX = endX;
     this.endY = endY;
+    this.xPos = startX;
+    this.yPos = startY;
     this.clickFunction = null;
     this.color = color;
     this.velX = 0;
     this.velY = 0;
     this.thickness = thickness;
+    this.loaded = true;
     s2pd.finalize(this);
-    this.make();
+    this.updatePos();
   }
-  make() {
+  /**
+   * Update position.
+   * @method
+   */
+  updatePos() {
     s2pd.ctx.beginPath();
     s2pd.ctx.moveTo(this.startX, this.startY);
     s2pd.ctx.lineTo(this.endX, this.endY);
@@ -24,28 +46,11 @@ export default class Line {
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
-  }
-  jump(howMuch, howLong) {
-    this.jumpHeight = howMuch;
-    this.jumpLength = howLong;
-    this.jumpFrames = 0;
-    this.jumping = true;
-  }
-  makeClickable() {
-    this.clickable = true;
-    this.draggable = false;
-    this.clickableId = s2pd.clickableObjects.length;
-    s2pd.clickableObjects.push(this);
-  }
-  onClick(callback) {
-    this.makeClickable();
-    this.clickFunction = callback;
-    this.clicked = false;
-  }
-  updatePos() {
     this.startX += this.velX;
     this.endX += this.velX;
     this.startY += this.velY;
     this.endY += this.velY;
   }
 }
+
+export default Line;

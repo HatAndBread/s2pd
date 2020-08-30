@@ -5,7 +5,15 @@ export async function loadAssets() {
   }
 }
 
-export class randomNumSetNoRepeat {
+/**
+ * a class
+ */
+export class RandomNumSetNoRepeat {
+  /**
+   *
+   * @param {number} min - asdfasd
+   * @param {number} max - sdfasf
+   */
   constructor(min, max) {
     this.max = max;
     this.min = min;
@@ -31,6 +39,7 @@ export class randomNumSetNoRepeat {
       this.numArray.splice(this.numnum, 1);
     }
   }
+
   getNum() {
     if (this.randomizedArray.length > 1) {
       this.numnum3 = this.randomizedArray[0];
@@ -51,7 +60,12 @@ export class randomNumSetNoRepeat {
     }
   }
 }
-
+/**
+ *
+ * @param {number} min - minimum
+ * @param {number} max - maximum
+ * @returns - Returns an integer between and including min and max
+ */
 export function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
