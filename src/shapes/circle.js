@@ -25,7 +25,6 @@ class Circle extends Shapes {
   * @method
   */
   updatePos() {
-    s2pd.allGameObjects[this.id] = this;
     this.hitBoxWidth = this.radius * 2;
     this.hitBoxHeight = this.radius * 2;
     this.hitBoxX = this.xPos - this.radius;

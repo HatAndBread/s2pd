@@ -28,8 +28,8 @@ const s2pd = {
   touchMoveY: null,
   touchEndX: null,
   touchEndY: null,
-  keyDown: null,
-  keyUp: null,
+  keyDown: [],
+  keyUp: [],
   orientation: undefined,
   exit: false,
   enableDragAndDrop: true,
@@ -38,9 +38,9 @@ const s2pd = {
   ctx: null,
   finalize: function (object) {
     if (object instanceof Background) {
-      this.allBackgrounds.push(object);
+      s2pd.allBackgrounds.push(object);
     } else {
-      this.allGameObjects.push(object);
+      s2pd.allGameObjects.push(object);
     }
   },
   jump: function (who, howHigh, howLong) {

@@ -204,20 +204,27 @@ function keyDown(key, callback) {
   }
 }
 function keyDownHandler(event) {
+  if (s2pd.preventDefaultKeyboard) {
+    event.preventDefault()
+  }
   if (keyDownEvents[event.keyCode] && !s2pd.looping) {
     keyDownEvents[event.keyCode]()
   }
   if (keyDownEvents[event.keyCode] && s2pd.looping) {
-    s2pd.keyDown = event.keyCode;
+    if (!s2pd.keyDown.includes(event.keyCode)) {
+      s2pd.keyDown.push(event.keyCode);
+    }
   }
 }
 function keyUpHandler(event) {
+  if (s2pd.preventDefaultKeyboard) {
+    event.preventDefault()
+  }
   if (keyUpEvents[event.keyCode] && !s2pd.looping) {
     keyUpEvents[event.keyCode]()
   }
-  if (keyDownEvents[event.keyCode] && s2pd.looping) {
-    s2pd.keyDown = null;
-    s2pd.keyUp = event.keyCode;
+  if (s2pd.looping) {
+    s2pd.keyUp.push(event.keyCode);
   }
 
 }

@@ -35,7 +35,6 @@ class Ellipse extends Shapes {
   * @method
   */
   updatePos() {
-    s2pd.allGameObjects[this.id] = this;
     if (this.rotation >= Math.PI * 2) {
       this.rotation = this.rotation % Math.PI;
       console.log(this.rotation);

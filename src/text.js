@@ -43,7 +43,6 @@ class Text extends Shapes {
    * @method
    */
   updatePos() {
-    s2pd.allGameObjects[this.id] = this;
     if (this.detectHit) {
       s2pd.hitDetectObjects[this.hitBoxId] = this;
     }

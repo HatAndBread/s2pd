@@ -44,20 +44,32 @@ export default function loop(game) {
       s2pd.draggableObjects[i].draggableId = i;
     }
   }
+  // KEYBOARD
+  if (s2pd.keyDown.length > 0) {
+    s2pd.keyDown.forEach((el) => {
+      if (typeof keyDownEvents[el] === 'function') {
+        keyDownEvents[el]();
+      } else {
+        console.error('Type error. Keyboard events must be a function.')
+      }
+    })
+  }
+  if (s2pd.keyUp.length > 0) {
+    for (let i = 0; i < s2pd.keyUp.length; i++) {
+      for (let j = 0; j < s2pd.keyDown.length; j++) {
+        if (s2pd.keyDown[j] === s2pd.keyUp[i]) {
+          s2pd.keyDown.splice(j, 1);
+        }
+      }
+      if (typeof keyUpEvents[s2pd.keyUp[i]] === 'function') {
+        keyUpEvents[s2pd.keyUp[i]]();
+      }
+      s2pd.keyUp.splice(i, 1);
+    }
+  }
+  //END KEYBOARD
 
-  if (s2pd.keyDown) {
-    if (keyDownEvents[s2pd.keyDown]) {
-      keyDownEvents[s2pd.keyDown]();
-    }
-  }
-  if (s2pd.keyUp) {
-    console.log(s2pd.keyUp)
-    if (keyUpEvents[s2pd.keyUp]) {
-      keyUpEvents[s2pd.keyUp]();
-    }
-    s2pd.keyUp = null;
-  }
-  const errorMessage = 'The loop() method requires a callback function😭 Example ===> loop(function(){//do something})';
+  const errorMessage = 'loop() method requires a callback function😭 Example ===> loop(function(){//do something})';
   if (game) {
     if (typeof game === 'function') {
       game();

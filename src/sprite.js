@@ -58,7 +58,6 @@ export default class Sprite {
 
   }
   updatePos() {
-    s2pd.allGameObjects[this.id] = this;
     this.hitBoxX = this.xPos;
     this.hitBoxY = this.yPos;
     this.hitBoxWidth = this.width;
@@ -95,7 +94,7 @@ export default class Sprite {
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
-    if (this.dragging === true) {
+    if (this.dragging) {
       s2pd.dragArray[0] = this;
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX - this.width / 2;

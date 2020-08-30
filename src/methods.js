@@ -1,9 +1,5 @@
 import s2pd from './core.js';
 
-export async function loadAssets() {
-  if (s2pd.objectsToLoad.length > 0) {
-  }
-}
 
 /**
  * a class

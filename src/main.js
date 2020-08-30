@@ -1,7 +1,7 @@
 import s2pd from './s2pd.js'
 s2pd.enableAudio()
 
-s2pd.createCanvas('UYO', 500, 500);
+s2pd.createCanvas('UYO', 1200, 500);
 s2pd.stillCanvas();
 s2pd.backgroundColor(45, 54, 45, 1);
 s2pd.canvasOpacity(1);
@@ -15,20 +15,23 @@ s2pd.keyUp('p', () => {
 s2pd.keyUp('o', () => {
   bgm.play()
 })
-const clouds = new s2pd.Background('./hero.png', 35, 4);
-clouds.addAnimation('standing', 0, 4);
-clouds.changeAnimationTo('standing');
+
+s2pd.keyUp('up', () => {
+  console.log('lovely day')
+})
+const clouds = new s2pd.Background('./hero.png', 35, 3);
+
 s2pd.keyDown('left', () => {
-  clouds.xPos -= 10;
+  clouds.xPos -= 2;
 })
 s2pd.keyDown('right', () => {
-  clouds.xPos += 10;
+  clouds.xPos += 2;
 })
 s2pd.keyDown('up', () => {
-  clouds.yPos -= 10;
+  clouds.yPos -= 2;
 })
 s2pd.keyDown('down', () => {
-  clouds.yPos += 10;
+  clouds.yPos += 2;
 })
 
 const slim = new s2pd.Line('red', 10, 10, 500, 500, 20)

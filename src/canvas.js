@@ -29,9 +29,26 @@ function addCanvas(id, width, height) {
   s2pd.width = width;
   s2pd.height = height;
 }
+/**
+ * 
+ * @param {string=} how - 'touch': Prevent the window from moving on touch input. 'keyboard': Prevent the canvas from moving on keyboard input. No arguments: Prevent window from moving on all input.
+ */
+function stillCanvas(how) {
+  if (!how) {
+    s2pd.canvas.style.touchAction = 'none';
+    s2pd.preventDefaultKeyboard = true;
+  } else {
+    how.toLowerCase()
+    if (how === 'touch') {
+      s2pd.canvas.style.touchAction = 'none';
+    } else if (how === 'keyboard') {
+      s2pd.preventDefaultKeyboard = true;
+    } else {
+      s2pd.canvas.style.touchAction = 'none';
+      s2pd.preventDefaultKeyboard = true;
+    }
+  }
 
-function stillCanvas() {
-  s2pd.canvas.style.touchAction = 'none';
 }
 
 function backgroundColor(r, g, b, a) {

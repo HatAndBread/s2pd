@@ -33,7 +33,6 @@ export default class Rectangle extends Shapes {
     this.updatePos();
   }
   updatePos() {
-    s2pd.allGameObjects[this.id] = this;
     this.hitBoxX = this.xPos;
     this.hitBoxY = this.yPos;
     this.hitBoxWidth = this.width;

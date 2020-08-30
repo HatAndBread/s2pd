@@ -6,7 +6,7 @@ class Background {
   /**
    * Creates a scrollable background.
    * @param {string} source - source of image file. 
-   * @param {number=} numberOfFrames - (Only if background is an animation)👉　Total number of animation frames in the source image file. 
+   * @param {number=} numberOfFrames - (Only if background is an animation)👉 Total number of animation frames in the source image file. 
    * @param {number=} animationSpeed - (Only if background is an animation)👉 Number of ticks before the next frame is displayed
    */
   constructor(source, numberOfFrames, animationSpeed) {
@@ -41,12 +41,12 @@ class Background {
     this.loader = new Promise((resolve, reject) => {
       this.theImage = new Image();
       this.theImage.src = source;
-      this.height = this.theImage.height;
-      this.width = this.theImage.width / this.numberOfFrames;
-      this.farXpos = this.width;
       this.theImage.addEventListener('load', resolve, { once: true });
       this.theImage.addEventListener('error', reject, { once: true });
     }).then(() => {
+      this.height = this.theImage.height;
+      this.width = this.theImage.width / this.numberOfFrames;
+      this.farXpos = this.width;
       this.loaded = true;
       s2pd.loadedAssets += 1;
       s2pd.finalize(this);
@@ -58,11 +58,10 @@ class Background {
       });
   }
   updatePos() {
-    s2pd.allBackgrounds[this.id] = this;
     this.autoSize()
     s2pd.ctx.globalAlpha = this.opacity;
-    let heightOfFrame = this.theImage.height;
-    let widthOfFrame = this.theImage.width / this.numberOfFrames;
+    this.heightOfFrame = this.theImage.height;
+    this.widthOfFrame = this.theImage.width / this.numberOfFrames;
 
     this.loopLength = this.refreshRate * this.animations[this.currentAnimation].numberOfFrames;
 
@@ -76,50 +75,22 @@ class Background {
         this.currentFrame = 0;
       }
     }
+
+    //if width of image file is less than half of canvas width...
     if (this.width < s2pd.width / 2) {
       this.farXpos = this.width * Math.ceil(s2pd.width / this.width) + this.xPos;
       this.negFarXPos = this.width * Math.ceil(s2pd.width / this.width) * -1 + this.xPos;
       for (let i = 0; i < Math.ceil(s2pd.width / this.width); i++) {
-        s2pd.ctx.drawImage(
-          this.theImage,
-          this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-          0,
-          widthOfFrame,
-          heightOfFrame,
-          this.xPos + i * this.width,
-          this.yPos,
-          this.width + 1,
-          this.height
-        );
+
+        this.drawImage(this.xPos + i * this.width);
       }
       if (this.xPos > 0) {
         for (let i = 0; i < Math.ceil(s2pd.width / this.width); i++) {
-          s2pd.ctx.drawImage(
-            this.theImage,
-            this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-            0,
-            widthOfFrame,
-            heightOfFrame,
-            this.xPos - i * this.width,
-            this.yPos,
-            this.width + 1,
-            this.height
-          );
+          this.drawImage(this.xPos - i * this.width)
         }
       }
-
       if (this.farXpos < s2pd.width) {
-        s2pd.ctx.drawImage(
-          this.theImage,
-          this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-          0,
-          widthOfFrame,
-          heightOfFrame,
-          this.farXpos,
-          this.yPos,
-          this.width + 1,
-          this.height
-        );
+        this.drawImage(this.farXpos);
         this.xPos = 0;
       }
 
@@ -127,144 +98,48 @@ class Background {
         this.xPos = 0;
       }
     }
+    //if width of image file is more than half width of canvas and less than the whole width
     if (this.width >= s2pd.width / 2 && this.width < s2pd.width) {
       this.farXpos = this.xPos + this.width;
       let leftOvers = this.width * 2 - s2pd.width + this.width;
-      s2pd.ctx.drawImage(
-        this.theImage,
-        this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-        0,
-        widthOfFrame,
-        heightOfFrame,
-        this.xPos,
-        this.yPos,
-        this.width + 1,
-        this.height
-      );
-      s2pd.ctx.drawImage(
-        this.theImage,
-        this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-        0,
-        widthOfFrame,
-        heightOfFrame,
-        this.farXpos,
-        this.yPos,
-        this.width + 1,
-        this.height
-      );
-      s2pd.ctx.drawImage(
-        this.theImage,
-        this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-        0,
-        widthOfFrame,
-        heightOfFrame,
-        this.width * 2 + this.xPos,
-        this.yPos,
-        this.width + 1,
-        this.height
-      );
-      s2pd.ctx.drawImage(
-        this.theImage,
-        this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-        0,
-        widthOfFrame,
-        heightOfFrame,
-        this.width * 3 + this.xPos,
-        this.yPos,
-        this.width + 1,
-        this.height
-      );
-
+      this.drawImage(this.xPos);
+      this.drawImage(this.farXpos);
+      this.drawImage(this.width * 2 + this.xPos);
+      this.drawImage(this.width * 3 + this.xPos);
       if (this.xPos <= leftOvers * -1) {
         this.xPos = (this.width * 2 - s2pd.width) * -1;
       }
-
       if (this.xPos >= 0) {
-        s2pd.ctx.drawImage(
-          this.theImage,
-          this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-          0,
-          widthOfFrame,
-          heightOfFrame,
-          this.xPos - this.width,
-          this.yPos,
-          this.width + 1,
-          this.height
-        );
+        this.drawImage(this.xPos - this.width);
         if (this.xPos >= this.width) {
           this.xPos = 0;
-          s2pd.ctx.drawImage(
-            this.theImage,
-            this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-            0,
-            widthOfFrame,
-            heightOfFrame,
-            this.xPos,
-            this.yPos,
-            this.width + 1,
-            this.height
-          );
+          this.drawImage(this.xPos);
         }
+
       }
     }
 
+
+
+    ///If width of image file is bigger than canvas.
     if (this.width >= s2pd.width) {
       this.farXpos = this.xPos + this.width;
 
-      s2pd.ctx.drawImage(
-        this.theImage,
-        this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-        0,
-        widthOfFrame,
-        heightOfFrame,
-        this.xPos,
-        this.yPos,
-        this.width + 1,
-        this.height
-      );
+      this.drawImage(this.xPos);
+
 
       if (this.farXpos <= s2pd.width) {
-        s2pd.ctx.drawImage(
-          this.theImage,
-          this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-          0,
-          widthOfFrame,
-          heightOfFrame,
-          this.farXpos,
-          this.yPos,
-          this.width + 1,
-          this.height
-        );
+        this.drawImage(this.farXpos);
         if (this.farXpos <= s2pd.width - s2pd.width) {
           this.xPos = 0;
         }
       }
 
       if (this.xPos >= 0) {
-        s2pd.ctx.drawImage(
-          this.theImage,
-          this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-          0,
-          widthOfFrame,
-          heightOfFrame,
-          this.xPos - this.width,
-          this.yPos,
-          this.width + 1,
-          this.height
-        );
+        this.drawImage(this.xPos - this.width);
         if (this.xPos >= this.width) {
           this.xPos = 0;
-          s2pd.ctx.drawImage(
-            this.theImage,
-            this.animations[this.currentAnimation].startFrame * widthOfFrame + this.currentFrame * widthOfFrame,
-            0,
-            widthOfFrame,
-            heightOfFrame,
-            this.xPos,
-            this.yPos,
-            this.width + 1,
-            this.height
-          );
+          this.drawImage(this.xPos);
         }
       }
     }
@@ -297,6 +172,63 @@ class Background {
     this.height = s2pd.height;
     this.width = increaceToWidth * this.width;
     this.farXpos = this.xPos + s2pd.width;
+  }
+  drawImage(xPos) {
+    s2pd.ctx.drawImage(
+      this.theImage,
+      this.animations[this.currentAnimation].startFrame * this.widthOfFrame + this.currentFrame * this.widthOfFrame,
+      0,
+      this.widthOfFrame,
+      this.heightOfFrame,
+      xPos,
+      this.yPos,
+      this.width + 1,
+      this.height
+    );
+    if (this.bottom()) {
+      if (this.yPos <= this.height * -1) {
+        this.drawY(xPos, this.yPos + this.height)
+        this.yPos = 0;
+      } else {
+        this.drawY(xPos, this.yPos + this.height)
+      }
+    }
+    if (this.top()) {
+      if (this.yPos >= this.height) {
+        this.drawY(xPos, this.yPos - this.height);
+        this.yPos = 0;
+      } else {
+        this.drawY(xPos, this.yPos - this.height);
+      }
+    }
+  }
+  drawY(xPos, yPos) {
+    s2pd.ctx.drawImage(
+      this.theImage,
+      this.animations[this.currentAnimation].startFrame * this.widthOfFrame + this.currentFrame * this.widthOfFrame,
+      0,
+      this.widthOfFrame,
+      this.heightOfFrame,
+      xPos,
+      yPos,
+      this.width + 1,
+      this.height
+    );
+
+  }
+  bottom() {
+    if (this.yPos < 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  top() {
+    if (this.yPos > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
