@@ -9,10 +9,12 @@ import Rectangle from './shapes/rectangle.js';
 import Line from './shapes/line.js';
 import Text from './text.js';
 import Background from './background.js';
+import Tile from './tile.js';
 import { mouseListeners } from './input/mouse.js';
 import { touchListeners } from './input/touch.js';
 import { keyboardListeners, keyDown, keyUp } from './input/keyboard.js';
 import { enableAudio, Sound } from './audio/audio.js';
+
 /**
  * clear the canvas
  * @function
@@ -54,6 +56,7 @@ export {
   Line,
   Text,
   Background,
+  Tile,
   keyDown,
   keyUp,
   enableAudio,

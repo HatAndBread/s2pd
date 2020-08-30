@@ -81,7 +81,6 @@ class Background {
       this.farXpos = this.width * Math.ceil(s2pd.width / this.width) + this.xPos;
       this.negFarXPos = this.width * Math.ceil(s2pd.width / this.width) * -1 + this.xPos;
       for (let i = 0; i < Math.ceil(s2pd.width / this.width); i++) {
-
         this.drawImage(this.xPos + i * this.width);
       }
       if (this.xPos > 0) {
@@ -118,9 +117,6 @@ class Background {
 
       }
     }
-
-
-
     ///If width of image file is bigger than canvas.
     if (this.width >= s2pd.width) {
       this.farXpos = this.xPos + this.width;
@@ -143,8 +139,6 @@ class Background {
         }
       }
     }
-
-
     s2pd.ctx.globalAlpha = 1;
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);

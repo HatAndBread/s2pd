@@ -28,7 +28,6 @@ export function mouseDown(event) {
 
         if (draggableOrNot) {
           clickedObject = s2pd.draggableObjects[i];
-          console.log(clickedObject);
           clickedObject.dragging = true;
         }
       }

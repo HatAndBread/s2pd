@@ -6,7 +6,6 @@ s2pd.stillCanvas();
 s2pd.backgroundColor(45, 54, 45, 1);
 s2pd.canvasOpacity(1);
 
-
 const bgm = new s2pd.Sound('./bgm.mp3', .5, 1, true, 762)
 bgm.load();
 s2pd.keyUp('p', () => {
@@ -16,22 +15,28 @@ s2pd.keyUp('o', () => {
   bgm.play()
 })
 
+
+const mary = new s2pd.Tile('./heart.png', 0, 0, 240, 90);
+mary.makeDraggable()
+console.log(mary)
+
 s2pd.keyUp('up', () => {
   console.log('lovely day')
+
 })
 const clouds = new s2pd.Background('./hero.png', 35, 3);
 
 s2pd.keyDown('left', () => {
-  clouds.xPos -= 2;
+  mary.innerX -= 1;
 })
 s2pd.keyDown('right', () => {
-  clouds.xPos += 2;
+  mary.innerX += 1;
 })
 s2pd.keyDown('up', () => {
-  clouds.yPos -= 2;
+  mary.innerY -= 1;
 })
 s2pd.keyDown('down', () => {
-  clouds.yPos += 2;
+  mary.innerY += 1;
 })
 
 const slim = new s2pd.Line('red', 10, 10, 500, 500, 20)
