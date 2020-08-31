@@ -16,12 +16,12 @@ s2pd.keyUp('o', () => {
 })
 
 
-const mary = new s2pd.Tile('./heart.png', 0, 0, 240, 90);
-mary.makeDraggable()
-console.log(mary)
+const mary = new s2pd.Tile('./heart.png');
+
+
 
 s2pd.keyUp('up', () => {
-  console.log('lovely day')
+
 
 })
 const clouds = new s2pd.Background('./hero.png', 35, 3);

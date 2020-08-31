@@ -70,7 +70,7 @@ export function mouseClick(event) {
   let canvasPos = s2pd.canvas.getBoundingClientRect();
   s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
   s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
-  console.log(`${s2pd.mouseX} ${s2pd.mouseY}`);
+
   for (let i = 0; i < s2pd.clickableObjects.length; i++) {
     if (
       s2pd.mouseX >= s2pd.clickableObjects[i].hitBoxX &&
