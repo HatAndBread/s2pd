@@ -1,9 +1,9 @@
 import s2pd from './core.js';
 import loop from './loop.js';
 import { createCanvas, addCanvas, stillCanvas, backgroundColor, canvasOpacity } from './canvas.js';
-import { RandomNumSetNoRepeat, getRandomColor, randomBetween, roundToDecimals, choose } from './methods.js';
+import { RandomNumSetNoRepeat, getRandomColor, randomBetween, roundToDecimals, choose, onCollision } from './methods.js';
 import Sprite from './sprite.js';
-import { Circle } from './shapes/circle.js';
+import Circle from './shapes/circle.js';
 import Ellipse from './shapes/ellipse.js';
 import Rectangle from './shapes/rectangle.js';
 import Line from './shapes/line.js';
@@ -37,6 +37,7 @@ keyboardListeners();
 export {
   clear,
   dontClear,
+  onCollision,
   s2pd,
   loop,
   createCanvas,

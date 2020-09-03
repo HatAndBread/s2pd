@@ -11,14 +11,13 @@ const s2pd = {
   loadedAudio: [],
   allGameObjects: [],
   allBackgrounds: [],
-  clickableObjects: [],
-  draggableObjects: [],
-  dragArray: [],
   holdableObjects: [],
   hitDetectObjects: [],
+  collisions: [],
+  platforms: [],
+  gravity: [],
   dragStarted: false,
   draggingWithMouse: true,
-  holdStarted: false,
   clear: false,
   mouseX: null,
   mouseY: null,
@@ -43,64 +42,27 @@ const s2pd = {
       s2pd.allGameObjects.push(object);
     }
   },
-  jump: function (who, howHigh, howLong) {
+  jump: function (who, howHigh) {
+    if (!(who instanceof Line)) {
 
-    if (howLong < 1) {
-      howLong = 1;
-    }
-    who.jumpFrames += 1;
-    if (!who instanceof Line) {
-      if (who.jumpFrames > 0 && who.jumpFrames <= howLong) {
-        who.yPos -= howHigh / 10 / howLong;
-      } else if (who.jumpFrames > howLong && who.jumpFrames <= howLong * 2) {
-        who.yPos -= howHigh / 20 / howLong;
-      } else if (who.jumpFrames > howLong * 2 && who.jumpFrames <= howLong * 3) {
-        who.yPos -= howHigh / 25 / howLong;
-      } else if (who.jumpFrames > howLong * 3 && who.jumpFrames <= howLong * 4) {
-        who.yPos -= howHigh / 50 / howLong;
-      } else if (who.jumpFrames > howLong * 4 && who.jumpFrames <= howLong * 5) {
-        who.yPos += howHigh / 50 / howLong;
-      } else if (who.jumpFrames > howLong * 5 && who.jumpFrames <= howLong * 6) {
-        who.yPos += howHigh / 25 / howLong;
-      } else if (who.jumpFrames > howLong * 6 && who.jumpFrames <= howLong * 7) {
-        who.yPos += howHigh / 20 / howLong;
-      } else if (who.jumpFrames > howLong * 7 && who.jumpFrames <= howLong * 8) {
-        who.yPos += howHigh / 10 / howLong;
+      const currentHeight = Math.abs(who.yPos - who.jumpStart);
+      //let howManyTimesToTop = Math.floor(howHigh / who.originalGravityLevel / 2)
+      if (currentHeight <= howHigh / 2) {
+        who.yPos -= who.originalGravityLevel;
+      } else if (currentHeight > howHigh / 2) {
+        who.gravityLevel -= who.accelerationRate
+        who.yPos -= who.gravityLevel;
+        if (who.gravityLevel <= 0) {
+          who.gravityLevel = who.originalGravityLevel;
+          who.jumping = false
+        }
       } else {
+        who.gravityLevel = who.originalGravityLevel;
         who.jumping = false;
-        who.jumpFrames = 0;
-      }
-    } else {
-      if (who.jumpFrames > 0 && who.jumpFrames <= howLong) {
-        who.startY -= howHigh / 10 / howLong;
-        who.endY -= howHigh / 10 / howLong;
-      } else if (who.jumpFrames > howLong && who.jumpFrames <= howLong * 2) {
-        who.startY -= howHigh / 20 / howLong;
-        who.endY -= howHigh / 20 / howLong;
-      } else if (who.jumpFrames > howLong * 2 && who.jumpFrames <= howLong * 3) {
-        who.startY -= howHigh / 25 / howLong;
-        who.endY -= howHigh / 25 / howLong;
-      } else if (who.jumpFrames > howLong * 3 && who.jumpFrames <= howLong * 4) {
-        who.startY -= howHigh / 50 / howLong;
-        who.endY -= howHigh / 50 / howLong;
-      } else if (who.jumpFrames > howLong * 4 && who.jumpFrames <= howLong * 5) {
-        who.startY += howHigh / 50 / howLong;
-        who.endY += howHigh / 50 / howLong;
-      } else if (who.jumpFrames > howLong * 5 && who.jumpFrames <= howLong * 6) {
-        who.startY += howHigh / 25 / howLong;
-        who.endY += howHigh / 25 / howLong;
-      } else if (who.jumpFrames > howLong * 6 && who.jumpFrames <= howLong * 7) {
-        who.startY += howHigh / 20 / howLong;
-        who.endY += howHigh / 20 / howLong;
-      } else if (who.jumpFrames > howLong * 7 && who.jumpFrames <= howLong * 8) {
-        who.startY += howHigh / 10 / howLong;
-        who.endY += howHigh / 10 / howLong;
-      } else {
-        who.jumping = false;
-        who.jumpFrames = 0;
       }
     }
   }
 };
 
+window.detect = s2pd.hitDetectObjects;
 export default s2pd;

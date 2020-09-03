@@ -29,7 +29,7 @@ export default class Rectangle extends Shapes {
     this.hitBoxHeight = this.height;
     this.loaded = true;
     this.timeStamp = Date.now();
-    s2pd.finalize(this);
+    s2pd.finalize(this)
     this.updatePos();
   }
   updatePos() {
@@ -53,7 +53,6 @@ export default class Rectangle extends Shapes {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.dragging === true) {
-      s2pd.dragArray[0] = this;
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX - this.width / 2;
         this.yPos = s2pd.mouseY - this.height / 2;
@@ -69,7 +68,7 @@ export default class Rectangle extends Shapes {
         this.hitBoxY = this.yPos;
         this.hitBoxWidth = this.width;
         this.hitBoxHeight = this.height;
-        s2pd.hitDetectObjects[this.hitBoxId] = this;
+
       }
     }
   }

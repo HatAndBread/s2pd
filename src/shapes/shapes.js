@@ -13,8 +13,8 @@ class Shapes {
     this.velX = 0;
     this.velY = 0;
     this.opacity = 1;
-    this.timeStamp = Date.now();
-    s2pd.finalize(this);
+    //this.timeStamp = Date.now();
+    //s2pd.finalize(this);
   }
   /**
    * Make object jump.
@@ -32,45 +32,26 @@ class Shapes {
    */
   hitDetect() {
     this.detectHit = true;
-    this.hitBoxId = s2pd.hitDetectObjects.length;
     s2pd.hitDetectObjects.push(this);
+    this.hitBoxId = s2pd.hitDetectObjects.length;
   }
-  /**
-   * Detect mouse clicks on object.
-   */
-  makeClickable() {
-    this.clickable = true;
-    this.draggable = false;
-    this.clickableId = s2pd.clickableObjects.length;
-    s2pd.clickableObjects.push(this);
-  }
+
   /**
    * @param {function} callback - What to do when object is clicked.
    */
   onClick(callback) {
-    this.makeClickable();
     this.clickFunction = callback;
-    this.clicked = false;
   }
-  /**
-   * make object draggable
-   */
-  makeDraggable() {
-    this.draggable = true;
-    this.clickable = false;
-    this.draggableId = s2pd.draggableObjects.length;
-    s2pd.draggableObjects.push(this);
+  onHold(callback) {
+    this.holdFunction = callback;
+    if (!s2pd.holdableObjects.includes(this)) {
+      s2pd.holdableObjects.push(this)
+    }
   }
-  /**
-   * detect if object is being touched continually or if the mouse is being held down over object.
-   * @method
-   */
-  makeHoldable() {
-    this.holdable = true;
-    this.clickable = false;
-    this.draggable = false;
-    this.holdableId = s2pd.holdableObjects.length;
-    s2pd.holdableObjects.push(this);
+
+
+  drag() {
+    this.dragging = true;
   }
 }
 export default Shapes;

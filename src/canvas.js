@@ -31,7 +31,7 @@ function addCanvas(id, width, height) {
 }
 /**
  * 
- * @param {string=} how - 'touch': Prevent the window from moving on touch input. 'keyboard': Prevent the canvas from moving on keyboard input. No arguments: Prevent window from moving on all input.
+ * @param {string=} how - 'touch': Prevent the window from moving on touch input. 'keyboard': Prevent the window from moving on keyboard input(arrow keys). No arguments: Prevent window from moving on all input.
  */
 function stillCanvas(how) {
   if (!how) {

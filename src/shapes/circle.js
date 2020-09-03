@@ -18,6 +18,7 @@ class Circle extends Shapes {
     this.radius = radius;
     this.thickness = thickness;
     this.loaded = true;
+    s2pd.finalize(this)
     this.updatePos();
   }
   /**
@@ -55,7 +56,6 @@ class Circle extends Shapes {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.dragging) {
-      s2pd.dragArray[0] = this;
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX;
         this.yPos = s2pd.mouseY;
@@ -70,4 +70,4 @@ class Circle extends Shapes {
   }
 }
 
-export { Circle };
+export default Circle;

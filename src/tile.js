@@ -99,14 +99,21 @@ class Tile {
             }
         }
         s2pd.ctx.globalAlpha = this.opacity;
+        if (this.width < this.imageWidth) {
+            this.width = this.imageWidth
+        }
+
+
         let columns = Math.ceil(this.width / this.imageWidth);
-        let rows = Math.ceil(this.height / this.imageHeight);
+        let rows = Math.floor(this.height / this.imageHeight);
+
 
 
 
 
 
         let increasingX = this.xPos - this.imageWidth;
+
         for (let i = -1; i < columns + 1; i++) {
 
             //on the column to the left side
@@ -564,10 +571,10 @@ class Tile {
 
         s2pd.ctx.globalAlpha = 1;
         if (this.jumping) {
+            console.log('HUH')
             s2pd.jump(this, this.jumpHeight, this.jumpLength);
         }
         if (this.dragging) {
-            s2pd.dragArray[0] = this;
             if (s2pd.draggingWithMouse) {
                 this.xPos = s2pd.mouseX - this.width / 2;
                 this.yPos = s2pd.mouseY - this.height / 2;
@@ -578,13 +585,12 @@ class Tile {
         } else {
             this.xPos += this.velX;
             this.yPos += this.velY;
-            if (this.detectHit) {
-                this.hitBoxX = this.xPos;
-                this.hitBoxY = this.yPos;
-                this.hitBoxWidth = this.width;
-                this.hitBoxHeight = this.height;
-                s2pd.hitDetectObjects[this.hitBoxId] = this;
-            }
+
+            this.hitBoxX = this.xPos;
+            this.hitBoxY = this.yPos;
+            this.hitBoxWidth = this.width;
+            this.hitBoxHeight = this.height;
+
         }
 
         this.timeThroughLoop += 1;
@@ -613,33 +619,46 @@ class Tile {
         );
     }
     hitDetect() {
-        this.detectHit = true;
-        this.hitBoxId = s2pd.hitDetectObjects.length;
-        s2pd.hitDetectObjects.push(this);
+
+        if (!this.detectHit) {
+            s2pd.hitDetectObjects.push(this);
+            this.detectHit = true;
+            this.hitBoxId = s2pd.hitDetectObjects.length;
+        }
+
     }
-    makeClickable() {
-        this.clickable = true;
-        this.draggable = false;
-        this.clickableId = s2pd.clickableObjects.length;
-        s2pd.clickableObjects.push(this);
-    }
+    /**
+   * @param {function} callback - What to do when object is clicked.
+   */
     onClick(callback) {
-        this.makeClickable();
         this.clickFunction = callback;
-        this.clicked = false;
     }
-    makeDraggable() {
-        this.draggable = true;
-        this.clickable = false;
-        this.draggableId = s2pd.draggableObjects.length;
-        s2pd.draggableObjects.push(this);
+    onHold(callback) {
+        this.holdFunction = callback;
+        if (!s2pd.holdableObjects.includes(this)) {
+            s2pd.holdableObjects.push(this)
+        }
     }
-    makeHoldable() {
-        this.holdable = true;
-        this.clickable = false;
-        this.draggable = false;
-        this.holdableId = s2pd.holdableObjects.length;
-        s2pd.holdableObjects.push(this);
+    drag() {
+        this.dragging = true;
+    }
+    platform(blockify) {
+        blockify ? this.block = true : this.block = false;
+        s2pd.platforms.push(this)
+        console.log(s2pd.platforms)
+    }
+    notPlatform() {
+        this.block = false;
+        for (let i = 0; i < s2pd.platforms.length; i++) {
+            s2pd.platforms[i] === this ? s2pd.platforms.splice(i, 1) : undefined;
+        }
+        console.log(s2pd.platforms)
+    }
+    jump(howMuch, howLong) {
+        this.jumpHeight = howMuch;
+        this.jumpLength = howLong;
+        this.jumpFrames = 0;
+        this.jumping = true;
     }
 
 }

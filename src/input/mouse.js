@@ -1,90 +1,70 @@
 import s2pd from '../core.js';
+import Line from '../shapes/line.js'
 
 export function mouseMove(event) {
-  if (s2pd.dragStarted) {
-    let canvasPos = s2pd.canvas.getBoundingClientRect();
-    s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
-    s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
-  }
-}
 
-export function mouseDown(event) {
-  if (s2pd.enableDragAndDrop) {
-    let clickedObject;
-    let draggableOrNot = false;
-    let canvasPos = s2pd.canvas.getBoundingClientRect();
-    s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
-    s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
-    for (let i = 0; i < s2pd.draggableObjects.length; i++) {
-      if (
-        s2pd.mouseX >= s2pd.draggableObjects[i].hitBoxX &&
-        s2pd.mouseY >= s2pd.draggableObjects[i].hitBoxY &&
-        s2pd.mouseX <= s2pd.draggableObjects[i].hitBoxX + s2pd.draggableObjects[i].hitBoxWidth &&
-        s2pd.mouseY <= s2pd.draggableObjects[i].hitBoxY + s2pd.draggableObjects[i].hitBoxHeight
-      ) {
-        s2pd.dragStarted = true;
-        draggableOrNot = true;
-        s2pd.draggingWithMouse = true;
-
-        if (draggableOrNot) {
-          clickedObject = s2pd.draggableObjects[i];
-          clickedObject.dragging = true;
-        }
-      }
-    }
-    for (let i = 0; i < s2pd.holdableObjects.length; i++) {
-      if (
-        s2pd.mouseX >= s2pd.holdableObjects[i].hitBoxX &&
-        s2pd.mouseY >= s2pd.holdableObjects[i].hitBoxY &&
-        s2pd.mouseX <= s2pd.holdableObjects[i].hitBoxX + s2pd.holdableObjects[i].hitBoxWidth &&
-        s2pd.mouseY <= s2pd.holdableObjects[i].hitBoxY + s2pd.holdableObjects[i].hitBoxHeight
-      ) {
-        s2pd.holdStarted = true;
-        clickedObject = s2pd.holdableObjects[i];
-        clickedObject.holdDown = true;
-      }
-    }
-  }
-}
-
-export function mouseUp() {
-  if (s2pd.dragStarted) {
-    s2pd.dragStarted = false;
-    for (let i = 0; i < s2pd.draggableObjects.length; i++) {
-      s2pd.draggableObjects[i].dragging = false;
-    }
-  }
-  if (s2pd.holdStarted) {
-    for (let i = 0; i < s2pd.holdableObjects.length; i++) {
-      if (s2pd.holdableObjects[i].holdDown) {
-        s2pd.holdableObjects[i].finishedHolding = true;
-        s2pd.holdableObjects[i].holdDown = false;
-      }
-    }
-    s2pd.holdStarted = false;
-  }
-}
-
-export function mouseClick(event) {
-  let clickedObject;
   let canvasPos = s2pd.canvas.getBoundingClientRect();
   s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
   s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
 
-  for (let i = 0; i < s2pd.clickableObjects.length; i++) {
-    if (
-      s2pd.mouseX >= s2pd.clickableObjects[i].hitBoxX &&
-      s2pd.mouseY >= s2pd.clickableObjects[i].hitBoxY &&
-      s2pd.mouseX <= s2pd.clickableObjects[i].hitBoxX + s2pd.clickableObjects[i].hitBoxWidth &&
-      s2pd.mouseY <= s2pd.clickableObjects[i].hitBoxY + s2pd.clickableObjects[i].hitBoxHeight
-    ) {
-      clickedObject = s2pd.clickableObjects[i];
-      clickedObject.clicked = true;
-      if (clickedObject.clickFunction) {
-        clickedObject.clickFunction();
+}
+
+export function isLine(obj) {
+  if (obj.distanceFromMe) {
+    let d;
+    if (!s2pd.touchX) {
+      d = obj.distanceFromMe(s2pd.mouseX, s2pd.mouseY)
+    } else {
+      d = obj.distanceFromMe(s2pd.touchX, s2pd.touchY)
+    }
+    if (d < obj.thickness * 0.1) return true
+  }
+}
+
+export function searchArr(arr, x, y, options) {
+  for (let i = 0; i < arr.length; i++) {
+    let a = arr[i]
+    const execute = () => {
+      if (!a.clickFunction && options) {
+        s2pd.heldObject = a;
+      } else {
+        if (a.clickFunction) { a.clickFunction() }
       }
     }
+    if (isLine(a)) {
+      execute();
+    } else if (
+      x >= a.hitBoxX &&
+      y >= a.hitBoxY &&
+      x <= a.hitBoxX + a.hitBoxWidth &&
+      y <= a.hitBoxY + a.hitBoxHeight
+    ) {
+      execute();
+    }
   }
+}
+
+export function mouseDown(event) {
+  s2pd.draggingWithMouse = true;
+  searchArr(s2pd.holdableObjects, s2pd.mouseX, s2pd.mouseY, true)
+}
+
+export function mouseUp() {
+  s2pd.heldObject = null;
+  s2pd.allGameObjects.forEach((el) => {
+    el.dragging = false;
+  })
+}
+
+export function mouseClick(event) {
+  let canvasPos = s2pd.canvas.getBoundingClientRect();
+  s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
+  s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
+  s2pd.heldObject = null;
+  s2pd.allGameObjects.forEach((el) => {
+    el.dragging = false;
+  })
+  searchArr(s2pd.allGameObjects, s2pd.mouseX, s2pd.mouseY)
 }
 
 export function mouseListeners() {

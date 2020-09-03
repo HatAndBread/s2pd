@@ -96,7 +96,7 @@ export function roundToDecimals(num, howManyDecimals) {
       break;
     default:
       multiplier = 100;
-      console.log('choose a valid number idiot');
+      console.log('Max digits is 6.');
   }
 
   return Math.round((num + Number.EPSILON) * multiplier) / multiplier;
@@ -109,5 +109,32 @@ export function choose(option1, option2) {
   }
   if (chooser === 1) {
     return option2;
+  }
+}
+
+export function pythagorean(sideA, sideB) {
+  return Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
+}
+
+/**
+ * @function - Detect collision between sprites or any other game object.
+ * @param {object} obj1 - Any s2pd game object. 
+ * @param {object} obj2 - Any s2pd game object.
+ * @param {boolean} triggerOnce - Trigger callback once while true, or trigger continually while true.
+ * @param {function} callback - A callback function that will be exectued every time object 1 and object 2 collide.
+ */
+export function onCollision(obj1, obj2, triggerOnce, callback) {
+  if (!obj1.detectHit && obj1.hitDetect) {
+    obj1.hitDetect();
+  }
+  if (!obj2.detectHit && obj2.hitDetect) {
+    obj2.hitDetect();
+  }
+  if (typeof callback !== 'function') {
+    console.error(`@onCollision: Callback function required.`)
+  } else if (!s2pd.hitDetectObjects.includes(obj1) || !s2pd.hitDetectObjects.includes(obj2)) {
+    console.error('@onCollision: Objects must be valid game objects (sprites, tiles, or shapes) ⬇︎', obj1, obj2)
+  } else {
+    s2pd.collisions.push({ obj1: obj1, obj2: obj2, callback: callback, triggerOnce: triggerOnce, triggered: false })
   }
 }

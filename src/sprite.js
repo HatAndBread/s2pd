@@ -27,7 +27,6 @@ export default class Sprite {
       this.animationSpeed = animationSpeed + (60 % animationSpeed) / Math.floor(60 / animationSpeed);
       this.refreshRate = 60 / animationSpeed;
     }
-
     this.velX = 0;
     this.velY = 0;
     this.loopLength = 0;
@@ -64,7 +63,10 @@ export default class Sprite {
     this.hitBoxHeight = this.height;
     let heightOfFrame = this.theImage.height;
     let widthOfFrame = this.theImage.width / this.numberOfFrames;
+    if (this.jumping) {
+      s2pd.jump(this, this.jumpHeight, this.jumpLength);
 
+    }
     this.loopLength = this.refreshRate * this.animations[this.currentAnimation].numberOfFrames;
 
     if (this.timeThroughLoop === this.animationSpeed) {
@@ -91,11 +93,8 @@ export default class Sprite {
     );
 
     s2pd.ctx.globalAlpha = 1;
-    if (this.jumping) {
-      s2pd.jump(this, this.jumpHeight, this.jumpLength);
-    }
+
     if (this.dragging) {
-      s2pd.dragArray[0] = this;
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX - this.width / 2;
         this.yPos = s2pd.mouseY - this.height / 2;
@@ -103,17 +102,20 @@ export default class Sprite {
         this.xPos = s2pd.touchMoveX - this.width / 2;
         this.yPos = s2pd.touchMoveY - this.height / 2;
       }
-    } else {
-      this.xPos += this.velX;
-      this.yPos += this.velY;
-      if (this.detectHit) {
-        this.hitBoxX = this.xPos;
-        this.hitBoxY = this.yPos;
-        this.hitBoxWidth = this.width;
-        this.hitBoxHeight = this.height;
-        s2pd.hitDetectObjects[this.hitBoxId] = this;
-      }
     }
+    if (this.gravity) {
+      this.onGravity()
+    }
+    this.xPos += this.velX;
+    this.yPos += this.velY;
+    if (this.detectHit) {
+      this.hitBoxX = this.xPos;
+      this.hitBoxY = this.yPos;
+      this.hitBoxWidth = this.width;
+      this.hitBoxHeight = this.height;
+      s2pd.hitDetectObjects[this.hitBoxId] = this;
+    }
+
 
     this.timeThroughLoop += 1;
   }
@@ -129,49 +131,127 @@ export default class Sprite {
   }
 
   hitDetect() {
-    this.detectHit = true;
-    this.hitBoxId = s2pd.hitDetectObjects.length;
-    s2pd.hitDetectObjects.push(this);
+
+    if (!this.detectHit) {
+      s2pd.hitDetectObjects.push(this);
+      this.detectHit = true;
+      this.hitBoxId = s2pd.hitDetectObjects.length;
+    }
+
   }
-  makeClickable() {
-    this.clickable = true;
-    this.draggable = false;
-    this.clickableId = s2pd.clickableObjects.length;
-    s2pd.clickableObjects.push(this);
-  }
+  /**
+   * @param {function} callback - What to do when object is clicked.
+   */
   onClick(callback) {
-    this.makeClickable();
     this.clickFunction = callback;
-    this.clicked = false;
   }
-  makeDraggable() {
-    this.draggable = true;
-    this.clickable = false;
-    this.draggableId = s2pd.draggableObjects.length;
-    s2pd.draggableObjects.push(this);
+  /**
+   * 
+   * @param {function} callback - What to do if mouse is held down over object or touched.
+   */
+  onHold(callback) {
+    this.holdFunction = callback;
+    if (!s2pd.holdableObjects.includes(this)) {
+      s2pd.holdableObjects.push(this)
+    }
   }
-  makeHoldable() {
-    this.holdable = true;
-    this.clickable = false;
-    this.draggable = false;
-    this.holdableId = s2pd.holdableObjects.length;
-    s2pd.holdableObjects.push(this);
+  drag() {
+    this.dragging = true;
   }
-  updateSize(howMuch) {
-    if (howMuch < 0) {
-      if (this.width > howMuch * -1) {
-        this.width *= howMuch;
-        this.hitBoxWidth = this.width;
+  /**
+   * Make sprite into a platform. Objects with gravity will not fall through platforms. 
+   * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. 
+   */
+  platform(blockify) {
+    blockify ? this.block = true : this.block = false;
+    s2pd.platforms.push(this)
+    console.log(s2pd.platforms)
+  }
+  /**
+   * Disable the sprites ability to be a platform. 
+   */
+  notPlatform() {
+    this.block = false;
+    for (let i = 0; i < s2pd.platforms.length; i++) {
+      s2pd.platforms[i] === this ? s2pd.platforms.splice(i, 1) : undefined;
+    }
+    console.log(s2pd.platforms)
+  }
+  /**
+   * 
+   * @param {number=} gravity - Amount of gravity. Higher number is more gravity. Default is 14. 
+   */
+  feelGravity(gravity) {
+
+    if (s2pd.gravity.includes(this)) {
+      this.gravity = true;
+      this.accelerating = 0;
+      !gravity ? this.gravityLevel = 14 : this.gravityLevel = gravity;
+      this.originalGravityLevel = this.gravityLevel;
+      this.accelerationRate = this.originalGravityLevel * .05;
+    } else {
+      s2pd.gravity.push(this);
+      this.gravity = true;
+      this.accelerating = 0;
+      !gravity ? this.gravityLevel = 14 : this.gravityLevel = gravity;
+      this.originalGravityLevel = this.gravityLevel;
+      this.accelerationRate = this.originalGravityLevel * .05;
+    }
+
+  }
+  noGravity() {
+    this.gravity = false;
+    for (let i = 0; i < s2pd.gravity.length; i++) {
+      s2pd.gravity[i] === this ? s2pd.gravity.splice(i, 1) : undefined
+      console.log(s2pd.gravity)
+    }
+
+  }
+  // onGravity to be called every tick while jumping
+  onGravity() {
+    if (!this.landed && !this.jumping) {
+      if (this.accelerating < this.originalGravityLevel) {
+        this.accelerating += this.accelerationRate;
+        this.velY = this.accelerating;
       }
-      if (this.height > howMuch * -1) {
-        this.height *= howMuch;
-        this.hitBoxHeight = this.height;
+      if (this.accelerating >= this.originalGravityLevel) {
+        this.velY = this.originalGravityLevel;
+      }
+    }
+  }
+  /**
+   * Make the object jump. Gravity must be enabled 👉 call: sprite.feelGravity(howMuchGravity);
+   * @param {number} howHigh - How high to make object jump in pixels.
+   * @param {boolean=} noDoubleJumps - Optional! Prevent object from jumping when it is not on a platform. Default is false. 
+   */
+  jump(howHigh, noDoubleJumps) {
+    if (this.gravity) {
+      noDoubleJumps ? this.noDoubleJumps = true : this.noDoubleJumps = false;
+      if (!this.noDoubleJumps) {
+        this.accelerationRate = this.originalGravityLevel * .05;
+        this.velY = 0;
+        this.jumpStart = this.yPos;
+        this.jumpHeight = howHigh;
+        this.jumping = true;
+      } else {
+        if (this.landed) {
+          this.accelerationRate = this.originalGravityLevel * .05;
+          this.velY = 0;
+          this.jumpStart = this.yPos;
+          this.jumpHeight = howHigh;
+          this.jumping = true;
+        }
       }
     } else {
-      this.width *= howMuch;
-      this.height *= howMuch;
-      this.hitBoxHeight = this.height;
-      this.hitBoxWidth = this.width;
+      console.warn('object.feelGravity() must be called for jump to work. 😇')
     }
+
+  }
+  updateSize(howMuch) {
+    howMuch = Math.abs(howMuch)
+    this.width *= howMuch;
+    this.height *= howMuch;
+    this.hitBoxHeight = this.height;
+    this.hitBoxWidth = this.width;
   }
 }

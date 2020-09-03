@@ -178,7 +178,7 @@ function returnKeyCode(key) {
 
 /**
  * Call a callback function when a certain keyboard key is released.
- * @param {(string|number)} key - JS keycode (number) or a string. Example →　'space' for space key. ',' for comma.
+ * @param {(string|number)} key - JavaScript keycode (number) or a string. Example →　'space' for space key. ',' for comma. 
  * @param {function} callback -  function to be called on key up.
  */
 function keyUp(key, callback) {
@@ -193,40 +193,61 @@ function keyUp(key, callback) {
  * Call a callback function when a certain keyboard key is being held down.
  * @param {(string|number)} key - JS keycode (number) or a string. Example →　'space' for space key. ',' for comma.
  * @param {function} callback -  function to be called on key down.
+ * @param {boolean} triggerOnce - Optional! Default is false. Trigger callback once while key is down (true), or trigger callback every tick while key is down(false). 
  */
 
-function keyDown(key, callback) {
+function keyDown(key, callback, triggerOnce) {
   if (typeof key === 'string') {
     let code = returnKeyCode(key);
-    keyDownEvents[code] = callback;
+    keyDownEvents[code] = { callback: callback, triggerOnce: triggerOnce, triggered: false };
   } else {
-    keyDownEvents[key] = callback;
+    keyDownEvents[key] = { callback: callback, triggerOnce: triggerOnce, triggered: false };
   }
 }
+
 function keyDownHandler(event) {
+  let a = keyDownEvents[event.keyCode]
   if (s2pd.preventDefaultKeyboard) {
-    event.preventDefault()
+    if (event.code === 'ArrowRight' || event.code === 'ArrowLeft' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+      event.preventDefault()
+    }
   }
-  if (keyDownEvents[event.keyCode] && !s2pd.looping) {
-    keyDownEvents[event.keyCode]()
+  if (a && !s2pd.looping) {
+    if (a.triggerOnce && !a.triggered) {
+      a.callback()
+      a.triggered = true;
+    } else {
+      a.callback();
+    }
   }
-  if (keyDownEvents[event.keyCode] && s2pd.looping) {
+  if (a && s2pd.looping) { // if string isn't recognized use JS keycode.
     if (!s2pd.keyDown.includes(event.keyCode)) {
       s2pd.keyDown.push(event.keyCode);
     }
   }
 }
+
 function keyUpHandler(event) {
   if (s2pd.preventDefaultKeyboard) {
-    event.preventDefault()
+    if (event.code === 'ArrowRight' || event.code === 'ArrowLeft' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+      event.preventDefault()
+    }
   }
+  keyDownEvents.forEach((el) => {
+    if (el.triggered) {
+      el.triggered = false;
+      s2pd.keyDown.splice(0, s2pd.keyDown.length)
+    }
+  })
+
+
   if (keyUpEvents[event.keyCode] && !s2pd.looping) {
     keyUpEvents[event.keyCode]()
+
   }
   if (s2pd.looping) {
     s2pd.keyUp.push(event.keyCode);
   }
-
 }
 function keyboardListeners() {
   document.addEventListener('keydown', keyDownHandler, false);

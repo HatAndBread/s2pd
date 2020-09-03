@@ -70,7 +70,6 @@ class Ellipse extends Shapes {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.dragging) {
-      s2pd.dragArray[0] = this;
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX;
         this.yPos = s2pd.mouseY;

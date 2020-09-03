@@ -10,16 +10,27 @@ class Sound {
   /**
    * 
    * @param {string} source - Source of audio file. 
-   * @param {number} volume - Playback volume. An integer between 0 and 1. 
-   * @param {number} playbackRate - Speed of playback. 1 is nomrmal speed. 0.5 is half normal speed. 2 is twice normal speed etc. Changing playback rate will also affect pitch on most browsers. 
-   * @param {boolean} loop - Loop back to beginning of audio file on end?
+   * @param {number=} volume - Playback volume. An integer between 0 and 1. Default is 0.5
+   * @param {boolean=} loop - Loop back to beginning of audio file on end? Default is false;
+   * @param {number=} playbackRate - Speed of playback. 1 is nomrmal speed. 0.5 is half normal speed. 2 is twice normal speed etc. Changing playback rate will also affect pitch on most browsers. Default is 1.
    */
-  constructor(source, volume, playbackRate, loop) {
+  constructor(source, volume, loop, playbackRate, ) {
     this.source = source;
     this.volume = volume;
-    this.playbackRate = playbackRate;
+    if (volume === 0) {
+      this.volume = volume;
+    } else if (volume) {
+      this.volume = volume;
+    } else {
+      this.volume = 0.5;
+    }
+    if (!playbackRate) {
+      this.playbackRate = 1;
+    } else {
+      this.playbackRate = playbackRate;
+    }
     this.loop = loop;
-    this.startTime
+    this.startTime;
     this.pauseTime = 0;
     this.pauseStartTime = 0
     this.pauseDuration = 0;
@@ -53,8 +64,8 @@ class Sound {
     s2pd.allAudioObjects.push(this)
   }
   play() {
-
     this.playSound = s2pd.audioContext.createBufferSource();
+
     this.gainNode = s2pd.audioContext.createGain();
     this.gainNode.gain.value = this.volume;
     this.playSound.buffer = this.theSound;
@@ -74,9 +85,12 @@ class Sound {
   pause() {
     this.pauseStartTime = Date.now()
     this.playSound.stop()
-    this.pauseTime = (Date.now() - this.startTime) / 1000
-    let dividy = this.pauseTime / this.duration
-    this.pauseTime = (this.duration * (dividy - Math.floor(dividy)))
+    this.pauseTime += (Date.now() - this.startTime) / 1000
+    if (this.pauseTime > this.playSound.buffer.duration) {
+      this.pauseTime = this.pauseTime % this.playSound.buffer.duration;
+      console.log(this.pauseTime)
+    }
+
 
 
   }
