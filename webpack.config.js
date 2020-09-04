@@ -1,30 +1,19 @@
 const path = require('path');
-/*
-module.exports = {
-  entry: './src/index.js',
-  output: {
-    library: 's2pd',
-    libraryTarget: 'var', //exports as global variable s2pd;
-    filename: 's2pd.js',
-    path: path.resolve(__dirname, 'dist')
-  }
-};
-*/
 
 function createConfig(name) {
   function getName() {
     if (name) {
-      return `s2pd.${name}.js`;
+      return `s2pd.${name}.js`; // minified global variable.
     } else {
-      return 's2pd.js';
+      return 's2pd.js'; // minified es6 module.
     }
   }
   return {
-    entry: './src/index.js',
+    entry: './src/s2pd.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: getName(),
-      library: 's2pd'
+      library: 's'
     }
   };
 }
