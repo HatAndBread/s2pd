@@ -32,20 +32,19 @@ class Text extends Shapes {
     this.center = false;
     this.longestLineLength = 0;
     this.longestLine = 0;
+    /**
+     * Leading increases space between rows. 1.1 is default. 
+     * @example
+     * someTextObject.leading = 2;
+     */
     this.leading = 1.1;
 
     s2pd.finalize(this);
     this.updatePos();
 
   }
-  /**
-   * Update position.
-   * @method
-   */
   updatePos() {
-    if (this.detectHit) {
-      s2pd.hitDetectObjects[this.hitBoxId] = this;
-    }
+
     this.lineBreaks = this.text.split('\n');
 
     for (let i = 0; i < this.lineBreaks.length; i++) {
@@ -55,9 +54,7 @@ class Text extends Shapes {
       }
     }
     this.draw()
-    if (this.jumping) {
-      s2pd.jump(this, this.jumpHeight, this.jumpLength);
-    }
+
     if (this.dragging) {
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX - this.width / 2;

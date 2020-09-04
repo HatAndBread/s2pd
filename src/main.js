@@ -7,12 +7,19 @@ s2pd.stillCanvas();
 s2pd.backgroundColor(45, 54, 45, 1);
 s2pd.canvasOpacity(1);
 
-const bgm = new s2pd.Sound('./bgm.mp3', 0.5, 'YES')
+const bgm = new s2pd.Sound('./bgm.mp3', 0.5, true)
 bgm.load();
 
 
+const terry = new s2pd.Ellipse(s2pd.getRandomColor(), 500, 300, 140, 50)
+terry.onHold(() => {
+  terry.drag()
+})
+terry.platform(true)
 
-const mary = new s2pd.Tile('./heart.png', 560, 400, 90, 90);
+
+
+const mary = new s2pd.Tile('./heart.png', 560, 400, 3, 3);
 mary.onHold(() => {
   console.log('HEEEEY')
   mary.drag()
@@ -55,11 +62,11 @@ const martha = new s2pd.Rectangle(s2pd.getRandomColor(), 400, 400, 50, 20, 4);
 martha.onHold(() => {
   martha.drag()
 })
+martha.platform(true);
 const bat = new s2pd.Sprite(600, 100, './bat.png', 14, 3);
 const slim = new s2pd.Line('red', 10, 10, 500, 500, 20)
 const jane = new s2pd.Line('green', 400, 200, 650, 500, 20)
 const dog = new s2pd.Circle(s2pd.getRandomColor(), 100, 100, 100);
-
 
 
 window.slim = slim
@@ -81,9 +88,14 @@ window.martha = martha
 bat.onHold(() => {
   bat.drag()
 })
-dog.onClick(() => { console.log('shapes work') })
 
-window.bat = bat;
+
+
+
+bat.onClick(() => {
+  bat.destroy()
+  console.log(bat)
+})
 const joe = new s2pd.Text(
   s2pd.getRandomColor(),
   100,
@@ -122,8 +134,9 @@ s2pd.clear();
 joe.onHold(() => {
   joe.drag()
 });
-const ground = new s2pd.Tile('./ground.png', 0, 450, 1000, 30)
-ground.platform()
+const ground = new s2pd.Tile('./fire.png', 100, 400, 5, 5, 8, 7)
+
+ground.platform(true)
 
 //s2pd.percentLoaded contains loading stuff
 bat.feelGravity(8);
@@ -137,8 +150,13 @@ s2pd.keyUp(',', () => { joe.text = `I'm a stupid monkey.\nWhat are you?\nChicken
 s2pd.keyDown('periOd', () => { joe.center = false })
 s2pd.keyUp('.', () => { joe.center = true })
 
+
 s2pd.keyDown('g', () => { console.log('🐧') })
+const fruits = ['🍉', '🍊', '🍈', '🍇', '🍌', '🍎']
+const fruitsRan = new s2pd.RandomNoRepeat(fruits)
+window.fruitsRan = fruitsRan
 s2pd.loop(function () {
 
 });
+
 

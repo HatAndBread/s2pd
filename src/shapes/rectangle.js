@@ -37,6 +37,8 @@ export default class Rectangle extends Shapes {
     this.hitBoxY = this.yPos;
     this.hitBoxWidth = this.width;
     this.hitBoxHeight = this.height;
+
+
     if (typeof this.thickness === 'number') {
       s2pd.ctx.globalAlpha = this.opacity;
       s2pd.ctx.strokeStyle = this.color;
@@ -48,9 +50,6 @@ export default class Rectangle extends Shapes {
       s2pd.ctx.fillStyle = this.color;
       s2pd.ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
       s2pd.ctx.globalAlpha = 1;
-    }
-    if (this.jumping) {
-      s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.dragging === true) {
       if (s2pd.draggingWithMouse) {

@@ -67,47 +67,37 @@ function checkPlatforms() {
       let b = s2pd.gravity[j];
 
       if (checkOverlap(a, b)) {
-        if (a.block) {
-          if (b.yPos < a.yPos && b.xPos > a.xPos - b.width / 1.2 && b.xPos < a.xPos + a.width / 1.2) {
-            console.log('Yo')
+        if (a.block) { //prevent sprite from going through solid object
+
+          if (b.yPos < a.hitBoxY && b.xPos > a.hitBoxX - b.hitBoxWidth / 1.2 && b.xPos < a.hitBoxX + a.hitBoxWidth / 1.2) {
             b.landed = true;
             b.velY = 0;
-            b.yPos = a.yPos - b.height;
+            b.yPos = a.hitBoxY - b.hitBoxHeight;
             b.accelerating = 0;
-
           } else if (b.xPos <= a.xPos) {
-            if (b.yPos > a.yPos + a.height / 1.2) {
-              console.log('MOOOO')
+            if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
               b.jumping = false;
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              console.log('WEEEEE')
-              b.xPos = a.xPos - b.width - 1
+              b.xPos = a.hitBoxX - b.hitBoxWidth - 1
             }
-
           } else if (b.xPos >= a.xPos) {
-            if (b.yPos > a.yPos + a.height / 1.2) {
-              console.log('MOOOO')
+            if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
               b.jumping = false;
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              b.xPos = a.xPos + a.width + 1
-              console.log('FEE')
-            }
+              b.xPos = a.hitBoxX + a.hitBoxWidth + 1
 
+            }
           }
-          //b.landed = true;
-          //b.velY = 0;
-          //b.velX = 0;
-          //b.yPos = a.yPos - b.height;
-          //b.accelerating = 0;
+
         } else {
 
           b.landed = true;
           b.velY = 0;
-          b.yPos = a.yPos - b.height;
+          b.yPos = a.hitBoxY - b.hitBoxHeight;
           b.accelerating = 0;
         }
 
@@ -119,9 +109,21 @@ function checkPlatforms() {
     }
   }
 }
-
+/**
+ * Create an animation loop.
+ * @param {function} game - A function containing tasks that you want to be carried out every tick of the loop.
+ * @example
+ * s.loop(function(){
+ *   if (rabbit.xPos > s.width){
+ *     rabbit.changeAnimationTo('sleep')
+ *   }
+ * });
+ */
 export default function loop(game) {
   s2pd.looping = true;
+  if (s2pd.firstTimeThroughLoop) {
+    s2pd.firstTimeThroughLoop = false;
+  }
   s2pd.percentLoaded = (s2pd.objectsToLoad.length / s2pd.loadedAssets) * 100;
   if (s2pd.percentLoaded === Infinity) {
     s2pd.percentLoaded = 0;
@@ -136,7 +138,6 @@ export default function loop(game) {
     }
   }
   for (let i = 0; i < s2pd.allBackgrounds.length; i++) {
-    s2pd.allBackgrounds[i].id = i;
     if (s2pd.allBackgrounds[i].loaded) {
       s2pd.allBackgrounds[i].updatePos();
       s2pd.allBackgrounds[i].autoSize();
@@ -150,11 +151,6 @@ export default function loop(game) {
     }
   }
 
-  if (s2pd.hitDetectObjects.length > 0) {
-    for (let i = 0; i < s2pd.hitDetectObjects.length; i++) {
-      s2pd.hitDetectObjects[i].hitBoxId = i;
-    }
-  }
 
   if (s2pd.heldObject) {
     s2pd.heldObject.holdFunction()
@@ -187,17 +183,9 @@ export default function loop(game) {
   //END KEYBOARD
   checkPlatforms()
 
-  const errorMessage = 'loop method requires a callback function😭 Example ===> loop(function(){//do something})';
+
   if (game) {
-    if (typeof game === 'function') {
-      game();
-    } else {
-      console.error(errorMessage);
-      s2pd.exit = true;
-    }
-  } else {
-    console.error(errorMessage);
-    s2pd.exit = true;
+    game()
   }
 
   if (s2pd.hitDetectObjects.length > 1) {
@@ -234,5 +222,7 @@ export default function loop(game) {
     });
   } else {
     s2pd.looping = false;
+    s2pd.exit = false;
+    s2pd.firstTimeThroughLoop = true;
   }
 }

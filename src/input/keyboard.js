@@ -16,21 +16,91 @@ function returnKeyCode(key) {
       return 16;
     case 'up':
       return 38;
+    case 'uparrow':
+      return 38;
+    case 'uparrowkey':
+      return 38;
+    case 'arrowupkey':
+      return 38;
+    case 'up-arrow':
+      return 38;
+    case 'up arrow':
+      return 38;
+    case 'arrowup':
+      return 38;
+    case 'arrow-up':
+      return 38;
+    case 'arrow up':
+      return 38;
     case 'down':
+      return 40;
+    case 'downarrow':
+      return 40;
+    case 'downarrowkey':
+      return 40;
+    case 'arrowdownkey':
+      return 40;
+    case 'down-arrow':
+      return 40;
+    case 'down arrow':
+      return 40;
+    case 'arrow down':
+      return 40;
+    case 'arrowdown':
+      return 40;
+    case 'arrow-down':
       return 40;
     case 'left':
       return 37;
+    case 'leftarrow':
+      return 37;
+    case 'leftarrowkey':
+      return 37;
+    case 'arrowleftkey':
+      return 37;
+    case 'arrowleft':
+      return 37;
+    case 'arrow-left':
+      return 37;
+    case 'arrow left':
+      return 37;
+    case 'left arrrow':
+      return 37;
+    case 'left-arrow':
+      return 37;
     case 'right':
       return 39;
+    case 'rightarrow':
+      return 39;
+    case 'arrowright':
+      return 39;
+    case 'right-arrow':
+      return 39;
+    case 'arrow-right':
+      return 39;
+    case 'right arrow':
+      return 39;
+    case 'arrow right':
+      return 39;
+    case 'rightarrowkey':
+      return 39;
+    case 'arrowrightkey':
+      return 39;
     case 'space':
+      return 32;
+    case 'spacekey':
       return 32;
     case 'enter':
       return 13;
     case 'return':
       return 13;
+    case 'returnkey':
+      return 13;
     case 'esc':
       return 27;
     case 'escape':
+      return 27;
+    case 'escapekey':
       return 27;
     case 'a':
       return 65;
@@ -178,8 +248,13 @@ function returnKeyCode(key) {
 
 /**
  * Call a callback function when a certain keyboard key is released.
- * @param {(string|number)} key - JavaScript keycode (number) or a string. Example →　'space' for space key. ',' for comma. 
+ * @param {(string|number)} key - JavaScript keycode (number) or a string. Example →　'space' for space key. ',' for comma.
  * @param {function} callback -  function to be called on key up.
+ * * @example
+ * // rabbit will jump every time up arrow key is lifted.
+ * s.keyUp('up',()=>{
+ *    rabbit.jump(200)
+ * });
  */
 function keyUp(key, callback) {
   if (typeof key === 'string') {
@@ -189,13 +264,18 @@ function keyUp(key, callback) {
     keyUpEvents[key] = callback;
   }
 }
+
 /**
  * Call a callback function when a certain keyboard key is being held down.
  * @param {(string|number)} key - JS keycode (number) or a string. Example →　'space' for space key. ',' for comma.
  * @param {function} callback -  function to be called on key down.
- * @param {boolean} triggerOnce - Optional! Default is false. Trigger callback once while key is down (true), or trigger callback every tick while key is down(false). 
+ * @param {boolean} triggerOnce - Optional! Default is false. Trigger callback once while key is down (true), or trigger callback every tick while key is down(false).
+ * @example
+ * // rabbit will move 3 pixels to the right every tick that right arrow is held down.
+ * s.keyDown('right',()=>{
+ *    rabbit.xPos+=3
+ * },false);
  */
-
 function keyDown(key, callback, triggerOnce) {
   if (typeof key === 'string') {
     let code = returnKeyCode(key);

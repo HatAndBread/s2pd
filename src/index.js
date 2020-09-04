@@ -1,7 +1,7 @@
 import s2pd from './core.js';
 import loop from './loop.js';
 import { createCanvas, addCanvas, stillCanvas, backgroundColor, canvasOpacity } from './canvas.js';
-import { RandomNumSetNoRepeat, getRandomColor, randomBetween, roundToDecimals, choose, onCollision } from './methods.js';
+import { RandomNoRepeat, getRandomColor, randomBetween, roundToDecimals, choose, onCollision } from './methods.js';
 import Sprite from './sprite.js';
 import Circle from './shapes/circle.js';
 import Ellipse from './shapes/ellipse.js';
@@ -29,11 +29,20 @@ function clear() {
 function dontClear() {
   s2pd.clear = false;
 }
-
+function width() {
+  return s2pd.width;
+}
+function height() {
+  return s2pd.height;
+}
+function stopLoop() {
+  s2pd.exit = true;
+}
 touchListeners();
 mouseListeners();
 keyboardListeners();
 
+console.log('٩(๑^o^๑)۶', 'Welcome to s2pd!ლ(╹◡╹ლ)')
 export {
   clear,
   dontClear,
@@ -41,15 +50,18 @@ export {
   s2pd,
   loop,
   createCanvas,
+  stopLoop,
   addCanvas,
   stillCanvas,
   backgroundColor,
   canvasOpacity,
-  RandomNumSetNoRepeat,
+  RandomNoRepeat,
   getRandomColor,
   randomBetween,
   roundToDecimals,
   choose,
+  width,
+  height,
   Sprite,
   Circle,
   Ellipse,

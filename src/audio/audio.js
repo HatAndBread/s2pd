@@ -1,5 +1,9 @@
 import s2pd from '../core.js';
-
+/**
+ * Enables audio and creates audio context. Enable audio must be called before trying to load or play any music files.
+ * Audio context will not start until after the user interacts on the page (mouse click, etc.)
+ * Audio context will automatically be resumed after user interacts with the page. 
+ */
 function enableAudio() {
   s2pd.audioContext = new AudioContext();
 }
@@ -13,6 +17,17 @@ class Sound {
    * @param {number=} volume - Playback volume. An integer between 0 and 1. Default is 0.5
    * @param {boolean=} loop - Loop back to beginning of audio file on end? Default is false;
    * @param {number=} playbackRate - Speed of playback. 1 is nomrmal speed. 0.5 is half normal speed. 2 is twice normal speed etc. Changing playback rate will also affect pitch on most browsers. Default is 1.
+   * @example 
+   * s.enableAudio(); 
+   * const backgroundMusic = new s.Sound('./someCoolMusic.mp3',0.5,true,1);
+   * backgroundMusic.load();
+   * button.onClick(()=>{
+   *    backgroundMusic.play();
+   * });
+   * // most browsers require web audio to be enabled after user interaction. Must call play and load AFTER audio enabled.
+   * pauseButton.onClick(()=>{
+   *   backgroundMusic.pause();
+   * })
    */
   constructor(source, volume, loop, playbackRate, ) {
     this.source = source;
@@ -43,6 +58,9 @@ class Sound {
     this.loaded = false;
     this.totallyLoaded = false;
   }
+  /**
+   * load audio file
+   */
   load() {
     let getSound = new XMLHttpRequest();
     let theSound;
@@ -55,7 +73,6 @@ class Sound {
         this.loaded = true;
       });
     }
-
     getSound.onloadend = () => {
       this.totallyLoaded = true;
       s2pd.loadedAudio.push(this)
@@ -63,6 +80,9 @@ class Sound {
     getSound.send();
     s2pd.allAudioObjects.push(this)
   }
+  /**
+   * play audio file
+   */
   play() {
     this.playSound = s2pd.audioContext.createBufferSource();
 
@@ -78,10 +98,15 @@ class Sound {
       this.playSound.loop = true;
     }
   }
-
+  /**
+   * Stop audio. When audio play is resumed will go back to the beginning. 
+   */
   stop() {
     this.playSound.stop();
   }
+  /**
+  * Pause audio.
+  */
   pause() {
     this.pauseStartTime = Date.now()
     this.playSound.stop()
@@ -91,23 +116,6 @@ class Sound {
       console.log(this.pauseTime)
     }
 
-
-
-  }
-  unpause() {
-    this.pauseDuration = (Date.now() - this.pauseStartTime)
-    this.startTime += this.pauseDuration
-    this.playSound = s2pd.audioContext.createBufferSource();
-    this.gainNode = s2pd.audioContext.createGain()
-    this.gainNode.gain.value = this.volume;
-    this.playSound.buffer = this.theSound;
-    this.playSound.connect(this.gainNode);
-    this.gainNode.connect(s2pd.audioContext.destination);
-    this.playSound.playbackRate.value = this.playbackRate;
-    this.playSound.start(0, this.pauseTime)
-    if (this.loop) {
-      this.playSound.loop = true;
-    }
   }
 }
 

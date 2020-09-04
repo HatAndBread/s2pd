@@ -29,6 +29,7 @@ class Background {
     this.negFarXPos = 0;
     this.velX = 0;
     this.velY = 0;
+    this.id = s2pd.getId()
     this.source = source;
     this.scrolling = false;
     this.loopLength = 0;
@@ -223,6 +224,30 @@ class Background {
     } else {
       return false;
     }
+  }
+  /**
+ * Remove all references to object. 
+ * 
+ */
+  destroy() {
+    const searchAndDestroy = (arr) => {
+      for (let i = arr.length; i >= 0; i--) {
+        if (arr[i]) {
+          if (arr[i].id) {
+            if (arr[i].id === this.id) {
+              arr.splice(i, 1);
+            }
+          }
+        }
+      }
+    }
+    searchAndDestroy(s2pd.allBackgrounds);
+    searchAndDestroy(s2pd.allGameObjects);
+    searchAndDestroy(s2pd.hitDetectObjects);
+    searchAndDestroy(s2pd.holdableObjects);
+    searchAndDestroy(s2pd.gravity);
+    searchAndDestroy(s2pd.platforms)
+    s2pd.delete(this);
   }
 }
 

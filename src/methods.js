@@ -1,61 +1,49 @@
 import s2pd from './core.js';
 
-
 /**
- * a class
+ * Create an object that will return items randomally from a list without repeating until every item in the list has been returned.
+ * @example
+ * // returns a random fruit. Will not repeat until all items in fruits array have been returned.
+ * const fruits = ['🍌','🍎','🍓','🍊','🍈','🍉']
+ * const getFruits = new s.RandomNoRepeat(fruits)
+ * getFruits.get()
  */
-export class RandomNumSetNoRepeat {
+export class RandomNoRepeat {
   /**
-   *
-   * @param {number} min - asdfasd
-   * @param {number} max - sdfasf
+   * 
+   * @param {array} arr - An array of items to randomize.
    */
-  constructor(min, max) {
-    this.max = max;
-    this.min = min;
-    this.originalMax = max;
-    this.originalMin = min;
-    this.numArray = [];
-    this.randomizedArray = [];
-    this.arrayWidth = this.originalMax - this.originalMin;
-    this.numnum = 0;
-    this.numnum2 = 0;
-    this.numnum3 = 0;
-    this.make();
+  constructor(arr) {
+    this.arr = arr;
+    this.storage = []
+    this.randomize()
   }
-  make() {
-    for (let i = 0; i < this.arrayWidth + 1; i++) {
-      this.numArray[i] = this.min;
-      this.min += 1;
-    }
-    for (let i = 0; i < this.arrayWidth + 1; i++) {
-      this.numnum = Math.floor(Math.random() * this.numArray.length);
-      this.numnum2 = this.numArray[this.numnum];
-      this.randomizedArray.push(this.numnum2);
-      this.numArray.splice(this.numnum, 1);
+  randomize() {
+    while (this.arr.length > 0) {
+      let ranNum = Math.floor(Math.random() * this.arr.length)
+      this.storage.push(this.arr[ranNum])
+      this.arr.splice(ranNum, 1)
+      if (this.arr.length === 0) {
+        this.arr = [...this.storage]
+        break;
+      }
     }
   }
-
-  getNum() {
-    if (this.randomizedArray.length > 1) {
-      this.numnum3 = this.randomizedArray[0];
-      this.randomizedArray.splice(0, 1);
-      return this.numnum3;
-    }
-    if (this.randomizedArray.length === 1) {
-      this.numnum3 = this.randomizedArray[0];
-      this.randomizedArray.splice(0, 1);
-      this.numArray.splice(0, this.numArray.length);
-      this.randomizedArray.splice(0, this.randomizedArray.length);
-      this.max = this.originalMax;
-      this.min = this.originalMin;
-      this.numnum = 0;
-      this.numnum2 = 0;
-      this.make(this.originalMin, this.originalMax);
-      return this.numnum3;
+  /**
+   * Get an item randomally. Will not repeat until all items have been used. 
+   */
+  get() {
+    if (this.storage.length === 0) {
+      this.randomize()
+      let nextWord = this.storage.splice(0, 1);
+      return nextWord
+    } else {
+      let nextWord = this.storage.splice(0, 1);
+      return nextWord
     }
   }
 }
+
 /**
  *
  * @param {number} min - minimum
@@ -65,11 +53,21 @@ export class RandomNumSetNoRepeat {
 export function randomBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+/**
+ * @returns
+ * returns a random rgb color as a string.
+ */
 export function getRandomColor() {
   return `rgb(${randomBetween(0, 255)},${randomBetween(0, 255)},${randomBetween(0, 255)})`;
 }
-
+/**
+ * Returns inputed number rounded to decimals.
+ * @param {number} num 
+ * @param {number} howManyDecimals 
+ * @example
+ * // returns 3.333
+ * s.roundToDecimals(10/3, 3)
+ */
 export function roundToDecimals(num, howManyDecimals) {
   let multiplier;
   switch (howManyDecimals) {
@@ -96,12 +94,19 @@ export function roundToDecimals(num, howManyDecimals) {
       break;
     default:
       multiplier = 100;
-      console.log('Max digits is 6.');
+      console.error('@roundToDecimal: Max digits is 6.');
   }
 
   return Math.round((num + Number.EPSILON) * multiplier) / multiplier;
 }
-
+/**
+ * returns option one or two randomally.
+ * @param {*} option1 - Anything. Number, string, or object.
+ * @param {*} option2 - Anything. Number, string, or object.
+ * @example
+ * s.choose(coffee,tea);
+ * // returns either coffee or tea randomally.
+ */
 export function choose(option1, option2) {
   let chooser = Math.floor(Math.random() * 2);
   if (chooser === 0) {
@@ -111,7 +116,11 @@ export function choose(option1, option2) {
     return option2;
   }
 }
-
+/**
+ * 
+ * @param {number} sideA 
+ * @param {number} sideB 
+ */
 export function pythagorean(sideA, sideB) {
   return Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
 }
@@ -122,6 +131,11 @@ export function pythagorean(sideA, sideB) {
  * @param {object} obj2 - Any s2pd game object.
  * @param {boolean} triggerOnce - Trigger callback once while true, or trigger continually while true.
  * @param {function} callback - A callback function that will be exectued every time object 1 and object 2 collide.
+ * @example
+ * s.onCollision(cat,dog,true,()=>{
+ *   cat.changeAnimationTo('bite');
+ * })
+ * // Will trigger function one time when cat and dog are overlapping.
  */
 export function onCollision(obj1, obj2, triggerOnce, callback) {
   if (!obj1.detectHit && obj1.hitDetect) {

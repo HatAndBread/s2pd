@@ -20,7 +20,7 @@ class Ellipse extends Shapes {
     super(color, xPos, yPos);
     this.radiusX = radiusX;
     this.radiusY = radiusY;
-    this.rotation = rotation;
+    !rotation ? this.rotation = 0 : this.rotation = rotation;
     this.velX = 0;
     this.velY = 0;
     this.opacity = 1;
@@ -54,6 +54,7 @@ class Ellipse extends Shapes {
       this.hitBoxY = this.yPos - this.radiusY;
     }
 
+
     if (typeof this.thickness === 'number') {
       s2pd.ctx.strokeStyle = this.color;
       s2pd.ctx.lineWidth = this.thickness;
@@ -66,9 +67,7 @@ class Ellipse extends Shapes {
       s2pd.ctx.ellipse(this.xPos, this.yPos, this.radiusX, this.radiusY, this.rotation, 0, 2 * Math.PI);
       s2pd.ctx.fill();
     }
-    if (this.jumping) {
-      s2pd.jump(this, this.jumpHeight, this.jumpLength);
-    }
+
     if (this.dragging) {
       if (s2pd.draggingWithMouse) {
         this.xPos = s2pd.mouseX;

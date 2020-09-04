@@ -30,6 +30,7 @@ class Circle extends Shapes {
     this.hitBoxHeight = this.radius * 2;
     this.hitBoxX = this.xPos - this.radius;
     this.hitBoxY = this.yPos - this.radius;
+
     if (typeof this.thickness === 'number') {
       s2pd.ctx.beginPath();
       s2pd.ctx.globalAlpha = this.opacity;
@@ -51,9 +52,6 @@ class Circle extends Shapes {
         s2pd.ctx.arc(this.xPos, this.yPos, this.radius, 0, 2 * Math.PI);
         s2pd.ctx.stroke();
       }
-    }
-    if (this.jumping) {
-      s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.dragging) {
       if (s2pd.draggingWithMouse) {

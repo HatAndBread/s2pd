@@ -5,6 +5,7 @@ const s2pd = {
   loadedAssets: 0,
   looping: false,
   objectsToLoad: [],
+  ids: [],
   percentLoaded: 0,
   allAudioObjects: [],
   touching: false,
@@ -46,7 +47,6 @@ const s2pd = {
     if (!(who instanceof Line)) {
 
       const currentHeight = Math.abs(who.yPos - who.jumpStart);
-      //let howManyTimesToTop = Math.floor(howHigh / who.originalGravityLevel / 2)
       if (currentHeight <= howHigh / 2) {
         who.yPos -= who.originalGravityLevel;
       } else if (currentHeight > howHigh / 2) {
@@ -61,8 +61,19 @@ const s2pd = {
         who.jumping = false;
       }
     }
+  },
+  getId: () => {
+    let num = Math.random();
+    if (s2pd.ids.includes(num)) {
+      s2pd.getId();
+    } else {
+      s2pd.ids.push(num)
+    }
+  },
+  delete: (obj) => {
+    obj = null;
   }
-};
+}
 
-window.detect = s2pd.hitDetectObjects;
+window.core = s2pd;
 export default s2pd;
