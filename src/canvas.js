@@ -30,8 +30,15 @@ function addCanvas(id, width, height) {
   s2pd.height = height;
 }
 /**
- * 
+ * Prevent canvas from unwanted movement on user interaction. 
  * @param {string=} how - 'touch': Prevent the window from moving on touch input. 'keyboard': Prevent the window from moving on keyboard input(arrow keys). No arguments: Prevent window from moving on all input.
+ * @example 
+ * s.stillCanvas('touch');
+ * // prevent canvas from moving when user touches canvas on a touch device.
+ * s.stillCanvas('keyboard');
+ * // prevent canvas from moving when user presses keyboard arrows.
+ * s.stillCanvas();
+ * // prevent canvas from moving on both touch and keyboard input.
  */
 function stillCanvas(how) {
   if (!how) {
@@ -51,14 +58,17 @@ function stillCanvas(how) {
 
 }
 
-function backgroundColor(r, g, b, a) {
-  if (a || a === 0) {
-    s2pd.canvas.style.backgroundColor = `rgba(${r},${g},${b},${a})`;
-  } else {
-    s2pd.canvas.style.backgroundColor = `rgb(${r},${g},${b})`;
-  }
+/**
+ * Change background color of canvas.
+ * @param {string} color - any valid css color.
+ */
+function backgroundColor(color) {
+  s2pd.canvas.style.backgroundColor = color;
 }
-
+/**
+ * Change opacity of canvas element.
+ * @param {number} opacity - a number from 0 to 1.
+ */
 function canvasOpacity(opacity) {
   s2pd.canvas.style.opacity = opacity;
 }

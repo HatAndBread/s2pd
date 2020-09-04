@@ -63,8 +63,12 @@ class Shapes {
  * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. 
  */
   platform(blockify) {
-    blockify ? this.block = true : this.block = false;
-    s2pd.platforms.push(this)
+    if (!this.intersect) {
+      blockify ? this.block = true : this.block = false;
+      s2pd.platforms.push(this)
+    } else {
+      console.warn('Lines are not supported as platforms yet. Use a rectangle instead.')
+    }
   }
   /**
    * Disable the sprites ability to be a platform. 

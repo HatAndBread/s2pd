@@ -1,3 +1,3 @@
-import * as s2pd from './index.js'
+import * as s from './index.js'
 
-export default s2pd;
+export default s;

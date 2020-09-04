@@ -30,6 +30,7 @@ class Sound {
    * })
    */
   constructor(source, volume, loop, playbackRate, ) {
+    s2pd.objectsToLoad.push(this);
     this.source = source;
     this.volume = volume;
     if (volume === 0) {
@@ -44,7 +45,7 @@ class Sound {
     } else {
       this.playbackRate = playbackRate;
     }
-    this.loop = loop;
+    !loop ? this.loop = false : this.loop = true;
     this.startTime;
     this.pauseTime = 0;
     this.pauseStartTime = 0
@@ -75,10 +76,12 @@ class Sound {
     }
     getSound.onloadend = () => {
       this.totallyLoaded = true;
-      s2pd.loadedAudio.push(this)
+      s2pd.loadedAudio.push(this);
+      this.loaded = true;
+      s2pd.loadedAssets += 1;
     }
     getSound.send();
-    s2pd.allAudioObjects.push(this)
+    s2pd.allAudioObjects.push(this);
   }
   /**
    * play audio file

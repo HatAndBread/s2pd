@@ -1,17 +1,14 @@
-import s2pd from './s2pd.js'
-window.s2pd = s2pd; // make methods available in console
-s2pd.enableAudio()
+import s from './s2pd.js'
+window.s = s; // make methods available in console
 
-s2pd.createCanvas('UYO', 1200, 500);
-s2pd.stillCanvas();
-s2pd.backgroundColor(45, 54, 45, 1);
-s2pd.canvasOpacity(1);
+s.ezSetup();
 
-const bgm = new s2pd.Sound('./bgm.mp3', 0.5, true)
+
+const bgm = new s.Sound('./bgm.mp3', 0.5, true)
 bgm.load();
 
 
-const terry = new s2pd.Ellipse(s2pd.getRandomColor(), 500, 300, 140, 50)
+const terry = new s.Ellipse(s.getRandomColor(), 500, 300, 140, 50)
 terry.onHold(() => {
   terry.drag()
 })
@@ -19,7 +16,7 @@ terry.platform(true)
 
 
 
-const mary = new s2pd.Tile('./heart.png', 560, 400, 3, 3);
+const mary = new s.Tile('./heart.png', 560, 400, 3, 3);
 mary.onHold(() => {
   console.log('HEEEEY')
   mary.drag()
@@ -27,7 +24,7 @@ mary.onHold(() => {
 mary.platform(true)
 
 
-const start = new s2pd.Text(s2pd.getRandomColor(), 400, 400, 'START', 'sans-serif', 48, 3)
+const start = new s.Text(s.getRandomColor(), 400, 400, 'START', 'sans-serif', 48, 3)
 start.onClick(() => {
   if (start.text === 'START') {
     bgm.play();
@@ -41,32 +38,32 @@ start.onClick(() => {
 window.mary = mary;
 
 
-const clouds = new s2pd.Background('./hero.png', 35, 3);
+const clouds = new s.Background('./hero.png', 35, 3);
 
-s2pd.keyDown('left', () => {
+s.keyDown('left', () => {
   mary.innerX -= 1;
   bat.xPos -= 3;
 }, false)
-s2pd.keyDown('right', () => {
+s.keyDown('right', () => {
   mary.innerX += 1;
   bat.xPos += 3;
 }, false)
-s2pd.keyDown('up', () => {
+s.keyDown('up', () => {
   mary.innerY -= 1;
 }, false)
-s2pd.keyDown('down', () => {
+s.keyDown('down', () => {
   mary.innerY += 1;
 }, false)
 
-const martha = new s2pd.Rectangle(s2pd.getRandomColor(), 400, 400, 50, 20, 4);
+const martha = new s.Rectangle(s.getRandomColor(), 400, 400, 50, 20, 4);
 martha.onHold(() => {
   martha.drag()
 })
 martha.platform(true);
-const bat = new s2pd.Sprite(600, 100, './bat.png', 14, 3);
-const slim = new s2pd.Line('red', 10, 10, 500, 500, 20)
-const jane = new s2pd.Line('green', 400, 200, 650, 500, 20)
-const dog = new s2pd.Circle(s2pd.getRandomColor(), 100, 100, 100);
+const bat = new s.Sprite(600, 100, './bat.png', 14, 3);
+const slim = new s.Line('red', 10, 10, 500, 500, 20)
+const jane = new s.Line('green', 400, 200, 650, 500, 20)
+const dog = new s.Circle(s.getRandomColor(), 100, 100, 100);
 
 
 window.slim = slim
@@ -74,17 +71,17 @@ slim.onHold(() => { slim.drag() })
 jane.onHold(() => {
   jane.drag()
 })
-s2pd.onCollision(slim, jane, false, () => {
+s.onCollision(slim, jane, false, () => {
   console.log('slim and jane collidin')
 })
-s2pd.keyUp('a', () => {
+s.keyUp('a', () => {
   slim.jump(300, 10)
 })
 dog.onHold(() => {
   dog.drag()
 })
 window.martha = martha
-//const frank = new s2pd.Ellipse(s2pd.getRandomColor(), 300, 300, 100, 20, 0.3);
+
 bat.onHold(() => {
   bat.drag()
 })
@@ -96,8 +93,8 @@ bat.onClick(() => {
   bat.destroy()
   console.log(bat)
 })
-const joe = new s2pd.Text(
-  s2pd.getRandomColor(),
+const joe = new s.Text(
+  s.getRandomColor(),
   100,
   250,
   `I'm a stupid monkey.\nWhat are you?\nChicken 🐔`,
@@ -105,17 +102,17 @@ const joe = new s2pd.Text(
 );
 
 
-s2pd.onCollision(slim, mary, true, () => {
+s.onCollision(slim, mary, true, () => {
   console.log('Mary and Slim Colliding!')
 })
 
-s2pd.onCollision(martha, mary, true, () => {
+s.onCollision(martha, mary, true, () => {
   console.log('PIG')
 })
-s2pd.onCollision(mary, bat, false, () => {
+s.onCollision(mary, bat, false, () => {
 
 })
-s2pd.onCollision(bat, martha, true, () => {
+s.onCollision(bat, martha, true, () => {
   console.log('PINPON')
 })
 
@@ -129,34 +126,38 @@ bat.changeAnimationTo('stupid')
 
 
 
-s2pd.clear();
+s.clear();
 
 joe.onHold(() => {
   joe.drag()
 });
-const ground = new s2pd.Tile('./fire.png', 100, 400, 5, 5, 8, 7)
+const ground = new s.Tile('./fire.png', 100, 400, 5, 5, 8, 7)
 
 ground.platform(true)
 
-//s2pd.percentLoaded contains loading stuff
+
 bat.feelGravity(8);
 
-s2pd.keyUp('space', () => {
+s.keyUp('space', () => {
   bat.jump(200)
   console.log(bat.accelerationRate)
 });
-s2pd.keyDown('comma', () => { joe.text = `Penguin\n🐧\nI like donuts\n🍩` }, true)
-s2pd.keyUp(',', () => { joe.text = `I'm a stupid monkey.\nWhat are you?\nChicken 🐔` })
-s2pd.keyDown('periOd', () => { joe.center = false })
-s2pd.keyUp('.', () => { joe.center = true })
+s.keyDown('comma', () => { joe.text = `Penguin\n🐧\nI like donuts\n🍩` }, true)
+s.keyUp(',', () => { joe.text = `I'm a stupid monkey.\nWhat are you?\nChicken 🐔` })
+s.keyDown('periOd', () => { joe.center = false })
+s.keyUp('.', () => { joe.center = true })
 
 
-s2pd.keyDown('g', () => { console.log('🐧') })
+s.keyDown('g', () => { console.log('🐧') })
 const fruits = ['🍉', '🍊', '🍈', '🍇', '🍌', '🍎']
-const fruitsRan = new s2pd.RandomNoRepeat(fruits)
+const fruitsRan = new s.RandomNoRepeat(fruits)
 window.fruitsRan = fruitsRan
-s2pd.loop(function () {
-
+s.loop(function () {
+  if (s.loaded() < 100) {
+    console.log('Loading...')
+  } else {
+  }
 });
+
 
 

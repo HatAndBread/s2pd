@@ -89,22 +89,16 @@ function checkPlatforms() {
               b.gravityLevel = b.originalGravityLevel;
             } else {
               b.xPos = a.hitBoxX + a.hitBoxWidth + 1
-
             }
           }
-
         } else {
-
           b.landed = true;
           b.velY = 0;
           b.yPos = a.hitBoxY - b.hitBoxHeight;
           b.accelerating = 0;
         }
-
-
       } else {
         b.landed = false;
-
       }
     }
   }
@@ -121,6 +115,8 @@ function checkPlatforms() {
  */
 export default function loop(game) {
   s2pd.looping = true;
+  s2pd.width = s2pd.canvas.width;
+  s2pd.height = s2pd.canvas.height;
   if (s2pd.firstTimeThroughLoop) {
     s2pd.firstTimeThroughLoop = false;
   }
@@ -128,6 +124,7 @@ export default function loop(game) {
   if (s2pd.percentLoaded === Infinity) {
     s2pd.percentLoaded = 0;
   }
+
   if (s2pd.clear) {
     s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
   }
