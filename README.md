@@ -1,3 +1,5 @@
+# UNDER CONSTRUCTION 😇
+
 # s2pd
 
 Hi! 👋🌈  
@@ -48,7 +50,7 @@ The Background class will automatically create an infinitely repeating tile back
 ```javascript
 const clouds = new s.Background('./clouds.png');
 ```
-Now let's make the clouds appear to move. We can use the backgrounds velX property (velocity along the x axis) to make the clouds drift to the left.
+Now let's make the clouds appear to move. We can use the background's velX property (velocity along the x axis) to make the clouds drift to the left.
 ```javascript
 clouds.velX = -2; //clouds move -2 pixels along the x axis each call of the animation loop. We can use velY to make things move along the y axis.
 ```
@@ -71,22 +73,35 @@ s.loop(function(){})
 Which gives us this...
 
 Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an image file with your animation laid out in a single horizontal row with each frame evently spaced. Let's use this image: 
-<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="200">
+<br>
+<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
+<br>
 Here we have 35 evenly spaced frames. Perfect! We make a sprite like this: 
 ```javascript
 const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); // For a single frame sprite all you need is the first three arguments. 
 ```
 This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every tick of the loop. A speed of 2 every two ticks, etc.
-<br>
-Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing right. The blink begins on frame 8 and continues for three frames after that, so...
+<br><br>
+Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 8 and continues for three frames after that, so...
 ```javascript
 sprite.addAnitimation('blinking-right', 8,3);
 ```
-Our sprite will automatically be animated for each frame in the image file. That would like weird, so let's set it to just animate the blinking part.
+The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would like weird, so let's set the current animation to **'blinking-right'**.
 ```javascript
 sprite.changeAnimationTo('blinking-right);
 ```
 And now we have an animated sprite!
+
+Let's add one more animation and make our sprite turn to the left or right when the left or right arrow keys on the keyboard are pressed.
+```javascript
+sprite.addAnitimation('blinking-left', 12 ,3);
+s.keyUp('right', ()=>{
+  sprite.changeAnimationTo('blinking-right');
+})
+s.keyUp('left', ()=>{
+  sprite.changeAnimationTo('blinking-left'); 
+})
+```
 
 
 
