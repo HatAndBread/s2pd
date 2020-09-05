@@ -45,7 +45,9 @@ import s from 's2pd';
 s.ezSetup(); // Basic setup for games. For more advanced options see API.
 ```
 Now we have an empty canvas element. Let's give it a background using this image file: 
+<br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/clouds.png" width="200">
+<br>
 The Background class will automatically create an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)!
 ```javascript
 const clouds = new s.Background('./clouds.png');
@@ -86,7 +88,7 @@ Since our sprite file contains multiple animations we need to define where our a
 ```javascript
 sprite.addAnitimation('blinking-right', 8,3);
 ```
-The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would like weird, so let's set the current animation to **'blinking-right'**.
+The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would look weird, so let's set the current animation to **'blinking-right'**.
 ```javascript
 sprite.changeAnimationTo('blinking-right);
 ```
@@ -102,6 +104,78 @@ s.keyUp('left', ()=>{
   sprite.changeAnimationTo('blinking-left'); 
 })
 ```
+
+Here is the result:
+
+Our sprite is floating in the sky. That's strange. Let's make if feel the force of gravity. 
+```javascript
+sprite.feelGravity(12); // A range from about 5 to 20 is good. 5 is moonish gravity. 14 is Earthish. 30 is Jupiterish. 14 is default.
+```
+Oh no! Our sprite is falling! Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
+<br>
+<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
+```javacript
+const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
+```
+This will create a tile centered horizontally, 3/4ths the height of the canvas vertically, repeating 2 times on the x axis and 1 time on the y axis. Now let's make the tile into a platform so our sprite won't fall through it.
+```javascript
+ground.platform(true); // passing a truthy value as an argument will make the object into a block, meaning that objects with gravity will not be able to pass through them from any direction (from above, below, left, or right).
+```
+Yay! Our sprite has a platform to stand on. Now let's give it the ability to jump. 
+```javascript
+s.keyUp('space', ()=>{
+  sprite.jump(200); // will make sprite jump 200 pixels.
+}, true); // passing a truthy value as the 3rd arguement will disable "double jumps", i.e. sprite won't be able to jump again until the jump is complete.
+```
+Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's make a flying circle that will destroy our sprite if they collide.
+```javascript
+const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
+// make a randomly colored circle 30 pixels off to the right of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
+evilCircle.velX = -10;
+if (evilCircle.xPos + evilCircle.radius < 0){
+  evilCircle.xPos = s.width+30; //xPos is the objects position on the x axis.
+}
+s.onCollision(evilCircle, sprite, true, ()=>{　// a truthy third argument will trigger the callback function only once while objects are colliding.
+  sprite.destroy(); //delete all references to our sprite😢
+});
+```
+All together...
+```javascript
+import s from 's2pd';
+s.ezSetup(); 
+const clouds = new s.Background('./clouds.png');
+clouds.velX = -2; 
+const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4);
+sprite.addAnitimation('blinking-right', 8,3);
+sprite.changeAnimationTo('blinking-right);
+sprite.addAnitimation('blinking-left', 12 ,3);
+s.keyUp('right', ()=>{
+  sprite.changeAnimationTo('blinking-right');
+})
+s.keyUp('left', ()=>{
+  sprite.changeAnimationTo('blinking-left'); 
+})
+sprite.feelGravity(12);
+const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
+ground.platform(true);
+s.keyUp('space', ()=>{
+  sprite.jump(200); 
+}, true);
+const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
+evilCircle.velX = -10;
+if (evilCircle.xPos + evilCircle.radius < 0){
+  evilCircle.xPos = s.width+30; 
+}
+s.onCollision(evilCircle, sprite, true, ()=>{　
+  sprite.destroy(); 
+});
+
+s.loop(function(){})
+```
+
+Let's give our game a try.
+There we have it! A working game, albeit a rather simple one. What can you create?
+
 
 
 
