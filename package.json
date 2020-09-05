@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "nodemon server.js",
-    "build": "webpack && node es6ify.js"
+    "build": "webpack && node es6ify.js",
+    "jsdoc": "jsdoc-md"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "jsdoc-md": "^7.0.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   }

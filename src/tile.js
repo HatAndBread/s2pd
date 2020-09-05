@@ -22,11 +22,12 @@ class Tile {
      * // Creates a 10 frame animated tile from sprite sheet. 
      * animatedTile.addAnimation('first',1,5);
      * animatedTile.changeAnimationTo('first');
-     * // Creates an animation called 'first' starting at frame 1 and lasting for 5 frames.
+     * // Creates a 5 frame animation called 'first' starting at frame 1.
      *
      */
     constructor(source, xPos, yPos, repeatX, repeatY, numberOfFrames, animationSpeed) {
         s2pd.objectsToLoad.push(this);
+        s2pd.allGameObjects.push(this);
         this.loaded = false;
         !xPos ? this.xPos = 0 : this.xPos = xPos;
         !yPos ? this.yPos = 0 : this.yPos = yPos;
@@ -81,7 +82,6 @@ class Tile {
                 this.height = this.imageHeight * this.repeatY;
                 this.loaded = true;
                 s2pd.loadedAssets += 1;
-                s2pd.finalize(this);
                 this.updatePos();
             })
             .catch((err) => {
@@ -607,6 +607,8 @@ class Tile {
         } else {
             this.xPos += this.velX;
             this.yPos += this.velY;
+            this.innerX += this.innerVelX;
+            this.innerY += this.innerVelY;
 
             this.hitBoxX = this.xPos;
             this.hitBoxY = this.yPos;
@@ -621,9 +623,10 @@ class Tile {
      * 
      * @param {string} name - A name to call the animation by.
      * @param {number} startFrame - Frame in the sprite sheet at which the animation should start.
-     * @param {number} numberOfFrames - The number of frames the animation should last for. 
+     * @param {number} numberOfFrames - The number of frames frames in the animation 
      * @example
-     * rabbit.addAnimation('jump', 3,9)
+     * rabbit.addAnimation('jump', 3,9);
+     * creates a 9 frame animation starting a frame 3.
      */
     addAnimation(name, startFrame, numberOfFrames) {
         this.animations.push({ name: name, startFrame: startFrame, numberOfFrames: numberOfFrames });
@@ -660,7 +663,6 @@ class Tile {
         if (!this.detectHit) {
             s2pd.hitDetectObjects.push(this);
             this.detectHit = true;
-            this.hitBoxId = s2pd.hitDetectObjects.length;
         }
 
     }
@@ -714,7 +716,6 @@ class Tile {
         for (let i = 0; i < s2pd.platforms.length; i++) {
             s2pd.platforms[i] === this ? s2pd.platforms.splice(i, 1) : undefined;
         }
-        console.log(s2pd.platforms)
     }
 
     /**

@@ -14,8 +14,7 @@ class Shapes {
     this.velX = 0;
     this.velY = 0;
     this.opacity = 1;
-    //this.timeStamp = Date.now();
-    //s2pd.finalize(this);
+    s2pd.allGameObjects.push(this);
   }
 
   hitDetect() {

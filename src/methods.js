@@ -152,3 +152,4 @@ export function onCollision(obj1, obj2, triggerOnce, callback) {
     s2pd.collisions.push({ obj1: obj1, obj2: obj2, callback: callback, triggerOnce: triggerOnce, triggered: false })
   }
 }
+

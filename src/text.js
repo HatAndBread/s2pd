@@ -9,8 +9,8 @@ class Text extends Shapes {
   /**
    * 
    * @param {string} color - Any valid css color 👉　'rgb(255, 255, 255)' -or- '#ffffff' -or- 'white'.
-   * @param {number} xPos - x coordinate
-   * @param {number} yPos - y coordinate
+   * @param {(number|string)} xPos - x coordinate. To center on canvas enter string 'center'.
+   * @param {(number|string)} yPos - y coordinate. To center enter on canvas string 'center'.
    * @param {string} text - Text to be displayed on the screen.
    * @param {string} font - Any valid font.
    * @param {number} size - Font size in pixels.
@@ -18,8 +18,21 @@ class Text extends Shapes {
    * @param {string=} innerColor - Optional! Inner color of text if an outline is present. Any valid css color.
    */
   constructor(color, xPos, yPos, text, font, size, thickness, innerColor) {
-    super(color, xPos, yPos);
+    super(color);
     this.loaded = true;
+    if (typeof xPos === 'number') {
+      this.xPos = xPos;
+    } else {
+      this.xPos = s2pd.width / 2 - (size * text.length / 4);
+      this.centerHorizontal = true;
+    }
+    if (typeof yPos === 'number') {
+      this.yPos = yPos;
+    } else {
+      this.yPos = s2pd.height / 2 - (size / 2);
+      this.centerVertical = true;
+    }
+
     this.text = text;
     this.font = font;
     this.size = size;
@@ -39,7 +52,7 @@ class Text extends Shapes {
      */
     this.leading = 1.1;
 
-    s2pd.finalize(this);
+
     this.updatePos();
 
   }
@@ -54,6 +67,12 @@ class Text extends Shapes {
       }
     }
     this.draw()
+    if (this.centerHorizontal) {
+      this.xPos = s2pd.width / 2 - this.width / 2;
+    }
+    if (this.centerVertical) {
+      this.yPos = s2pd.height / 2 - this.height / 2;
+    }
 
     if (this.dragging) {
       if (s2pd.draggingWithMouse) {

@@ -20,6 +20,7 @@ export default class Sprite {
    */
   constructor(xPos, yPos, source, numberOfFrames, animationSpeed) {
     s2pd.objectsToLoad.push(this);
+    s2pd.allGameObjects.push(this);
     this.loaded = false;
     this.xPos = xPos;
     this.yPos = yPos;
@@ -56,7 +57,6 @@ export default class Sprite {
         this.height = this.theImage.height;
         this.loaded = true;
         s2pd.loadedAssets += 1;
-        s2pd.finalize(this);
         this.updatePos();
       })
       .catch((err) => {
@@ -121,7 +121,6 @@ export default class Sprite {
       this.hitBoxY = this.yPos;
       this.hitBoxWidth = this.width;
       this.hitBoxHeight = this.height;
-      s2pd.hitDetectObjects[this.hitBoxId] = this;
     }
 
 
@@ -135,7 +134,7 @@ export default class Sprite {
   * @param {number} numberOfFrames - The number of frames the animation should last for.
   * @example
   * rabbit.addAnimation('jump', 3,9)
-  * // creates an animation starting at frame 3 and continues for 9 frames.
+  * // creates a 9 frame animation starting at frame 3.
   */
   addAnimation(name, startFrame, numberOfFrames) {
     this.animations.push({ name: name, startFrame: startFrame, numberOfFrames: numberOfFrames });
@@ -159,7 +158,6 @@ export default class Sprite {
     if (!this.detectHit) {
       s2pd.hitDetectObjects.push(this);
       this.detectHit = true;
-      this.hitBoxId = s2pd.hitDetectObjects.length;
     }
 
   }
@@ -205,7 +203,6 @@ export default class Sprite {
   platform(blockify) {
     blockify ? this.block = true : this.block = false;
     s2pd.platforms.push(this)
-    console.log(s2pd.platforms)
   }
   /**
    * Disable the sprites as a platform.
@@ -215,7 +212,6 @@ export default class Sprite {
     for (let i = 0; i < s2pd.platforms.length; i++) {
       s2pd.platforms[i] === this ? s2pd.platforms.splice(i, 1) : undefined;
     }
-    console.log(s2pd.platforms)
   }
   /**
    * Give the object gravity. Will fall unless it lands on a platform.
@@ -245,8 +241,7 @@ export default class Sprite {
   noGravity() {
     this.gravity = false;
     for (let i = 0; i < s2pd.gravity.length; i++) {
-      s2pd.gravity[i] === this ? s2pd.gravity.splice(i, 1) : undefined
-      console.log(s2pd.gravity)
+      s2pd.gravity[i] === this ? s2pd.gravity.splice(i, 1) : undefined;
     }
   }
   // onGravity to be called every tick while jumping
@@ -255,7 +250,6 @@ export default class Sprite {
       if (this.accelerating < this.originalGravityLevel) {
         this.accelerating += this.accelerationRate;
         this.velY = this.accelerating;
-
       }
       if (this.accelerating >= this.originalGravityLevel) {
         this.velY = this.originalGravityLevel;
@@ -272,6 +266,7 @@ export default class Sprite {
    */
   jump(howHigh, noDoubleJumps) {
     if (this.gravity) {
+      this.accelerating = 0;
       noDoubleJumps ? this.noDoubleJumps = true : this.noDoubleJumps = false;
       if (!this.noDoubleJumps) {
         this.accelerationRate = this.originalGravityLevel * .05;
@@ -314,7 +309,6 @@ export default class Sprite {
           if (arr[i].id) {
             if (arr[i].id === this.id) {
               arr.splice(i, 1);
-              console.log('destroyin bat')
             }
           }
         }

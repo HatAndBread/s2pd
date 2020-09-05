@@ -1,6 +1,7 @@
 import s2pd from './core.js';
 import { keyDownEvents, keyUpEvents } from './input/keyboard.js'
 import Line from './shapes/line.js'
+import { updateGlobals } from './index.js'
 
 
 function executeCollision(collision) {
@@ -117,6 +118,7 @@ export default function loop(game) {
   s2pd.looping = true;
   s2pd.width = s2pd.canvas.width;
   s2pd.height = s2pd.canvas.height;
+  updateGlobals()
   if (s2pd.firstTimeThroughLoop) {
     s2pd.firstTimeThroughLoop = false;
   }
@@ -142,7 +144,6 @@ export default function loop(game) {
 
   }
   for (let i = 0; i < s2pd.allGameObjects.length; i++) {
-    s2pd.allGameObjects[i].id = i;
     if (s2pd.allGameObjects[i].loaded) {
       s2pd.allGameObjects[i].updatePos();
     }
@@ -184,6 +185,9 @@ export default function loop(game) {
   if (game) {
     game()
   }
+  if (s2pd.cancelDraw) {
+    s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
+  }
 
   if (s2pd.hitDetectObjects.length > 1) {
     for (let i = 0; i < s2pd.hitDetectObjects.length; i++) {
@@ -203,9 +207,9 @@ export default function loop(game) {
             }
           } else {
             if (checkOverlap(a, b)) {
-              findCollisionFunction(a, b, true)
+              findCollisionFunction(a, b, true) // if overlapping 'true' to call collision function
             } else {
-              findCollisionFunction(a, b, false)
+              findCollisionFunction(a, b, false) // if not overlapping 'false' to reset 'triggerOnce' 
             }
           }
         }

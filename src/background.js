@@ -11,6 +11,7 @@ class Background {
    */
   constructor(source, numberOfFrames, animationSpeed) {
     s2pd.objectsToLoad.push(this);
+    s2pd.allBackgrounds.push(this);
     this.loaded = false;
     this.xPos = 0;
     this.yPos = 0;
@@ -50,7 +51,6 @@ class Background {
       this.farXpos = this.width;
       this.loaded = true;
       s2pd.loadedAssets += 1;
-      s2pd.finalize(this);
       this.updatePos();
     })
       .catch((err) => {

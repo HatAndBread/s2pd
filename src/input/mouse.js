@@ -1,11 +1,12 @@
 import s2pd from '../core.js';
-import Line from '../shapes/line.js'
+import { updateGlobals } from '../index.js'
 
 export function mouseMove(event) {
 
   let canvasPos = s2pd.canvas.getBoundingClientRect();
   s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
   s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
+  updateGlobals()
 
 }
 
@@ -46,11 +47,13 @@ export function searchArr(arr, x, y, options) {
 
 export function mouseDown(event) {
   s2pd.draggingWithMouse = true;
+  updateGlobals();
   searchArr(s2pd.holdableObjects, s2pd.mouseX, s2pd.mouseY, true)
 }
 
 export function mouseUp() {
   s2pd.heldObject = null;
+  updateGlobals();
   s2pd.allGameObjects.forEach((el) => {
     el.dragging = false;
   })
@@ -61,6 +64,10 @@ export function mouseClick(event) {
   s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
   s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
   s2pd.heldObject = null;
+  updateGlobals();
+  if (typeof s2pd.globalClick === 'function') {
+    s2pd.globalClick();
+  }
   s2pd.allGameObjects.forEach((el) => {
     el.dragging = false;
   })

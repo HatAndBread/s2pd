@@ -14,6 +14,7 @@ const s2pd = {
   allBackgrounds: [],
   holdableObjects: [],
   hitDetectObjects: [],
+  cancelDraw: false,
   collisions: [],
   platforms: [],
   gravity: [],
@@ -36,16 +37,8 @@ const s2pd = {
   firstTimeThroughLoop: true,
   canvas: null,
   ctx: null,
-  finalize: function (object) {
-    if (object instanceof Background) {
-      s2pd.allBackgrounds.push(object);
-    } else {
-      s2pd.allGameObjects.push(object);
-    }
-  },
   jump: function (who, howHigh) {
     if (!(who instanceof Line)) {
-
       const currentHeight = Math.abs(who.yPos - who.jumpStart);
       if (currentHeight <= howHigh / 2) {
         who.yPos -= who.originalGravityLevel;
@@ -63,11 +56,12 @@ const s2pd = {
     }
   },
   getId: () => {
-    let num = Math.random();
+    let num = Math.floor(Math.random() * 1000000);
     if (s2pd.ids.includes(num)) {
       s2pd.getId();
     } else {
       s2pd.ids.push(num)
+      return num;
     }
   },
   delete: (obj) => {

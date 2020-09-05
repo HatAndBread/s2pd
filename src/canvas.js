@@ -1,4 +1,5 @@
 import s2pd from './core.js';
+import { updateGlobals } from './index.js';
 /**
  * Create a new html5 canvas element.
  * @param {string} id - id of the html5 canvas element
@@ -14,6 +15,7 @@ function createCanvas(id, width, height) {
   s2pd.ctx = s2pd.canvas.getContext('2d');
   s2pd.width = width;
   s2pd.height = height;
+  updateGlobals();
 }
 /**
  * Add canvas context to an existing html5 canvas element.
@@ -28,6 +30,7 @@ function addCanvas(id, width, height) {
   s2pd.ctx = s2pd.canvas.getContext('2d');
   s2pd.width = width;
   s2pd.height = height;
+  updateGlobals();
 }
 /**
  * Prevent canvas from unwanted movement on user interaction. 

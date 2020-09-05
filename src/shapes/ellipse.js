@@ -27,7 +27,6 @@ class Ellipse extends Shapes {
     this.thickness = thickness;
     this.loaded = true;
     this.timeStamp = Date.now();
-    s2pd.finalize(this);
     this.updatePos();
   }
   /**
@@ -37,7 +36,6 @@ class Ellipse extends Shapes {
   updatePos() {
     if (this.rotation >= Math.PI * 2) {
       this.rotation = this.rotation % Math.PI;
-      console.log(this.rotation);
     }
     if (
       (this.rotation > Math.PI * 0.25 && this.rotation < Math.PI * 0.75) ||

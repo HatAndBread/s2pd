@@ -18,7 +18,6 @@ class Circle extends Shapes {
     this.radius = radius;
     this.thickness = thickness;
     this.loaded = true;
-    s2pd.finalize(this)
     this.updatePos();
   }
   /**

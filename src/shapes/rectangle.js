@@ -29,7 +29,6 @@ export default class Rectangle extends Shapes {
     this.hitBoxHeight = this.height;
     this.loaded = true;
     this.timeStamp = Date.now();
-    s2pd.finalize(this)
     this.updatePos();
   }
   updatePos() {

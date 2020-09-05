@@ -9,7 +9,7 @@ function createConfig(name) {
     }
   }
   return {
-    entry: './src/s2pd.js',
+    entry: './src/index.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: getName(),

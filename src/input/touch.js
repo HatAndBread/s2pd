@@ -1,5 +1,6 @@
 import s2pd from '../core.js';
-import { searchArr } from './mouse.js'
+import { searchArr } from './mouse.js';
+import { updateGlobals } from '../index.js'
 
 function handleTouchStart(e) {
   s2pd.draggingWithMouse = false;
@@ -10,6 +11,10 @@ function handleTouchStart(e) {
   s2pd.touchMoveY = s2pd.touchY = Math.floor(e.touches[0].clientY - canvasPos.top);
   searchArr(s2pd.holdableObjects, s2pd.touchX, s2pd.touchY, true);
   s2pd.draggingWithMouse = false;
+  updateGlobals();
+  if (typeof s2pd.globalTouch === 'function') {
+    s2pd.globalTouch();
+  }
 }
 
 export function touchListeners() {
@@ -24,6 +29,7 @@ export function touchListeners() {
     s2pd.draggingWithMouse = false;
     s2pd.touchMoveX = e.touches[0].clientX - canvasPos.left;
     s2pd.touchMoveY = e.touches[0].clientY - canvasPos.top;
+    updateGlobals();
   });
 
   document.addEventListener('touchend', function (e) {
@@ -38,5 +44,6 @@ export function touchListeners() {
     s2pd.touchY = null;
     s2pd.touchMoveX = null;
     s2pd.touchMoveY = null;
+    updateGlobals()
   });
 }

@@ -30,7 +30,6 @@ class Line extends Shapes {
     this.loaded = true;
     this.length = pythagorean(this.startX - this.endX, this.startY - this.endY)
     this.dragStart = { xStart: null, yStart: null, xEnd: null, yEnd: null, lastX: null, lastY: null };
-    s2pd.finalize(this);
     this.updatePos();
   }
   /**

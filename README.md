@@ -7,4 +7,4 @@ s2pd aims to be intuitive enough to be used by beginners, students, and anyone w
 
 # API
 
-<h2>installation</h2>
+## Table of contents

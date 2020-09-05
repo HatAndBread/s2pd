@@ -15,6 +15,55 @@ import { touchListeners } from './input/touch.js';
 import { keyboardListeners, keyDown, keyUp } from './input/keyboard.js';
 import { enableAudio, Sound } from './audio/audio.js';
 
+
+
+let mouseX = s2pd.mouseX;
+let mouseY = s2pd.mouseY;
+let touchX = s2pd.touchX;
+let touchY = s2pd.touchY;
+let touchMoveX = s2pd.touchMoveX;
+let touchMoveY = s2pd.touchMoveY;
+let touchEndX = s2pd.touchEndX;
+let touchEndY = s2pd.touchEndY;
+let width = s2pd.width;
+let height = s2pd.height;
+
+function updateGlobals() {
+  mouseX = s2pd.mouseX;
+  mouseY = s2pd.mouseY;
+  touchX = s2pd.touchX;
+  touchY = s2pd.touchY;
+  touchMoveX = s2pd.touchMoveX;
+  touchMoveY = s2pd.touchMoveY;
+  touchEndX = s2pd.touchEndX;
+  touchEndY = s2pd.touchEndY;
+  width = s2pd.width;
+  height = s2pd.height;
+}
+/**
+ * 
+ * @param {function} callback - a callback to be on any mouse click.
+ */
+const onClick = (callback) => {
+  if (typeof callback === 'function') {
+    s2pd.globalClick = callback;
+  } else {
+    console.error('@onClick 👉 typeerror: onClick requires a callback function.')
+  }
+}
+/**
+ *
+ * @param {function} callback - a callback to be called on every touch.
+ */
+const onTouch = (callback) => {
+  if (typeof callback === 'function') {
+    s2pd.globalTouch = callback;
+  } else {
+    console.error('@onTouch 👉 typeerror: onTouch requires a callback function.')
+  }
+
+}
+
 /**
  * clear the canvas
  * @function
@@ -30,19 +79,19 @@ function dontClear() {
   s2pd.clear = false;
 }
 /**
- * @returns
- * returns current width of canvas
+ * prevent drawing during loop.
  */
-function width() {
-  return s2pd.width;
+function cancelDraw() {
+  s2pd.cancelDraw = true;
 }
 /**
- * @returns
- * returns current height of canvas
+ * allow drawing during loop.
  */
-function height() {
-  return s2pd.height;
+function uncancelDraw() {
+  s2pd.cancelDraw = false;
 }
+
+
 /**
  * Stop loop.
  */
@@ -66,8 +115,8 @@ function resize(width, height) {
  */
 function ezSetup() {
   enableAudio();
-  console.log('Ignore audio context warning☝️', 'Audio context will automatically resume after user interaction (mouse click etc). ', 'In production it is best practice to enable audio context and load all audio files after that. For more info see 👉 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices', '♬(ノ゜∇゜)ノ♩ ')
-  createCanvas('canvas', 800, 600);
+  console.log('Ignore audio context warning☝️', 'Audio context will automatically resume after user interaction (mouse click etc). ', 'In production load and play audio only after mouse click or touch. For more info see 👉 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices', '♬(ノ゜∇゜)ノ♩ ')
+  createCanvas('canvas', 900, 600);
   stillCanvas();
 }
 /**
@@ -93,6 +142,17 @@ keyboardListeners();
 
 console.log('٩(๑^o^๑)۶', 'Welcome to s2pd!ლ(╹◡╹ლ)');
 export {
+  mouseX,
+  mouseY,
+  touchX,
+  touchY,
+  touchEndX,
+  touchEndY,
+  touchMoveX,
+  touchMoveY,
+  onClick,
+  onTouch,
+  updateGlobals,
   resize,
   clear,
   dontClear,
@@ -100,6 +160,8 @@ export {
   loaded,
   s2pd,
   ezSetup,
+  cancelDraw,
+  uncancelDraw,
   loop,
   createCanvas,
   stopLoop,
