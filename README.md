@@ -97,11 +97,13 @@ And now we have an animated sprite!
 Let's add one more animation and make our sprite turn to the left or right when the left or right arrow keys on the keyboard are pressed.
 ```javascript
 sprite.addAnitimation('blinking-left', 12 ,3);
-s.keyUp('right', ()=>{
+s.keyDown('right', ()=>{
   sprite.changeAnimationTo('blinking-right');
+  sprite.xPos += 2; // will increase sprite's position on x axis by 2 pixels
 })
-s.keyUp('left', ()=>{
+s.keyDown('left', ()=>{
   sprite.changeAnimationTo('blinking-left'); 
+  sprite.xPos -= 2;
 })
 ```
 
@@ -149,11 +151,13 @@ const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4);
 sprite.addAnitimation('blinking-right', 8,3);
 sprite.changeAnimationTo('blinking-right);
 sprite.addAnitimation('blinking-left', 12 ,3);
-s.keyUp('right', ()=>{
+s.keyDown('right', ()=>{
   sprite.changeAnimationTo('blinking-right');
+  sprite.xPos += 2;
 })
-s.keyUp('left', ()=>{
+s.keyDown('left', ()=>{
   sprite.changeAnimationTo('blinking-left'); 
+  sprite.xPos -= 2;
 })
 sprite.feelGravity(12);
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
