@@ -74,7 +74,7 @@ s.loop(function(){})
 
 Which gives us this...
 
-Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an image file with your animation laid out in a single horizontal row with each frame evently spaced. Let's use this image: 
+Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an image file with your animation laid out in a single horizontal row with each frame evenly spaced. Let's use this image: 
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
 <br>
