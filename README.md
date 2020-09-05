@@ -126,8 +126,8 @@ ground.platform(true); // passing a truthy value as an argument will make the ob
 Yay! Our sprite has a platform to stand on. Now let's give it the ability to jump. 
 ```javascript
 s.keyUp('space', ()=>{
-  sprite.jump(200); // will make sprite jump 200 pixels.
-}, true); // passing a truthy value as the 3rd arguement will disable "double jumps", i.e. sprite won't be able to jump again until the jump is complete.
+  sprite.jump(200, true); // will make sprite jump 200 pixels.
+}); // passing a truthy value as the second arguement in jump method will disable "double jumps", i.e. sprite won't be able to jump again until the jump is complete.
 ```
 Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's make a flying circle that will destroy our sprite if they collide.
 ```javascript
@@ -163,8 +163,8 @@ sprite.feelGravity(12);
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
 ground.platform(true);
 s.keyUp('space', ()=>{
-  sprite.jump(200); 
-}, true);
+  sprite.jump(200, true); 
+});
 const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
 evilCircle.velX = -10;
 if (evilCircle.xPos + evilCircle.radius < 0){
