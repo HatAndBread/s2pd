@@ -82,7 +82,7 @@ Here we have 35 evenly spaced frames. Perfect! We make a sprite like this:
 ```javascript
 const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); // For a single frame sprite all you need is the first three arguments. 
 ```
-This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every tick of the loop. A speed of 2 every two ticks, etc.
+This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every time the program goes through the loop. A speed of 2 every will change frames every two ticks, etc.
 <br><br>
 Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 8 and continues for three frames after that, so...
 ```javascript
@@ -94,7 +94,7 @@ sprite.changeAnimationTo('blinking-right');
 ```
 And now we have an animated sprite!
 
-Let's add one more animation and make our sprite turn to the left or right when the left or right arrow keys on the keyboard are pressed.
+Let's add one more animation and make our sprite turn to the left or right and walk when the left or right arrow keys on the keyboard are pressed.
 ```javascript
 sprite.addAnimation('blinking-left', 12 ,3);
 s.keyDown('right', ()=>{
@@ -131,20 +131,25 @@ s.keyUp('space', ()=>{
 ```
 Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's make a flying circle that will destroy our sprite if they collide.
 ```javascript
-const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
-// make a randomly colored circle 30 pixels off to the right of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
-evilCircle.velX = -10;
-s.onCollision(evilCircle, sprite, true, ()=>{　// a truthy third argument will trigger the callback function only once while objects are colliding.
-  sprite.destroy(); //delete all references to our sprite😢
+const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
+// Make a randomly colored circle 30 pixels off to the leftt of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
+evilCircle.velX = 8; // Make the circle travel horitontally 8 pixels per frame.
+s.onCollision(evilCircle, sprite, true, ()=>{　// A truthy third argument will trigger the callback function only once while objects are colliding.
+  ground.notPlatform(); // Ground is no longer a platform so our sprite will fall. 😢
+  evilCircle.destroy(); // Delete all references to evilCircle.
 });
 ```
 In our loop callback let's add this code. 
 ```javascript
 s.loop(function () {
-if (evilCircle.xPos + evilCircle.radius < 0) { // xPos is circle's position on x axis.
-  evilCircle.xPos = s.width + 30;
-  evilCircle.yPos = s.randomBetween(0, s.height); // yPos is circle's position on y axis.
-  }
+   if (evilCircle.xPos + evilCircle.radius > s.width) { // if evil circle goes beyond width of canvas...
+        evilCircle.color = s.getRandomColor();
+        evilCircle.xPos = -30; // send evil circle back to left side of canvas.
+        evilCircle.yPos = s.randomBetween(0, s.height);
+    }
+    if (sprite.yPos > s.height) {
+        sprite.destroy(); // delete all references to our sprite when it has fallen off the canvas. 😢😢😢
+    }
 });
 ```
 All together...
@@ -159,31 +164,36 @@ sprite.addAnimation('blinking-right', 8, 3);
 sprite.changeAnimationTo('blinking-right');
 sprite.addAnimation('blinking-left', 12, 3);
 s.keyDown('right', () => {
-  sprite.changeAnimationTo('blinking-right');
-  sprite.xPos += 2;
+    sprite.changeAnimationTo('blinking-right');
+    sprite.xPos += 2;
 })
 s.keyDown('left', () => {
-  sprite.changeAnimationTo('blinking-left');
-  sprite.xPos -= 2;
+    sprite.changeAnimationTo('blinking-left');
+    sprite.xPos -= 2;
 })
 sprite.feelGravity(12);
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
 ground.platform(true);
 s.keyUp('space', () => {
-  sprite.jump(200, true);
+    sprite.jump(200, true);
 });
-const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
-evilCircle.velX = -10;
+const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
+evilCircle.velX = 8;
 
 s.onCollision(evilCircle, sprite, true, () => {
-  sprite.destroy();
+    ground.notPlatform();
+    evilCircle.destroy();
 });
 
 s.loop(function () {
-  if (evilCircle.xPos + evilCircle.radius < 0) {
-    evilCircle.xPos = s.width + 30;
-    evilCircle.yPos = s.randomBetween(0, s.height);
-  }
+    if (evilCircle.xPos + evilCircle.radius > s.width) {
+        evilCircle.color = s.getRandomColor();
+        evilCircle.xPos = -30;
+        evilCircle.yPos = s.randomBetween(0, s.height);
+    }
+    if (sprite.yPos > s.height) {
+        sprite.destroy();
+    }
 });
 ```
 
