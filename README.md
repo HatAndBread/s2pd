@@ -86,17 +86,17 @@ This will create an animated sprite in the center of the canvas. 35 is the numbe
 <br><br>
 Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 8 and continues for three frames after that, so...
 ```javascript
-sprite.addAnitimation('blinking-right', 8,3);
+sprite.addAnimation('blinking-right', 8,3);
 ```
 The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would look weird, so let's set the current animation to **'blinking-right'**.
 ```javascript
-sprite.changeAnimationTo('blinking-right);
+sprite.changeAnimationTo('blinking-right');
 ```
 And now we have an animated sprite!
 
 Let's add one more animation and make our sprite turn to the left or right when the left or right arrow keys on the keyboard are pressed.
 ```javascript
-sprite.addAnitimation('blinking-left', 12 ,3);
+sprite.addAnimation('blinking-left', 12 ,3);
 s.keyDown('right', ()=>{
   sprite.changeAnimationTo('blinking-right');
   sprite.xPos += 2; // will increase sprite's position on x axis by 2 pixels
@@ -134,47 +134,57 @@ Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's
 const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
 // make a randomly colored circle 30 pixels off to the right of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
 evilCircle.velX = -10;
-if (evilCircle.xPos + evilCircle.radius < 0){
-  evilCircle.xPos = s.width+30; //xPos is the objects position on the x axis.
-}
 s.onCollision(evilCircle, sprite, true, ()=>{　// a truthy third argument will trigger the callback function only once while objects are colliding.
   sprite.destroy(); //delete all references to our sprite😢
 });
 ```
+In our loop callback let's add this code. 
+```javascript
+s.loop(function () {
+if (evilCircle.xPos + evilCircle.radius < 0) { // xPos is circle's position on x axis.
+  evilCircle.xPos = s.width + 30;
+  evilCircle.yPos = s.randomBetween(0, s.height); // yPos is circle's position on y axis.
+  }
+});
+```
 All together...
 ```javascript
-import s from 's2pd';
-s.ezSetup(); 
+import s from './s2pd.js';
+
+s.ezSetup();
 const clouds = new s.Background('./clouds.png');
-clouds.velX = -2; 
-const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4);
-sprite.addAnitimation('blinking-right', 8,3);
-sprite.changeAnimationTo('blinking-right);
-sprite.addAnitimation('blinking-left', 12 ,3);
-s.keyDown('right', ()=>{
+clouds.velX = -2;
+const sprite = new s.Sprite(s.width / 2, s.height / 2, './hero.png', 35, 4);
+sprite.addAnimation('blinking-right', 8, 3);
+sprite.changeAnimationTo('blinking-right');
+sprite.addAnimation('blinking-left', 12, 3);
+s.keyDown('right', () => {
   sprite.changeAnimationTo('blinking-right');
   sprite.xPos += 2;
 })
-s.keyDown('left', ()=>{
-  sprite.changeAnimationTo('blinking-left'); 
+s.keyDown('left', () => {
+  sprite.changeAnimationTo('blinking-left');
   sprite.xPos -= 2;
 })
 sprite.feelGravity(12);
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
 ground.platform(true);
-s.keyUp('space', ()=>{
-  sprite.jump(200, true); 
+s.keyUp('space', () => {
+  sprite.jump(200, true);
 });
 const evilCircle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
 evilCircle.velX = -10;
-if (evilCircle.xPos + evilCircle.radius < 0){
-  evilCircle.xPos = s.width+30; 
-}
-s.onCollision(evilCircle, sprite, true, ()=>{　
-  sprite.destroy(); 
+
+s.onCollision(evilCircle, sprite, true, () => {
+  sprite.destroy();
 });
 
-s.loop(function(){})
+s.loop(function () {
+  if (evilCircle.xPos + evilCircle.radius < 0) {
+    evilCircle.xPos = s.width + 30;
+    evilCircle.yPos = s.randomBetween(0, s.height);
+  }
+});
 ```
 
 Let's give our game a try.
