@@ -187,7 +187,7 @@ s.loop(function () {
 });
 ```
 
-Let's give our game a try.
+Let's <a href="https://app.netlify.com/sites/compassionate-jones-9a151d/overview">give our game a try.</a>
 There we have it! A working game, albeit a rather simple one. What can you create?
 
 
