@@ -8,6 +8,17 @@ function enableAudio() {
   s2pd.audioContext = new AudioContext();
 }
 /**
+ * Create an audio context and load all audio files associated with the Sound class.
+ * Call loadAudio after some kind of user interaction (mouse click, touch).
+ * Most browsers will throw an error if audio play is not user initiated. 
+ */
+function loadAudio() {
+  s2pd.audioContext = new AudioContext();
+  s2pd.objectsToLoad.forEach(el => {
+    el instanceof Sound ? el.load() : undefined;
+  })
+}
+/**
  * Sound
  */
 class Sound {
@@ -72,13 +83,16 @@ class Sound {
         theSound = buffer;
         this.theSound = theSound;
         this.loaded = true;
+        if (this.requestToPlayBeforeLoaded) {
+          this.play();
+          this.requestToPlayBeforeLoaded = false;
+        }
       });
     }
     getSound.onloadend = () => {
       this.totallyLoaded = true;
-      s2pd.loadedAudio.push(this);
       this.loaded = true;
-      s2pd.loadedAssets += 1;
+      s2pd.loadedAudio += 1;
     }
     getSound.send();
     s2pd.allAudioObjects.push(this);
@@ -87,18 +101,21 @@ class Sound {
    * play audio file
    */
   play() {
-    this.playSound = s2pd.audioContext.createBufferSource();
-
-    this.gainNode = s2pd.audioContext.createGain();
-    this.gainNode.gain.value = this.volume;
-    this.playSound.buffer = this.theSound;
-    this.playSound.connect(this.gainNode);
-    this.gainNode.connect(s2pd.audioContext.destination);
-    this.playSound.playbackRate.value = this.playbackRate;
-    this.playSound.start(0, this.pauseTime)
-    this.startTime = Date.now()
-    if (this.loop) {
-      this.playSound.loop = true;
+    if (this.loaded) {
+      this.playSound = s2pd.audioContext.createBufferSource();
+      this.gainNode = s2pd.audioContext.createGain();
+      this.gainNode.gain.value = this.volume;
+      this.playSound.buffer = this.theSound;
+      this.playSound.connect(this.gainNode);
+      this.gainNode.connect(s2pd.audioContext.destination);
+      this.playSound.playbackRate.value = this.playbackRate;
+      this.playSound.start(0, this.pauseTime)
+      this.startTime = Date.now()
+      if (this.loop) {
+        this.playSound.loop = true;
+      }
+    } else {
+      this.requestToPlayBeforeLoaded = true;
     }
   }
   /**
@@ -122,4 +139,4 @@ class Sound {
   }
 }
 
-export { enableAudio, Sound };
+export { enableAudio, loadAudio, Sound };

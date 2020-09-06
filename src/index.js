@@ -13,7 +13,7 @@ import Tile from './tile.js';
 import { mouseListeners } from './input/mouse.js';
 import { touchListeners } from './input/touch.js';
 import { keyboardListeners, keyDown, keyUp } from './input/keyboard.js';
-import { enableAudio, Sound } from './audio/audio.js';
+import { enableAudio, Sound, loadAudio } from './audio/audio.js';
 
 
 
@@ -27,6 +27,10 @@ let touchEndX = s2pd.touchEndX;
 let touchEndY = s2pd.touchEndY;
 let width = s2pd.width;
 let height = s2pd.height;
+let percentLoaded = 0;
+let percentImagesLoaded = 0;
+let percentSoundLoaded = 0;
+
 
 function updateGlobals() {
   mouseX = s2pd.mouseX;
@@ -39,6 +43,9 @@ function updateGlobals() {
   touchEndY = s2pd.touchEndY;
   width = s2pd.width;
   height = s2pd.height;
+  percentLoaded = s2pd.percentLoaded;
+  percentImagesLoaded = s2pd.percentImagesLoaded;
+  percentSoundLoaded = s2pd.percentSoundLoaded;
 }
 /**
  * 
@@ -106,34 +113,29 @@ function stopLoop() {
 function resize(width, height) {
   s2pd.canvas.width = width;
   s2pd.canvas.height = height;
-  s2pd.width = width;
+  s2pd.width = width;;
   s2pd.height = height;
 }
 /**
- * Sets up project quickly.
- * Creates canvas element with id canvas, enables audio, and prevents unwanted canvas movement on touch and keyboard input.
+ * Set up project quickly.
+ * Creates canvas element with id 'canvas', sizes to window, automatically resizes on window resize, enables audio, and prevents unwanted canvas movement on touch and keyboard input.
+ * Not recommended for integration with existing projects as it is likely to change the flow of your document in unexpected ways.
  */
 function ezSetup() {
-  enableAudio();
-  console.log('Ignore audio context warning☝️', 'Audio context will automatically resume after user interaction (mouse click etc). ', 'In production load and play audio only after mouse click or touch. For more info see 👉 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices', '♬(ノ゜∇゜)ノ♩ ')
-  createCanvas('canvas', 900, 600);
+  document.body.style.position = 'fixed';
+  document.body.style.top = 0;
+  document.body.style.left = 0;
+  document.body.style.margin = 0;
+  document.body.style.padding = 0;
+  createCanvas('canvas', window.innerWidth, window.innerHeight);
+  s2pd.canvas.style.position = 'relative';
+  s2pd.canvas.style.top = 0;
+  s2pd.canvas.style.left = 0;
+  s2pd.sizeToWindow = true;
   stillCanvas();
 }
-/**
- * @returns
- * returns what percent of sprites and audio files have been loaded.
- * @example
- * s.loop(function(){
- *   if (s.loaded()<100){
- *     //loading screen
- *   }else{
- *     //do some cool stuff
- *   }
- * })
- */
-function loaded() {
-  return s2pd.percentLoaded;
-}
+
+
 touchListeners();
 mouseListeners();
 keyboardListeners();
@@ -150,6 +152,9 @@ export {
   touchEndY,
   touchMoveX,
   touchMoveY,
+  percentLoaded,
+  percentImagesLoaded,
+  percentSoundLoaded,
   onClick,
   onTouch,
   updateGlobals,
@@ -157,7 +162,7 @@ export {
   clear,
   dontClear,
   onCollision,
-  loaded,
+  loadAudio,
   s2pd,
   ezSetup,
   cancelDraw,

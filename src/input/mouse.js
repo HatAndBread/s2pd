@@ -29,7 +29,12 @@ export function searchArr(arr, x, y, options) {
       if (!a.clickFunction && options) {
         s2pd.heldObject = a;
       } else {
-        if (a.clickFunction) { a.clickFunction() }
+        if (a.clickFunction) {
+          a.clickFunction();
+          if (a.triggerClickOnce) {
+            a.clickFunction = null;
+          }
+        }
       }
     }
     if (isLine(a)) {

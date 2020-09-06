@@ -1,6 +1,7 @@
 import s2pd from './core.js';
 import { keyDownEvents, keyUpEvents } from './input/keyboard.js'
 import Line from './shapes/line.js'
+import { Sound } from './audio/audio.js'
 import { updateGlobals } from './index.js'
 
 
@@ -62,10 +63,13 @@ function checkOverlap(a, b) {
 }
 
 function checkPlatforms() {
-  for (let i = 0; i < s2pd.platforms.length; i++) {
-    for (let j = 0; j < s2pd.gravity.length; j++) {
-      let a = s2pd.platforms[i];
-      let b = s2pd.gravity[j];
+  for (let i = 0; i < s2pd.gravity.length; i++) {
+    if (s2pd.platforms.length === 0) {
+      s2pd.gravity[i].landed = false;
+    }
+    for (let j = 0; j < s2pd.platforms.length; j++) {
+      let a = s2pd.platforms[j]; // A = PLATFORMS
+      let b = s2pd.gravity[i]; // B = SPRITES
 
       if (checkOverlap(a, b)) {
         if (a.block) { //prevent sprite from going through solid object
@@ -104,6 +108,14 @@ function checkPlatforms() {
     }
   }
 }
+
+function isNotAudio() {
+  let num = 0;
+  for (let i = 0; i < s2pd.objectsToLoad.length; i++) {
+    !(s2pd.objectsToLoad[i] instanceof Sound) ? num += 1 : undefined;
+  }
+  return num;
+}
 /**
  * Create an animation loop.
  * @param {function} game - A function containing tasks that you want to be carried out every tick of the loop.
@@ -115,16 +127,19 @@ function checkPlatforms() {
  * });
  */
 export default function loop(game) {
+
   s2pd.looping = true;
   s2pd.width = s2pd.canvas.width;
   s2pd.height = s2pd.canvas.height;
+  s2pd.percentLoaded = ((s2pd.loadedImages + s2pd.loadedAudio) / s2pd.objectsToLoad.length) * 100;
+  s2pd.percentImagesLoaded = (s2pd.loadedImages / isNotAudio()) * 100;
+  s2pd.percentSoundLoaded = s2pd.loadedAudio / (s2pd.objectsToLoad.length - isNotAudio()) * 100;
+  if (s2pd.percentLoaded === Infinity) {
+    s2pd.percentLoaded = 0;
+  }
   updateGlobals()
   if (s2pd.firstTimeThroughLoop) {
     s2pd.firstTimeThroughLoop = false;
-  }
-  s2pd.percentLoaded = (s2pd.objectsToLoad.length / s2pd.loadedAssets) * 100;
-  if (s2pd.percentLoaded === Infinity) {
-    s2pd.percentLoaded = 0;
   }
 
   if (s2pd.clear) {
@@ -185,9 +200,7 @@ export default function loop(game) {
   if (game) {
     game()
   }
-  if (s2pd.cancelDraw) {
-    s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
-  }
+
 
   if (s2pd.hitDetectObjects.length > 1) {
     for (let i = 0; i < s2pd.hitDetectObjects.length; i++) {
@@ -216,6 +229,10 @@ export default function loop(game) {
       }
     }
   }
+  if (s2pd.cancelDraw) {
+    s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
+  }
+
 
   if (!s2pd.exit) {
     requestAnimationFrame(function () {

@@ -50,7 +50,7 @@ class Background {
       this.width = this.theImage.width / this.numberOfFrames;
       this.farXpos = this.width;
       this.loaded = true;
-      s2pd.loadedAssets += 1;
+      s2pd.loadedImages += 1;
       this.updatePos();
     })
       .catch((err) => {

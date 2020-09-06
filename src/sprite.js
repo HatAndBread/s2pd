@@ -56,7 +56,7 @@ export default class Sprite {
         this.width = this.theImage.width / this.numberOfFrames;
         this.height = this.theImage.height;
         this.loaded = true;
-        s2pd.loadedAssets += 1;
+        s2pd.loadedImages += 1;
         this.updatePos();
       })
       .catch((err) => {
@@ -163,13 +163,17 @@ export default class Sprite {
   }
   /**
    * @param {function} callback - What to do when object is clicked.
+   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time. 
    * @example
-   * sprite.onClick(()=>{
+   * circle.onClick(()=>{
    *   circle.color = 'rgb(1,2,3)'
    * })
    */
-  onClick(callback) {
+  onClick(callback, triggerOnce) {
     this.clickFunction = callback;
+    if (triggerOnce) {
+      this.triggerClickOnce = true;
+    }
   }
 
   /**

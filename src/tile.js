@@ -76,12 +76,13 @@ class Tile {
                 this.imageHeight = this.theImage.height;
                 if (!this.repeatX || !this.repeatY) {
                     this.repeatX = s2pd.width / this.imageWidth;
-                    this.repeatY = s2pd.height / this.imageHeight
+                    this.repeatY = s2pd.height / this.imageHeight;
+                    this.autoResize = true;
                 }
                 this.width = this.imageWidth * this.repeatX;
                 this.height = this.imageHeight * this.repeatY;
                 this.loaded = true;
-                s2pd.loadedAssets += 1;
+                s2pd.loadedImages += 1;
                 this.updatePos();
             })
             .catch((err) => {
@@ -95,6 +96,10 @@ class Tile {
         this.hitBoxHeight = this.height;
         this.heightOfFrame = this.theImage.height;
         this.widthOfFrame = this.theImage.width / this.numberOfFrames;
+        if (this.autoResize) {
+            this.repeatX = s2pd.width / this.imageWidth;
+            this.repeatY = s2pd.height / this.imageHeight;
+        }
         this.theFormula = this.animations[this.currentAnimation].startFrame * this.widthOfFrame + this.currentFrame * this.widthOfFrame;
         if (this.jumping) {
             s2pd.jump(this, this.jumpHeight, this.jumpLength);
@@ -667,14 +672,18 @@ class Tile {
 
     }
     /**
-    * @param {function} callback - What to do when object is clicked.
-    * @example
-    * sprite.onClick(()=>{
-    *   circle.color = 'rgb(1,2,3)'
-    * })
-    */
-    onClick(callback) {
+  * @param {function} callback - What to do when object is clicked.
+  * @param {boolean} triggerOnce - Truthy value to only trigger callback one time. 
+  * @example
+  * circle.onClick(()=>{
+  *   circle.color = 'rgb(1,2,3)'
+  * })
+  */
+    onClick(callback, triggerOnce) {
         this.clickFunction = callback;
+        if (triggerOnce) {
+            this.triggerClickOnce = true;
+        }
     }
     /**
     *
