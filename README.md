@@ -198,10 +198,7 @@ s.loop(function () {
 ```
 
 Let's <a href="https://compassionate-jones-9a151d.netlify.app/">give our game a try.</a>
-There we have it! A working game, albeit a rather simple one. What can you create?
-
-
-
+There we have it! A working game, albeit a rather stupid one. I think you can do better! What will you create?
 
 
 # API
