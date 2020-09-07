@@ -3,9 +3,9 @@
 # s2pd
 
 Hi! 👋🌈  
-s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. Here is a game written in s2pd in just 200 lines of code: 
+s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game I hastily threw together in just one hour: <a href = "https://s2pd-example.netlify.app/">CLICK ME TO PLAY EXAMPLE GAME</a>
 
-It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art.
+It is my hope that s2pd is easy and intuitive enough to be used by absolute beginners, students, and anyone else who is curious about delving into the world of digital art.
 
 # Installation 
 On the command line.
