@@ -2,7 +2,8 @@
   "name": "s2pd",
   "version": "1.0.0",
   "description": "Hi! 👋🌈   s2pd is a simple HTML5 canvas and web audio library for making art and 2D games in JavaScript.",
-  "private": true,
+  "main": "./src/s2pd.js",
+  "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "nodemon server.js",
