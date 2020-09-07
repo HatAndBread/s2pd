@@ -154,7 +154,7 @@ s.loop(function () {
 ```
 All together...
 ```javascript
-import s from './s2pd.js';
+import s from 's2pd.js';
 
 s.ezSetup();
 const clouds = new s.Background('./clouds.png');
