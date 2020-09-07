@@ -137,7 +137,6 @@ function ezSetup() {
   } else {
     createCanvas('canvas', 900, 500);
   }
-
   s2pd.canvas.style.position = 'relative';
   s2pd.canvas.style.left = 0;
   s2pd.canvas.style.userSelect = 'none';
