@@ -1,15 +1,16 @@
-import Background from './background.js';
 import Line from './shapes/line.js'
 
 const s2pd = {
-  loadedAssets: 0,
+  loadedImages: 0,
+  loadedAudio: 0,
   looping: false,
   objectsToLoad: [],
   ids: [],
   percentLoaded: 0,
+  percentImagesLoaded: 0,
+  percentSoundLoaded: 0,
   allAudioObjects: [],
   touching: false,
-  loadedAudio: [],
   allGameObjects: [],
   allBackgrounds: [],
   holdableObjects: [],
@@ -20,7 +21,7 @@ const s2pd = {
   gravity: [],
   dragStarted: false,
   draggingWithMouse: true,
-  clear: false,
+  clear: true,
   mouseX: null,
   mouseY: null,
   touchX: null,

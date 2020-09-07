@@ -29,7 +29,12 @@ export function searchArr(arr, x, y, options) {
       if (!a.clickFunction && options) {
         s2pd.heldObject = a;
       } else {
-        if (a.clickFunction) { a.clickFunction() }
+        if (a.clickFunction) {
+          a.clickFunction();
+          if (a.triggerClickOnce) {
+            a.clickFunction = null;
+          }
+        }
       }
     }
     if (isLine(a)) {
@@ -67,6 +72,9 @@ export function mouseClick(event) {
   updateGlobals();
   if (typeof s2pd.globalClick === 'function') {
     s2pd.globalClick();
+    if (s2pd.globalClickTriggerOnce) {
+      s2pd.globalClick = null;
+    }
   }
   s2pd.allGameObjects.forEach((el) => {
     el.dragging = false;

@@ -25,13 +25,17 @@ class Shapes {
 
   /**
    * @param {function} callback - What to do when object is clicked.
+   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time. 
    * @example
    * circle.onClick(()=>{
    *   circle.color = 'rgb(1,2,3)'
    * })
    */
-  onClick(callback) {
+  onClick(callback, triggerOnce) {
     this.clickFunction = callback;
+    if (triggerOnce) {
+      this.triggerClickOnce = true;
+    }
   }
   /**
    * 

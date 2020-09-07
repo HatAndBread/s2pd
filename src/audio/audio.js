@@ -5,7 +5,34 @@ import s2pd from '../core.js';
  * Audio context will automatically be resumed after user interacts with the page. 
  */
 function enableAudio() {
-  s2pd.audioContext = new AudioContext();
+
+  let AudioContext = window.AudioContext
+    || window.webkitAudioContext
+    || false;
+  if (AudioContext) {
+    s2pd.audioContext = new AudioContext();
+  } else {
+    alert('Sorry. You need to update your browser to use web audio. ');
+  }
+
+}
+/**
+ * Create an audio context and load all audio files associated with the Sound class.
+ * Call loadAudio after some kind of user interaction (mouse click, touch).
+ * Most browsers will throw an error if audio play is not user initiated. 
+ */
+function loadAudio() {
+  let AudioContext = window.AudioContext
+    || window.webkitAudioContext
+    || false;
+  if (AudioContext) {
+    s2pd.audioContext = new AudioContext();
+  } else {
+    alert('Sorry. You need to update your browser in order to play this game. ')
+  }
+  s2pd.objectsToLoad.forEach(el => {
+    el instanceof Sound ? el.load() : undefined;
+  })
 }
 /**
  * Sound
@@ -53,7 +80,8 @@ class Sound {
     this.gainNode;
     this.duration;
     this.theSound;
-    this.playSound
+    this.playSound;
+    this.stopped = true;
     this.fileSize = 0
     this.amountLoaded = 0
     this.loaded = false;
@@ -72,13 +100,17 @@ class Sound {
         theSound = buffer;
         this.theSound = theSound;
         this.loaded = true;
+        if (this.requestToPlayBeforeLoaded) {
+          this.play();
+          this.stopped = false;
+          this.requestToPlayBeforeLoaded = false;
+        }
       });
     }
     getSound.onloadend = () => {
       this.totallyLoaded = true;
-      s2pd.loadedAudio.push(this);
       this.loaded = true;
-      s2pd.loadedAssets += 1;
+      s2pd.loadedAudio += 1;
     }
     getSound.send();
     s2pd.allAudioObjects.push(this);
@@ -87,39 +119,51 @@ class Sound {
    * play audio file
    */
   play() {
-    this.playSound = s2pd.audioContext.createBufferSource();
-
-    this.gainNode = s2pd.audioContext.createGain();
-    this.gainNode.gain.value = this.volume;
-    this.playSound.buffer = this.theSound;
-    this.playSound.connect(this.gainNode);
-    this.gainNode.connect(s2pd.audioContext.destination);
-    this.playSound.playbackRate.value = this.playbackRate;
-    this.playSound.start(0, this.pauseTime)
-    this.startTime = Date.now()
-    if (this.loop) {
-      this.playSound.loop = true;
+    if (this.loaded) {
+      this.stopped = false;
+      this.playSound = s2pd.audioContext.createBufferSource();
+      this.gainNode = s2pd.audioContext.createGain();
+      this.gainNode.gain.value = this.volume;
+      this.playSound.buffer = this.theSound;
+      this.playSound.connect(this.gainNode);
+      this.gainNode.connect(s2pd.audioContext.destination);
+      this.playSound.playbackRate.value = this.playbackRate;
+      this.playSound.start(0, this.pauseTime)
+      this.startTime = Date.now()
+      if (this.loop) {
+        this.playSound.loop = true;
+      }
+    } else {
+      this.requestToPlayBeforeLoaded = true;
     }
   }
   /**
    * Stop audio. When audio play is resumed will go back to the beginning. 
    */
   stop() {
-    this.playSound.stop();
+    if (!this.stopped) {
+      this.playSound.stop();
+      this.stopped = true;
+    } else {
+      console.warn('Called stop on already stopped audio object. 👮‍♀️', 'This may cause errors in some browsers.')
+    }
   }
   /**
   * Pause audio.
   */
   pause() {
+    if (!this.stopped) {
+      this.playSound.stop();
+      this.stopped = true;
+    }
     this.pauseStartTime = Date.now()
     this.playSound.stop()
     this.pauseTime += (Date.now() - this.startTime) / 1000
     if (this.pauseTime > this.playSound.buffer.duration) {
       this.pauseTime = this.pauseTime % this.playSound.buffer.duration;
-      console.log(this.pauseTime)
     }
 
   }
 }
 
-export { enableAudio, Sound };
+export { enableAudio, loadAudio, Sound };
