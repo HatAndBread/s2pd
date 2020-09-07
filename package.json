@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/HatAndBread/s2pd.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Joshua Mark Hume",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/HatAndBread/s2pd/issues"
   },
