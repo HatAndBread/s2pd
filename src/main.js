@@ -1,15 +1,17 @@
 import s from './s2pd.js'
+
 s.ezSetup();
 const bgm = new s.Sound('./bgm.mp3', 0.5, true);
 const ouch = new s.Sound('./ouch.mp3', 0.5, false, 1.2);
 const gameOverMusic = new s.Sound('./gameOverMusic.mp3', 0.5);
+
 const clouds = new s.Background('./clouds.png');
 const mountains = new s.Background('./mountains.png');
 const fire = new s.Sprite(-10, -10, './fire.png', 8, 3);
 fire.opacity = 0; // make invisible at start
 const bat = new s.Sprite(s.width / 2, 100, './bat.png', 14, 4);
 const hearts = new s.Tile('./heart.png', 20, 20, 5, 1);
-const lava = new s.Tile('./lava.png', 0, s.height - 16);
+const lava = new s.Tile('./lava.png', 0, s.height - 16, false, 1);
 lava.innerVelX = 0.5, lava.innerVelY = 0.3;
 lava.platform(true);
 const circle = new s.Circle(s.getRandomColor(), s.width + 30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
@@ -45,7 +47,7 @@ loadButton.onClick(() => {
   loadButton.opacity
 }, true);
 start.onClick(() => {
-  if (!gameStarted && loadClicked) {
+  if (!gameStarted && loadClicked && !gameOver) {
     s.loadAudio(); // Call loadAudio after user interaction. Most browsers will throw an error otherwise.
     startTime = Date.now()
     gameStarted = true;
@@ -61,10 +63,13 @@ start.onClick(() => {
     ellipse.velX = 4;
     ellipse2.velX = -4;
   }
+  if (gameOver) {
+    location.reload();
+  }
 })
 s.keyUp('space', () => {
   if (gameStarted && !gameOver) {
-    bat.jump(200);
+    bat.jump(120);
   }
 })
 s.keyDown('right', () => {
@@ -85,7 +90,7 @@ s.keyDown('left', () => {
 })
 s.onTouch(() => {
   if (gameStarted && !gameOver) {
-    bat.jump(200);
+    bat.jump(120);
     if (s.touchX > bat.xPos) {
       bat.velX = 3;
       bat.changeAnimationTo('flyRight');
@@ -97,7 +102,7 @@ s.onTouch(() => {
 })
 s.onClick(() => {
   if (gameStarted && !gameOver) {
-    bat.jump(200);
+    bat.jump(120);
     if (s.mouseX > bat.xPos) {
       bat.velX = 3;
       bat.changeAnimationTo('flyRight');
@@ -166,9 +171,11 @@ function keepFromGoingTooFast(obj, min, max, newVel) {
 }
 
 function game() {
-  if (s.percentLoaded < 100) {
+  if (s.percentLoaded < 100) { // loading screen
     loadButton.xPos += s.randomBetween(-2, 2);
     loadButton.yPos += s.randomBetween(-2, 2);
+    loadingScreen.width = s.width;
+    loadingScreen.height = s.height;
     loadingText.text = `${Math.floor(s.percentLoaded)}% loaded ☠️`;
   }
   else {
@@ -217,10 +224,11 @@ function game() {
     if (hearts.repeatX === 0) {
       if (!gameOver) { // prevent from playing repeatedly;
         gameOverMusic.play();
+        bgm.stop(); // calling stop more than once will throw an error in safari. 
       }
       gameOver = true;
-      bgm.stop();
-      start.text = '☠️GAME OVER☠️'
+      start.text = '☠️GAME OVER☠️\nPlay again?😇'
+      start.center = true;
       start.opacity = 1;
       directionBatFacing === 'left' ? bat.changeAnimationTo('deadLeft') : bat.changeAnimationTo('deadRight');
       lava.notPlatform();
@@ -228,9 +236,6 @@ function game() {
       bat.velY = 0.1, bat.velX = 0.1;
     }
   }
-
-
-
 }
 s.loop(game)
 

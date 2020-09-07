@@ -50,10 +50,14 @@ function updateGlobals() {
 /**
  * 
  * @param {function} callback - a callback to be on any mouse click.
+ * @param {boolean} triggerOnce - Truthy value to trigger callback only once time.
  */
-const onClick = (callback) => {
+const onClick = (callback, triggerOnce) => {
   if (typeof callback === 'function') {
     s2pd.globalClick = callback;
+    if (triggerOnce) {
+      s2pd.globalClickTriggerOnce = true;
+    }
   } else {
     console.error('@onClick 👉 typeerror: onClick requires a callback function.')
   }
@@ -127,11 +131,22 @@ function ezSetup() {
   document.body.style.left = 0;
   document.body.style.margin = 0;
   document.body.style.padding = 0;
-  createCanvas('canvas', window.innerWidth, window.innerHeight);
+  if (window.innerWidth < 900) {
+    createCanvas('canvas', window.innerWidth, window.innerHeight);
+    s2pd.sizeToWindow = true;
+  } else {
+    createCanvas('canvas', 900, 500);
+  }
+
   s2pd.canvas.style.position = 'relative';
-  s2pd.canvas.style.top = 0;
   s2pd.canvas.style.left = 0;
-  s2pd.sizeToWindow = true;
+  s2pd.canvas.style.userSelect = 'none';
+  document.body.style.userSelect = 'none';
+  document.body.style.msUserSelect = 'none';
+  document.body.style.webkitUserSelect = 'none';
+  document.body.style.mozUserSelect = 'none';
+  document.body.style.webkitTouchCallout = 'none';
+  document.body.style.height = window.innerHeight;
   stillCanvas();
 }
 

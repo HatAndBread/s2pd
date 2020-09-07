@@ -72,6 +72,9 @@ export function mouseClick(event) {
   updateGlobals();
   if (typeof s2pd.globalClick === 'function') {
     s2pd.globalClick();
+    if (s2pd.globalClickTriggerOnce) {
+      s2pd.globalClick = null;
+    }
   }
   s2pd.allGameObjects.forEach((el) => {
     el.dragging = false;
