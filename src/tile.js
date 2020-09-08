@@ -184,18 +184,32 @@ class Tile {
 
 
                 } else if (this.innerY > 0) {
+                    if (this.repeatY > 1) {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula + this.imageWidth - this.innerX,
+                            0,
+                            this.innerX,
+                            this.heightOfFrame,
+                            this.xPos,
+                            this.yPos + this.innerY,
+                            this.innerX,
+                            this.imageHeight
+                        );
+                    } else {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula + this.imageWidth - this.innerX,
+                            this.innerY * -1,
+                            this.innerX,
+                            this.heightOfFrame,
+                            this.xPos,
+                            this.yPos,
+                            this.innerX,
+                            this.imageHeight
+                        );
+                    }
 
-                    s2pd.ctx.drawImage(
-                        this.theImage,
-                        this.theFormula + this.imageWidth - this.innerX,
-                        0,
-                        this.innerX,
-                        this.heightOfFrame,
-                        this.xPos,
-                        this.yPos + this.innerY,
-                        this.innerX,
-                        this.imageHeight
-                    );
 
 
                     s2pd.ctx.drawImage(
@@ -290,18 +304,32 @@ class Tile {
 
 
                 } else if (this.innerY > 0) {
+                    if (this.repeatY > 1) {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula - this.innerX, //
+                            0,
+                            this.widthOfFrame,
+                            this.heightOfFrame,
+                            increasingX, //
+                            this.yPos + this.innerY,
+                            this.imageWidth,
+                            this.imageHeight
+                        );
+                    } else {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula - this.innerX, //
+                            this.innerY * -1,
+                            this.widthOfFrame,
+                            this.heightOfFrame,
+                            increasingX, //
+                            this.yPos,
+                            this.imageWidth,
+                            this.imageHeight
+                        );
+                    }
 
-                    s2pd.ctx.drawImage(
-                        this.theImage,
-                        this.theFormula - this.innerX, //
-                        0,
-                        this.widthOfFrame,
-                        this.heightOfFrame,
-                        increasingX, //
-                        this.yPos + this.innerY,
-                        this.imageWidth,
-                        this.imageHeight
-                    );
 
                     s2pd.ctx.drawImage(
                         this.theImage,
@@ -390,17 +418,33 @@ class Tile {
                         this.innerY
                     );
                 } else if (this.innerY > 0) {
-                    s2pd.ctx.drawImage(
-                        this.theImage,
-                        this.theFormula,
-                        0,
-                        0 - this.innerX,
-                        this.heightOfFrame,
-                        increasingX + this.innerX,
-                        this.yPos + this.innerY,
-                        Math.abs(this.innerX),
-                        this.imageHeight
-                    );
+                    if (this.repeatY > 1) {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula,
+                            0,
+                            0 - this.innerX,
+                            this.heightOfFrame,
+                            increasingX + this.innerX,
+                            this.yPos + this.innerY,
+                            Math.abs(this.innerX),
+                            this.imageHeight
+                        );
+
+                    } else {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula,
+                            this.innerY * -1,
+                            0 - this.innerX,
+                            this.heightOfFrame,
+                            increasingX + this.innerX,
+                            this.yPos,
+                            Math.abs(this.innerX),
+                            this.imageHeight
+                        );
+                    }
+
                     s2pd.ctx.drawImage(
                         this.theImage,
                         this.theFormula,
@@ -484,17 +528,34 @@ class Tile {
                     );
 
                 } else if (this.innerY > 0) {
-                    s2pd.ctx.drawImage(
-                        this.theImage,
-                        this.theFormula,
-                        0,
-                        this.imageWidth - this.innerX,
-                        this.heightOfFrame,
-                        increasingX + this.innerX,
-                        this.yPos + this.innerY,
-                        this.imageWidth - this.innerX,
-                        this.imageHeight
-                    );
+                    ///////HERE
+                    if (this.repeatY > 1) {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula,
+                            0,
+                            this.imageWidth - this.innerX,
+                            this.heightOfFrame,
+                            increasingX + this.innerX,
+                            this.yPos + this.innerY,
+                            this.imageWidth - this.innerX,
+                            this.imageHeight
+                        );
+                    } else {
+                        ////////////////?????????
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula,
+                            this.innerY * -1,
+                            this.imageWidth - this.innerX,
+                            this.heightOfFrame,
+                            increasingX + this.innerX,
+                            this.yPos,
+                            this.imageWidth - this.innerX,
+                            this.imageHeight
+                        );
+                    }
+
                     s2pd.ctx.drawImage(
                         this.theImage,
                         this.theFormula,
@@ -554,7 +615,7 @@ class Tile {
             } else if (i === columns && this.innerX > 0) {
 
             }
-            else {//////////////////////////////
+            else {////////////////////////////// ALL The tiles in the middle
                 if (this.innerY <= 0) {
 
                     s2pd.ctx.drawImage(
@@ -583,9 +644,21 @@ class Tile {
                     );
 
                 } else if (this.innerY > 0) {
-
-                    this.drawImage(increasingX + this.innerX, this.yPos + this.innerY);
-
+                    if (this.repeatY > 1) {
+                        this.drawImage(increasingX + this.innerX, this.yPos + this.innerY);
+                    } else {
+                        s2pd.ctx.drawImage(
+                            this.theImage,
+                            this.theFormula,
+                            this.innerY * -1,
+                            this.widthOfFrame,
+                            this.heightOfFrame,
+                            increasingX + this.innerX,
+                            this.yPos,
+                            this.imageWidth,
+                            this.imageHeight
+                        );
+                    }
                     s2pd.ctx.drawImage(
                         this.theImage,
                         this.theFormula,
@@ -631,7 +704,6 @@ class Tile {
 
         s2pd.ctx.globalAlpha = 1;
         if (this.jumping) {
-            console.log('HUH')
             s2pd.jump(this, this.jumpHeight, this.jumpLength);
         }
         if (this.dragging) {
@@ -789,7 +861,6 @@ class Tile {
         this.gravity = false;
         for (let i = 0; i < s2pd.gravity.length; i++) {
             s2pd.gravity[i] === this ? s2pd.gravity.splice(i, 1) : undefined
-            console.log(s2pd.gravity)
         }
     }
     // onGravity to be called every tick while jumping

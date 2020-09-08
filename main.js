@@ -1,20 +1,21 @@
 import s from './s2pd.js'
 
-s.createCanvas('canvas', 1200, 300)
-const clouds = new s.Background('./clouds.png');
+s.createCanvas('canvas', 700, 200);
+s.backgroundColor(s.getRandomColor())
+const ground = new s.Tile('./ground.png', 100, 100, 1, 1)
 
 
 s.keyDown('left', () => {
-  clouds.xPos -= 2
+  ground.innerX -= 2
 })
 s.keyDown('right', () => {
-  clouds.xPos += 2
+  ground.innerX += 2
 })
 s.keyDown('up', () => {
-  clouds.yPos -= 2
+  ground.innerY -= 2
 })
 s.keyDown('down', () => {
-  clouds.yPos += 2
+  ground.innerY += 2
 })
 
 function game() {
