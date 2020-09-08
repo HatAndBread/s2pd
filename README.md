@@ -228,7 +228,7 @@ Create a new html5 canvas element.
   // creates a 900x600 canvas
 ```
 
-🌈**addCanvas(id, width, height)**
+🌈***addCanvas(id, width, height)***
 
 Add canvas context to an existing html5 canvas element.
 ```javascript
@@ -236,7 +236,7 @@ Add canvas context to an existing html5 canvas element.
   // adds context to canvas and size 900x600
 ```
 
-🌈**backgroundColor(color)**
+🌈***backgroundColor(color)***
 
 Change background color of canvas.
 ```javascript
@@ -244,7 +244,7 @@ Change background color of canvas.
   // color parameter: any valid css color
 ```
 
-🌈**canvasOpacity(opacity)**
+🌈***canvasOpacity(opacity)***
 
 Change opacity of canvas.
 ```javascript
@@ -252,7 +252,7 @@ s.changeOpacity(0.5)
 // opacity parameter: a number between 0 and 1
 ```
 
-🌈**stillCanvas(how)**
+🌈***stillCanvas(how)***
 
 Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
 ```javascript
@@ -265,6 +265,18 @@ s.stillCanvas('keyboard');
 ```
 
 <div id="loop"><h1>Loop</h1></div>
+
+🌈***loop(game)***
+
+Create a game loop or animation loop. All animations require a loop. The computer will run through the loop roughly 60 times per second, calling the callback function (game) each time. The callback function should contain all tasks that you wanted carried out each go around of the loop.
+
+```javascript
+ s.loop(function(){
+   if (mySprite.xPos >= s.width){
+     mySprite.xPos = 0;
+ }
+}
+```
 
 <div id="sprites"><h1>Sprites</h1></div>
 
@@ -285,6 +297,5 @@ s.stillCanvas('keyboard');
 <div id="methods"><h1>Methods</h1></div>
 
 
-## Creating a canvas
 
 ## Table of contents
