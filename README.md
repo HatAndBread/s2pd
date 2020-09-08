@@ -3,18 +3,18 @@
 # s2pd
 
 Hi! 👋🌈  
-s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game I hastily threw together in just one hour: <a href = "https://s2pd-example.netlify.app/">CLICK ME TO PLAY EXAMPLE GAME</a>
+s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game I hastily threw together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
 It is my hope that s2pd is easy and intuitive enough to be used by absolute beginners, students, and anyone else who is curious about delving into the world of digital art.
 
 # Installation 
 On the command line.
 ```
-npm install s2pd
+git clone https://github.com/HatAndBread/s2pd.git
 ```
 In your JavaScript file.
 ```javascript
-import s from 's2pd';
+import s from './s2pd/s2pd';
 ```
 ### OR
 
@@ -23,7 +23,6 @@ There are also two minified versions of s2pd available in the dist folder. **s2p
 ```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,9 +30,7 @@ There are also two minified versions of s2pd available in the dist folder. **s2p
   <script src="s2pd.glob.js" defer></script>
   <script src="main.js" defer></script>
 </head>
-
 <body></body>
-
 </html>
 ```
 # Quick tutorial
@@ -41,7 +38,7 @@ There are also two minified versions of s2pd available in the dist folder. **s2p
 Let's make a stupidly simple game! First, let's create a canvas.
 
 ```javascript
-import s from 's2pd';
+import s from './s2pd/s2pd';
 s.ezSetup(); // Basic setup for games. For more advanced options see API.
 ```
 Now we have an empty canvas element. Let's give it a background using this image file: 
