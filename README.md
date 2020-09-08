@@ -203,7 +203,36 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 </ul>
 
 <div id="canvas"><h1>Canvas</h1>
-
+**createCanvas(id, width, height)
+Create a new html5 canvas element.
+  <table>
+  <th></th>
+    <tr>
+      <td>Name</td>
+      <td>Type</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td>id</td>
+      <td>string</td>
+      <td>id of the html5 canvas element</td>
+    </tr>
+    <tr>
+      <td>width</td>
+      <td>number</td>
+      <td>canvas width</td>
+    </tr>
+    <tr>
+      <td>height</td>
+      <td>string</td>
+      <td>canvas height</td>
+    </tr>
+  </table>
+```javascript
+  s.createCanvas('canvas',900,600)
+  // creates a 900x600 canvas
+```
+  
 </div>
 
 <div id="sprites"><h1>Sprites</h1></div>
