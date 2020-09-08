@@ -191,6 +191,7 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 # API
 <ul>
 <li><a href="#canvas">Canvas</a></li>
+ <li><a href="#loop">Loop</a></li>
 <li><a href="#sprites">Sprites</a></li>
 <li><a href="#tiles">Tiles</a></li>
 <li><a href="#backgrounds">Backgrounds</a></li>
@@ -202,38 +203,47 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#methods">Methods</a></li>
 </ul>
 
-<div id="canvas"><h1>Canvas</h1>
+<div id="canvas"><h1>Canvas</h1></div>
 **createCanvas(id, width, height)
 Create a new html5 canvas element.
-  <table>
-  <th></th>
-    <tr>
-      <td>Name</td>
-      <td>Type</td>
-      <td>Description</td>
-    </tr>
-    <tr>
-      <td>id</td>
-      <td>string</td>
-      <td>id of the html5 canvas element</td>
-    </tr>
-    <tr>
-      <td>width</td>
-      <td>number</td>
-      <td>canvas width</td>
-    </tr>
-    <tr>
-      <td>height</td>
-      <td>string</td>
-      <td>canvas height</td>
-    </tr>
-  </table>
 ```javascript
   s.createCanvas('canvas',900,600)
   // creates a 900x600 canvas
 ```
-  
-</div>
+
+**addCanvas(id, width, height)
+Add canvas context to an existing html5 canvas element.
+```javascript
+  s.addCanvas('someCanvasElementAlreadyInYourProject',900,600)
+  // adds context to canvas and size 900x600
+```
+
+**backgroundColor(color)
+Change background color of canvas.
+```javascript
+  s.backgroundColor('rgb(140,224,98)');
+  // color parameter: any valid css color
+```
+
+**canvasOpacity(opacity)
+Change opacity of canvas.
+```javascript
+s.changeOpacity(0.5)
+// opacity parameter: a number between 0 and 1
+```
+
+**stillCanvas(how)
+Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
+```javascript
+s.stillCanvas();
+// prevents window from moving when user is touching canvas or when using arrow keys.
+s.stillCanvas('touch');
+// prevents window from moving when user is touching canvas only. Essential for drawing applications.
+s.stillCanvas('keyboard');
+// prevents window from moving when arrow keys are used only.
+```
+
+<div id="loop"><h1>Loop</h1></div>
 
 <div id="sprites"><h1>Sprites</h1></div>
 
