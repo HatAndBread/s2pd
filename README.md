@@ -60,7 +60,7 @@ clouds.velX = -2;
 s.loop(function(){})
 ```
 
-Which gives us this...
+Which gives us <a href ="https://thirsty-yalow-db5758.netlify.app/">**this**</a>
 
 Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an image file with your animation laid out in a single horizontal row with each frame evenly spaced. Let's use this image: 
 <br>
