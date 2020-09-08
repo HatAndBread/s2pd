@@ -202,7 +202,9 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#methods">Methods</a></li>
 </ul>
 
-<div id="canvas"><h1>Canvas</h1></div>
+<div id="canvas"><h1>Canvas</h1>
+
+</div>
 
 <div id="sprites"><h1>Sprites</h1></div>
 
