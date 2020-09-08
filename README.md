@@ -13,12 +13,14 @@ It is my hope that s2pd is easy and intuitive enough to be used by absolute begi
      <li><a href="#api">API<a/></li>
   </ul>
 
-# Installation 
 <div id="install"></div>
+# Installation 
+
 On the command line.
 ```
 git clone https://github.com/HatAndBread/s2pd.git
 ```
+
 In your JavaScript file.
 ```javascript
 import s from './s2pd/s2pd.js';
@@ -213,7 +215,9 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 </ul>
 
 <div id="canvas"><h1>Canvas</h1></div>
+
 **createCanvas(id, width, height)**
+
 Create a new html5 canvas element.
 ```javascript
   s.createCanvas('canvas',900,600)
@@ -221,6 +225,7 @@ Create a new html5 canvas element.
 ```
 
 **addCanvas(id, width, height)**
+
 Add canvas context to an existing html5 canvas element.
 ```javascript
   s.addCanvas('someCanvasElementAlreadyInYourProject',900,600)
@@ -228,6 +233,7 @@ Add canvas context to an existing html5 canvas element.
 ```
 
 **backgroundColor(color)**
+
 Change background color of canvas.
 ```javascript
   s.backgroundColor('rgb(140,224,98)');
@@ -235,6 +241,7 @@ Change background color of canvas.
 ```
 
 **canvasOpacity(opacity)**
+
 Change opacity of canvas.
 ```javascript
 s.changeOpacity(0.5)
@@ -242,6 +249,7 @@ s.changeOpacity(0.5)
 ```
 
 **stillCanvas(how)**
+
 Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
 ```javascript
 s.stillCanvas();
