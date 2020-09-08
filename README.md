@@ -14,31 +14,22 @@ git clone https://github.com/HatAndBread/s2pd.git
 ```
 In your JavaScript file.
 ```javascript
-import s from './s2pd/s2pd';
+import s from './s2pd/s2pd.js';
 ```
 ### OR
 
-There are also two minified versions of s2pd available in the dist folder. **s2pd.js** can be included in your project as an es6 module. Alternatively, **s2pd.glob.js** can be included in your index.html file to create a global variable, 's'.
+There are also two minified versions of s2pd available.<a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.js">**s2pd.js**</a>  can be imported into your project as an es6 module. Alternatively, <a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.glob.js"> **s2pd.glob.js**</a> can be included in the head section of your html file.
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>s2pd</title>
   <script src="s2pd.glob.js" defer></script>
-  <script src="main.js" defer></script>
-</head>
-<body></body>
-</html>
+  <script src="my-game.js" defer></script>
 ```
 # Quick tutorial
 
 Let's make a stupidly simple game! First, let's create a canvas.
 
 ```javascript
-import s from './s2pd/s2pd';
+import s from './s2pd/s2pd.js';
 s.ezSetup(); // Basic setup for games. For more advanced options see API.
 ```
 Now we have an empty canvas element. Let's give it a background using this image file: 
@@ -62,7 +53,7 @@ s.loop(function(){
 ```
 All together we have...
 ```javascript
-import s from 's2pd';
+import s from './s2pd/s2pd.js';
 s.ezSetup(); 
 const clouds = new s.Background('./clouds.png');
 clouds.velX = -2; 
@@ -151,7 +142,7 @@ s.loop(function () {
 ```
 All together...
 ```javascript
-import s from 's2pd.js';
+import s from './s2pd/s2pd.js';
 
 s.ezSetup();
 const clouds = new s.Background('./clouds.png');
