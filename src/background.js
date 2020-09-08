@@ -81,7 +81,7 @@ class Background {
     if (this.width < s2pd.width / 2) {
       this.farXpos = this.width * Math.ceil(s2pd.width / this.width) + this.xPos;
       this.negFarXPos = this.width * Math.ceil(s2pd.width / this.width) * -1 + this.xPos;
-      for (let i = 0; i < Math.ceil(s2pd.width / this.width); i++) {
+      for (let i = 0; i < Math.ceil(s2pd.width / this.width) + 1; i++) {
         this.drawImage(this.xPos + i * this.width);
       }
       if (this.xPos > 0) {
@@ -89,12 +89,13 @@ class Background {
           this.drawImage(this.xPos - i * this.width)
         }
       }
-      if (this.farXpos < s2pd.width) {
+      if (this.xPos < -this.width) {
         this.drawImage(this.farXpos);
         this.xPos = 0;
       }
 
       if (this.negFarXPos >= -this.width) {
+
         this.xPos = 0;
       }
     }
