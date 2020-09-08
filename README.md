@@ -14,6 +14,7 @@ It is my hope that s2pd is easy and intuitive enough to be used by absolute begi
   </ul>
 
 <div id="install"></div>
+
 # Installation 
 
 On the command line.
@@ -33,8 +34,9 @@ There are also two minified versions of s2pd available.<a href="https://github.c
   <script src="s2pd.glob.js" defer></script>
   <script src="my-game.js" defer></script>
 ```
-# Quick tutorial
 <div id="tutorial"></div>
+
+# Quick tutorial
 
 Let's make a stupidly simple game! First, let's create a canvas.
 
@@ -198,8 +200,10 @@ s.loop(function () {
 Let's <a href="https://compassionate-jones-9a151d.netlify.app/">give our game a try.</a>
 There we have it! A working game, albeit a rather stupid one. I think you can do better! What will you create?
 
-# API
 <div id="api"></div>
+
+# API
+
 <ul>
 <li><a href="#canvas">Canvas</a></li>
  <li><a href="#loop">Loop</a></li>
@@ -216,7 +220,7 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 
 <div id="canvas"><h1>Canvas</h1></div>
 
-**createCanvas(id, width, height)**
+🌈***createCanvas(id, width, height)***
 
 Create a new html5 canvas element.
 ```javascript
@@ -224,7 +228,7 @@ Create a new html5 canvas element.
   // creates a 900x600 canvas
 ```
 
-**addCanvas(id, width, height)**
+🌈**addCanvas(id, width, height)**
 
 Add canvas context to an existing html5 canvas element.
 ```javascript
@@ -232,7 +236,7 @@ Add canvas context to an existing html5 canvas element.
   // adds context to canvas and size 900x600
 ```
 
-**backgroundColor(color)**
+🌈**backgroundColor(color)**
 
 Change background color of canvas.
 ```javascript
@@ -240,7 +244,7 @@ Change background color of canvas.
   // color parameter: any valid css color
 ```
 
-**canvasOpacity(opacity)**
+🌈**canvasOpacity(opacity)**
 
 Change opacity of canvas.
 ```javascript
@@ -248,7 +252,7 @@ s.changeOpacity(0.5)
 // opacity parameter: a number between 0 and 1
 ```
 
-**stillCanvas(how)**
+🌈**stillCanvas(how)**
 
 Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
 ```javascript
