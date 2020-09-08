@@ -3,7 +3,7 @@
 # s2pd
 
 Hi! 👋🌈  
-s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game I hastily threw together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
+s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
 It is my hope that s2pd is easy and intuitive enough to be used by absolute beginners, students, and anyone else who is curious about delving into the world of digital art.
 
@@ -188,8 +188,40 @@ s.loop(function () {
 Let's <a href="https://compassionate-jones-9a151d.netlify.app/">give our game a try.</a>
 There we have it! A working game, albeit a rather stupid one. I think you can do better! What will you create?
 
-
 # API
+<ul>
+<li><a href="#canvas">Canvas</a></li>
+<li><a href="#sprites">Sprites</a></li>
+<li><a href="#tiles">Tiles</a></li>
+<li><a href="#backgrounds">Backgrounds</a></li>
+<li><a href="#shapes">Shapes</a></li>
+<li><a href="#sound">Sound</a></li>
+<li><a href="#mouse">Mouse</a></li>
+<li><a href="#touch">Touch</a></li>
+<li><a href="#keyboard">Keyboard</a></li>
+<li><a href="#methods">Methods</a></li>
+</ul>
+
+<div id="canvas">#Canvas</div>
+
+<div id="sprites">#Sprites</div>
+
+<div id="tiles">#Tiles</div>
+
+<div id="backgrounds"></div>
+
+<div id="shapes"></div>
+
+<div id="sound"></div>
+
+<div id="mouse"></div>
+
+<div id="touch"></div>
+
+<div id="keyboard"></div>
+
+<div id="methods"></div>
+
 
 ## Creating a canvas
 
