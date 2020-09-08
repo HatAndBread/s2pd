@@ -202,25 +202,25 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#methods">Methods</a></li>
 </ul>
 
-<div id="canvas">#Canvas</div>
+<div id="canvas"><h1>Canvas</h1></div>
 
-<div id="sprites">#Sprites</div>
+<div id="sprites"><h1>Sprites</h1></div>
 
-<div id="tiles">#Tiles</div>
+<div id="tiles"><h1>Tiles</h1></div>
 
-<div id="backgrounds"></div>
+<div id="backgrounds"><h1>Backgrounds</h1></div>
 
-<div id="shapes"></div>
+<div id="shapes"><h1>Shapes</h1></div>
 
-<div id="sound"></div>
+<div id="sound"><h1>Sound</h1></div>
 
-<div id="mouse"></div>
+<div id="mouse"><h1>Mouse</h1></div>
 
-<div id="touch"></div>
+<div id="touch"><h1>Touch</h1></div>
 
-<div id="keyboard"></div>
+<div id="keyboard">Keyboard<h1></h1></div>
 
-<div id="methods"></div>
+<div id="methods">Methods<h1></h1></div>
 
 
 ## Creating a canvas
