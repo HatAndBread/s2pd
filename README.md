@@ -218,9 +218,9 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 
 <div id="touch"><h1>Touch</h1></div>
 
-<div id="keyboard">Keyboard<h1></h1></div>
+<div id="keyboard"><h1>Keyboard</h1></div>
 
-<div id="methods">Methods<h1></h1></div>
+<div id="methods"><h1>Methods</h1></div>
 
 
 ## Creating a canvas
