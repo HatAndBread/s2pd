@@ -6,8 +6,15 @@ Hi! 👋🌈
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
 It is my hope that s2pd is easy and intuitive enough to be used by absolute beginners, students, and anyone else who is curious about delving into the world of digital art.
+<h2>Contents<h2>
+  <ul>
+    <li><a href="#install">Installation<a/></li>
+     <li><a href="#tutorial">Quick Tutorial<a/></li>
+     <li><a href="#api">API<a/></li>
+  </ul>
 
 # Installation 
+<div id="install"></div>
 On the command line.
 ```
 git clone https://github.com/HatAndBread/s2pd.git
@@ -25,6 +32,7 @@ There are also two minified versions of s2pd available.<a href="https://github.c
   <script src="my-game.js" defer></script>
 ```
 # Quick tutorial
+<div id="tutorial"></div>
 
 Let's make a stupidly simple game! First, let's create a canvas.
 
@@ -189,6 +197,7 @@ Let's <a href="https://compassionate-jones-9a151d.netlify.app/">give our game a 
 There we have it! A working game, albeit a rather stupid one. I think you can do better! What will you create?
 
 # API
+<div id="api"></div>
 <ul>
 <li><a href="#canvas">Canvas</a></li>
  <li><a href="#loop">Loop</a></li>
@@ -204,35 +213,35 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 </ul>
 
 <div id="canvas"><h1>Canvas</h1></div>
-**createCanvas(id, width, height)
+**createCanvas(id, width, height)**
 Create a new html5 canvas element.
 ```javascript
   s.createCanvas('canvas',900,600)
   // creates a 900x600 canvas
 ```
 
-**addCanvas(id, width, height)
+**addCanvas(id, width, height)**
 Add canvas context to an existing html5 canvas element.
 ```javascript
   s.addCanvas('someCanvasElementAlreadyInYourProject',900,600)
   // adds context to canvas and size 900x600
 ```
 
-**backgroundColor(color)
+**backgroundColor(color)**
 Change background color of canvas.
 ```javascript
   s.backgroundColor('rgb(140,224,98)');
   // color parameter: any valid css color
 ```
 
-**canvasOpacity(opacity)
+**canvasOpacity(opacity)**
 Change opacity of canvas.
 ```javascript
 s.changeOpacity(0.5)
 // opacity parameter: a number between 0 and 1
 ```
 
-**stillCanvas(how)
+**stillCanvas(how)**
 Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
 ```javascript
 s.stillCanvas();
