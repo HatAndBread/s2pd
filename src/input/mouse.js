@@ -2,12 +2,12 @@ import s2pd from '../core.js';
 import { updateGlobals } from '../index.js'
 
 export function mouseMove(event) {
-
-  let canvasPos = s2pd.canvas.getBoundingClientRect();
-  s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
-  s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
-  updateGlobals()
-
+  if (s2pd.canvas) {
+    let canvasPos = s2pd.canvas.getBoundingClientRect();
+    s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
+    s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
+    updateGlobals();
+  }
 }
 
 export function isLine(obj) {
@@ -65,21 +65,23 @@ export function mouseUp() {
 }
 
 export function mouseClick(event) {
-  let canvasPos = s2pd.canvas.getBoundingClientRect();
-  s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
-  s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
-  s2pd.heldObject = null;
-  updateGlobals();
-  if (typeof s2pd.globalClick === 'function') {
-    s2pd.globalClick();
-    if (s2pd.globalClickTriggerOnce) {
-      s2pd.globalClick = null;
+  if (s2pd.canvas) {
+    let canvasPos = s2pd.canvas.getBoundingClientRect();
+    s2pd.mouseX = Math.floor(event.clientX - canvasPos.left);
+    s2pd.mouseY = Math.floor(event.clientY - canvasPos.top);
+    s2pd.heldObject = null;
+    updateGlobals();
+    if (typeof s2pd.globalClick === 'function') {
+      s2pd.globalClick();
+      if (s2pd.globalClickTriggerOnce) {
+        s2pd.globalClick = null;
+      }
     }
+    s2pd.allGameObjects.forEach((el) => {
+      el.dragging = false;
+    })
+    searchArr(s2pd.allGameObjects, s2pd.mouseX, s2pd.mouseY)
   }
-  s2pd.allGameObjects.forEach((el) => {
-    el.dragging = false;
-  })
-  searchArr(s2pd.allGameObjects, s2pd.mouseX, s2pd.mouseY)
 }
 
 export function mouseListeners() {

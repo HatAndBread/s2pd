@@ -127,7 +127,6 @@ function isNotAudio() {
  * });
  */
 export default function loop(game) {
-
   s2pd.looping = true;
   s2pd.width = s2pd.canvas.width;
   s2pd.height = s2pd.canvas.height;

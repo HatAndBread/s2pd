@@ -77,7 +77,7 @@ function canvasOpacity(opacity) {
 }
 
 window.addEventListener('resize', () => {
-  if (s2pd.sizeToWindow) {
+  if (s2pd.sizeToWindow && s2pd.canvas) {
     s2pd.canvas.width = window.innerWidth;
     s2pd.canvas.height = window.innerHeight;
   }
