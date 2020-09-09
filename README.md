@@ -282,7 +282,7 @@ Change opacity of canvas.
 </ul>
 
 ```javascript
-s.changeOpacity(0.5)
+s.canvasOpacity(0.5)
 // opacity parameter: a number between 0 and 1
 ```
 
@@ -517,6 +517,17 @@ rabbit.updateSize(0.5);
 🌈***destroy()***
 
 Remove all references to sprite.
+
+🌈***Additional sprite parameters***
+---
+velX: {number} - The object's velocity along the x-axis.
+velY: {number} - The object's velocity along the y-axis.
+opacity: {number} - A number between 0 and 1.
+width: {number} - *read-only*
+height: {number} - *read-only*
+gravity: {number} - *read-only*
+dragging: {boolean} - *read-only* -  is currently being dragged.
+jumping: {boolean} - *read-only* - is currently jumping.
 
 <div id="tiles"><h1>Tiles</h1></div>
 
