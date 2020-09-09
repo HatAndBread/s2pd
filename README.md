@@ -3,7 +3,7 @@
 Hi! 👋🌈  
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
-It is my hope that s2pd is easy and intuitive enough to be used by absolute beginners, students, and anyone else who is curious about delving into the world of digital art.
+It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art.
 <h2>Contents</h2>
   <ul>
     <li><a href="#install">Installation<a/></li>
@@ -209,6 +209,7 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#tiles">Tiles</a></li>
 <li><a href="#backgrounds">Backgrounds</a></li>
 <li><a href="#shapes">Shapes</a></li>
+<li><a href="#text">Text</a></li>
 <li><a href="#sound">Sound</a></li>
 <li><a href="#mouse">Mouse</a></li>
 <li><a href="#touch">Touch</a></li>
@@ -361,8 +362,8 @@ Example ↓
   <li>xPos: {number} Initial x position of your sprite. </li>
   <li>yPos: {number} Initial y position of your sprite.</li>
   <li>source: {string} Source file of your sprite sheet. </li>
-  <li>numberOfFrames: {number} The number of frames in your sprite sheet. </li>
-  <li>animationSpeed: {number} Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. </li>
+  <li>numberOfFrames: {number} Optional. The number of frames in your sprite sheet. Leave blank if your sprite is a single frame. </li>
+  <li>animationSpeed: {number} Optional. Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. Leave blank if your sprite is a single frame. </li>
   </ul>
   
 ```javascript
@@ -534,7 +535,67 @@ Remove all references to sprite.
 
 <div id="backgrounds"><h1>Backgrounds</h1></div>
 
+**Note: Like** <a href="sprites">sprite sheets</a>**, background animations must be laid out in a single horizontal row with each frame equally sized **
+The Background class automatically creates an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)! Takes the hard work out of creating scrolling backgrounds and parralax effects.
+
+🌈***constructor(source, numberOfFrames, animationSpeed)***
+
+<ul>
+  <li>source: {string} Source file of your background. </li>
+  <li>numberOfFrames: {number} Optional. The number of frames in your background animation. Leave blank if your background is not an animation.</li>
+  <li>animationSpeed: {number} Optional. Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. Leave blank if your background is not an animation. </li>
+  </ul>
+  
+```javascript
+const sky = new s.Background('./sky.png', 10,4);
+// creates an animated background with 10 frames and a speed of four.
+```
+
+***Methods***
+---
+
+🌈***addAnimation(name, startFrame, numberOfFrames)***
+
+Add an animation to the background.
+
+<ul>
+  <li>name: {string} a string to call the animation by when changing animations.</li>
+  <li>startFrame: {number} the frame in the sprite sheet where the animation begins.</li>
+  <li>numberOfFrames: {number} the number of frames the animation continues for.</li>
+</ul>
+
+```javascript
+const sky = new s.Background(s.width/2, s.height/2, './bunny.png', 4,4);
+sky.addAnimation('rain', 3,1);
+// Creates a two frame animation called 'rain'. Begins on frame 3 and continues for 1 frame (until frame 4).
+```
+
+🌈***changeAnimationTo(name)***
+
+Change the background's current animation.
+
+<ul>
+  <li>name: {string} The name of the animation.</li>
+</ul>
+
+```javascript
+sky.changeAnimationTo('sunny');
+//changes current animation to 'sunny'.
+```
+
+🌈***destroy()***
+
+Remove all references to background.
+
+🌈***Additional background parameters***
+
+<ul>
+  <li>opacity: {number} - A number between 0 and 1.</li>
+</ul>
+
 <div id="shapes"><h1>Shapes</h1></div>
+
+<div id="text"><h1>Text</h1></div>
 
 <div id="sound"><h1>Sound</h1></div>
 
