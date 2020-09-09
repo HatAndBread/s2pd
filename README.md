@@ -860,7 +860,7 @@ Remove all references to object.
   <li>For more info on web audio 👉　https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API</li>
   </ul>
   
-🌈***constructorconstructor(source, volume, loop, playbackRate)***
+🌈***constructor(source, volume, loop, playbackRate)***
 
 <ul>
   <li>source: {string} Audio source file path. </li>
@@ -892,6 +892,7 @@ Remove all references to object.
 🌈***s.loadAudio()***
 Global method to load ALL audio files. 
 Percent of audio files (and image files) loaded can be retrieved through the global variable 👉 s.percentLoaded
+
 See above example for usage.
 
 🌈***play()***
