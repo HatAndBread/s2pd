@@ -638,7 +638,149 @@ Remove all references to background.
 
 <div id="shapes"><h1>Shapes</h1></div>
 
+⭕️ **Circle**
+
+🌈***constructor(color, xPos, yPos, radius, thickness)***
+
+<ul>
+  <li>color: {string} Any valid css color. </li>
+  <li>xPos: {number} Position on the x axis. The xPos of a circle describes the shape's center point.</li>
+  <li>yPos: {number} Position on the y axis. The yPos of a circle describes the shape's center point.</li>
+  <li>radius: {number} Distance from center of circle to its outer edge.</li>
+  <li>thickness: {number} Optional! If present the thickness parameter will make your circle into an outline. Thickness describes the width of the circle's outline.</li>
+  </ul>
+
+```javascript
+const myCircle = new s.Circle('rgb(1,2,3)', s.width/2,s.height/2,30,3);
+//creates an outline of a circle with a diameter of 60 pixels in the center of the canvas.
+```
+
+🥚 ***Ellipse***
+
+🌈***constructor(color, xPos, yPos, radiusX, radiusY, rotation, thickness)***
+
+<ul>
+  <li>color: {string} Any valid css color. </li>
+  <li>xPos: {number} Position on the x axis. The xPos of a ellipse describes the shape's center point.</li>
+  <li>yPos: {number} Position on the y axis. The yPos of a ellipse describes the shape's center point.</li>
+  <li>radiusX: {number} Distance from center of ellipse to its outer edge along the x axis.</li>
+  <li>radiusY: {number} Distance from center of ellipse to its outer edge along the y axis.</li>
+  <li>rotation: {number} Rotation of ellipse in radians. Default is 0.</li>
+  <li>thickness: {number} Optional! If present the thickness parameter will make your ellipse into an outline. Thickness describes the width of the ellipse's outline.</li>
+  </ul>
+  
+  ```javascript
+  const myEllipse = new s.Ellipse('rgb(1,2,3)', s.width/2,s.height/2,30,60,1,3)
+  // creates an outline of an ellipse in the center of the canvas with a diameter of 60 along the x axis, 120 along the y axis, rotated 1 radian.
+  ```
+⬛️　***Rectangle***
+
+🌈***constructor(color, xPos, yPos, width, height, thickness)***
+
+<ul>
+  <li>color: {string} Any valid css color. </li>
+  <li>xPos: {number} Position on the x axis. The xPos of a rectangle describes the shape's leftmost point.</li>
+  <li>yPos: {number} Position on the y axis. The yPos of a rectangle describes the shape's uppermost point.</li>
+  <li>width: {number} Width of rectangle.</li>
+  <li>height: {number} Height of rectangle.</li>
+  <li>thickness: {number} Optional! If present the thickness parameter will make your rectangle into an outline. Thickness describes the width of the rectangle's outline.</li>
+  </ul>
+  
+  ```javascript
+  const myRectangle = new s.Rectangle('rgb(1,2,3)', s.width/2,w.height/2,100,100);
+  // creates a 100x100 square with the square's upper-left point in the center of the canvas.
+  ```
+  
+📏 ***Line***
+  
+🌈***constructor(color, startX, startY, endX, endY, thickness)***
+
+<ul>
+  <li>color: {string} Any valid css color. </li>
+  <li>startX: {number} Starting position on the x axis.</li>
+  <li>startY: {number} Starting position on the y axis</li>
+  <li>endX: {number} End position on the x axis.</li>
+  <li>endY: {number} End position on the y axis.</li>
+  <li>thickness: {number} Width of line.</li>
+  </ul>
+  
+   ```javascript
+  const myLine = new s.Line('rgb(1,2,3)', 100,100,100,300, 3);
+  // Creates a 3 pixel-wide vertical line stretching from coordinates (100,100) to (100, 300).
+  ```
+  
+  ***Methods***
+---
+
+**Note: all members of the Shapes super class share the same methods.**
+
+🌈***onClick(callback, triggerOnce)***
+
+What to do on mouse click.
+
+<ul>
+  <li>callback: {function} callback function to be executed when shape is clicked</li>
+  <li>triggerOnce: {boolean} falsy value - execute the callback function every time the shape is clicked. truthy value - execute callback function only once.</li>
+</ul>
+
+```javascript
+myCircle.onClick(()=>{
+  myCircle.color = s.getRandomColor();
+}, false);
+// Will change myCircle's color to a random color each time it is clicked. 
+```
+  
+🌈***onHold(callback)***
+
+What to do when mouse button is held down over shape or shape is touched for a sustained period of time. 
+
+<ul>
+  <li>callback: {function} callback function to be executed when shape is held.</li>
+</ul>
+
+```javascript
+myRectangle.onHold(()=>{
+  myRectangle.drag(); // drag and drop myRectangle. 
+});
+```
+
+🌈***drag()***
+
+Drag and drop the shape. Must be triggered in onHold method.
+
+```javascript
+myRectangle.onHold(()=>{
+  myRectangle.drag(); // drag and drop myRectangle. 
+});
+```
+
+🌈***Additional shape parameters***
+
+<ul>
+  <li>opacity: {number} - A number between 0 and 1.</li>
+  <li>velX: {number} - The shape's velocity along the x-axis.</li>
+  <li>velY: {number} - The shape's velocity along the y-axis.</li>
+</ul>
+
 <div id="text"><h1>Text</h1></div>
+
+🌈***constructor(color, xPos, yPos, text, font, size, thickness, innerColor)***
+
+<ul>
+  <li>color: {string} Any valid css color. </li>
+  <li>xPos: {number or string} Position of text on x axis. Enter 'center' to center on x axis.</li>
+  <li>yPos: {number or string} Position of text on y axis. Enter 'center' to center on y axis.</li>
+  <li>text: {string} The text to be displayed on screen.</li>
+  <li>font: {string} Any valid font.</li>
+  <li>size: {number} Size of font in pixels.</li>
+  <li>thickness: {number} Optional! Width of font outline.</li>
+  <li>size: {number} Optional! Inner color of text if an outline is present. Any valid css color. </li>
+  </ul>
+  
+```javascript
+const someText = new s.Text('red', 'center', 'center', 'HELLO! 👋 ', 'sans-serif', 28, 3, 'green');
+// prints 'HELLO! 👋' in the center of the canvas with a red outline and green inner-color.
+```
 
 <div id="sound"><h1>Sound</h1></div>
 
