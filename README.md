@@ -367,6 +367,8 @@ bunny.changeAnimationTo('jump');
 
 🌈***onClick(callback, triggerOnce)***
 
+What to do on mouse click.
+
 <ul>
   <li>callback: callback function to be executed when sprite is clicked</li>
   <li>triggerOnce: falsy value - execute the callback function every time sprite is clicked. truthy value - execute callback function only once.</li>
@@ -374,13 +376,111 @@ bunny.changeAnimationTo('jump');
 
 ```javascript
 bunny.onClick(()=>{
+bunny.changeAnimationTo('jump');
   bunny.jump(200);
 }, false)
 // bunny will jump 200 pixels high each time iot is clicked. 
 ```
   
+🌈***onHold(callback)***
 
+What to do when mouse button is held down over object or object is touched for a sustained period of time. 
 
+<ul>
+  <li>callback: callback function to be executed when sprite is held.</li>
+</ul>
+
+```javascript
+bunny.onHold(()=>{
+  bunny.drag(); // drag and drop the sprite. 
+});
+```
+
+🌈***drag()***
+
+Drag and drop the sprite. Must be triggered in onHold method.
+
+```javascript
+bunny.onHold(()=>{
+  bunny.drag(); 
+});
+```
+
+🌈***feelGravity(gravity)***
+
+Make your sprite feel the force of gravity. Will fall unless it lands on a platform.  
+
+<ul>
+  <li>gravity: A number describing the strength of gravity. Higher number is more gravity. Default is 14. </li>
+</ul>
+
+```javascript
+bunny.feelGravity(10);
+});
+```
+
+🌈***noGravity()***
+
+Remove a sprite's ability to feel gravity.
+
+```javascript
+rabbit.noGravity();
+```
+
+🌈***jump(howHigh, noDoubleJumps)***
+
+Make object jump. Gravity must be enabled using the feelGravity method for the jump method to work.
+
+<ul>
+  <li>howHigh: How high to make object jump in pixels. </li>
+  <li>noDoubleJumps: Boolean. Prevent object from jumping when it is not on a platform. Default is false.</li>
+</ul>
+
+```javascript
+rabbit.feelGravity(10);
+rabbit.onClick(()=>{
+  rabbit.jump(200);
+},true);
+//Make rabbit jump 200 pixels when clicked. Will not be able to jump again until it has landed on a platform.
+```
+
+🌈***platform(blockify)***
+
+Make sprite into a platform. Objects with gravity will not fall through platforms. 
+<ul>
+  <li>blockify: Boolean. Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. If platform is not a block objects will be prevented from passing from above.</li>
+</ul>
+
+```javascript
+const bricks = new s.Sprite(200, 200, './bricks.png');
+bricks.platform(true);
+//bricks sprite is turned into a platform which objects with gravity will not be able to pass through from any direction.
+```
+
+🌈***notPlatform()***
+
+Disable the sprite as a platform.
+
+```javascript
+rabbit.notPlatform();
+```
+
+🌈***updateSize(howMuch)***
+
+ Increase or decrease sprite's size. 
+ 
+<ul>
+  <li>howMuch: 0.5 for half current size. 2 for twice current size, etc.</li>
+</ul>  
+
+```javascript
+rabbit.updateSize(0.5);
+// make rabbit half its current size.
+```
+
+🌈***destroy()***
+
+Remove all references to sprite.
 
 <div id="tiles"><h1>Tiles</h1></div>
 
