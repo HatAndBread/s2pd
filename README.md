@@ -519,15 +519,17 @@ rabbit.updateSize(0.5);
 Remove all references to sprite.
 
 🌈***Additional sprite parameters***
----
-velX: {number} - The object's velocity along the x-axis.
-velY: {number} - The object's velocity along the y-axis.
-opacity: {number} - A number between 0 and 1.
-width: {number} - *read-only*
-height: {number} - *read-only*
-gravity: {number} - *read-only*
-dragging: {boolean} - *read-only* -  is currently being dragged.
-jumping: {boolean} - *read-only* - is currently jumping.
+
+<ul>
+  <li>velX: {number} - The object's velocity along the x-axis.</li>
+  <li>velY: {number} - The object's velocity along the y-axis.</li>
+  <li>opacity: {number} - A number between 0 and 1.</li>
+  <li>width: {number} - *read-only*</li>
+  <li>height: {number} - *read-only*</li>
+  <li>gravity: {number} - *read-only*</li>
+  <li>dragging: {boolean} - *read-only* -  is currently being dragged.</li>
+  <li>jumping: {boolean} - *read-only* - is currently jumping.</li>
+</ul>
 
 <div id="tiles"><h1>Tiles</h1></div>
 
