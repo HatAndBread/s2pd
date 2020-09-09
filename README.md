@@ -233,6 +233,13 @@ s.ezSetup();
 🌈***createCanvas(id, width, height)***
 
 Create a new html5 canvas element.
+
+<ul>
+  <li>id: {string} id of html5 canvas element.</li>
+  <li>width: {number} width of canvas in pixels. </li>
+  <li>height: {number} height of canvas in pixels. </li>
+</ul>
+
 ```javascript
   s.createCanvas('canvas',900,600)
   // creates a 900x600 canvas
@@ -241,6 +248,13 @@ Create a new html5 canvas element.
 🌈***addCanvas(id, width, height)***
 
 Add canvas context to an existing html5 canvas element.
+
+<ul>
+  <li>id: {string} id of html5 canvas already existing in your project.</li>
+  <li>width: {number} width of canvas in pixels. </li>
+  <li>height: {number} height of canvas in pixels. </li>
+</ul>
+
 ```javascript
   s.addCanvas('someCanvasElementAlreadyInYourProject',900,600)
   // adds context to canvas and size 900x600
@@ -249,6 +263,11 @@ Add canvas context to an existing html5 canvas element.
 🌈***backgroundColor(color)***
 
 Change background color of canvas.
+
+<ul>
+  <li>color: {string} Any valid css color passed as a string. </li>
+</ul>
+
 ```javascript
   s.backgroundColor('rgb(140,224,98)');
   // color parameter: any valid css color
@@ -257,6 +276,11 @@ Change background color of canvas.
 🌈***canvasOpacity(opacity)***
 
 Change opacity of canvas.
+
+<ul>
+  <li>opacity: {number} A number between 0 and 1. 0 is invisible. 1 is fully visible.</li>
+</ul>
+
 ```javascript
 s.changeOpacity(0.5)
 // opacity parameter: a number between 0 and 1
@@ -265,6 +289,11 @@ s.changeOpacity(0.5)
 🌈***stillCanvas(how)***
 
 Prevent window from unwanted movement on user interaction. User interaction (such as touching canvas or using keyboard arrow keys) can often cause window to move in unexpected and unwanted ways. 
+
+<ul>
+  <li>how: {string} 'keyboard' to prevent arrow from moving window. 'touch' to prevent touch of canvas from moving window. </li>
+</ul>
+
 ```javascript
 s.stillCanvas();
 // prevents window from moving when user is touching canvas or when using arrow keys.
@@ -280,6 +309,10 @@ s.stillCanvas('keyboard');
 
 Creates a game loop or animation loop. The loop function is an essential element of most applications. Without it only static images are possible. The computer will run through the loop roughly 60 times per second, executing the callback function each time through. The callback function should contain all tasks that you wanted carried out each go around of the loop.
 
+<ul>
+  <li>callback: {function} a callback function that will be executed every time through the loop.</li>
+</ul>
+
 ```javascript
  s.loop(function(){
    if (mySprite.xPos >= s.width){
@@ -290,6 +323,7 @@ Creates a game loop or animation loop. The loop function is an essential element
 🌈***stopLoop()***
 
 Stops the loop. 
+
 ```javascript
 s.stopLoop();
 }
@@ -300,6 +334,7 @@ s.stopLoop();
 🌈***clear()***
 
 Clears the canvas at the beginning of the loop. If clear is not called the image drawn to the canvas during the previous go through of the loop will remain.
+
 ```javascript
 s.clear();
 ```
@@ -307,6 +342,7 @@ s.clear();
 🌈***dontClear()***
 
 Undoes the clear() method. Prevents the image drawn to the canvas during the previous go through of the loop from being cleared.
+
 ```javascript
 let randomNumber = Math.floor(Math.random()*10)
 randomNumber === 0 ? s.clear() : s.dontClear()
@@ -324,11 +360,11 @@ Example ↓
 🌈***constructor(xPos, yPos, source, numberOfFrames, animationSpeed)***
 
 <ul>
-  <li>xPos: Initial x position of your sprite. </li>
-  <li>yPos: Initial y position of your sprite.</li>
-  <li>source: Source file of your sprite sheet. </li>
-  <li>numberOfFrames: The number of frames in your sprite sheet. </li>
-  <li>animationSpeed: Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. </li>
+  <li>xPos: {number} Initial x position of your sprite. </li>
+  <li>yPos: {number} Initial y position of your sprite.</li>
+  <li>source: {string} Source file of your sprite sheet. </li>
+  <li>numberOfFrames: {number} The number of frames in your sprite sheet. </li>
+  <li>animationSpeed: {number} Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. </li>
   </ul>
   
 ```javascript
@@ -336,14 +372,14 @@ const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
 //creates a bunny sprite in the center of the canvas. Sprite sheet has four frames. Frame will change every four times through loop. 🐰
 ```
 
-**Methods**
+*Methods*
 
 🌈***addAnimation(name, startFrame, numberOfFrames)***
 
 <ul>
-  <li>name: a string to call the animation by when changing animations.</li>
-  <li>startFrame: the frame in the sprite sheet where the animation begins.</li>
-  <li>numberOfFrames: the number of frames the animation continues for.</li>
+  <li>name: {string} a string to call the animation by when changing animations.</li>
+  <li>startFrame: {number} the frame in the sprite sheet where the animation begins.</li>
+  <li>numberOfFrames: {number} the number of frames the animation continues for.</li>
 </ul>
 
 ```javascript
@@ -357,7 +393,7 @@ bunny.addAnimation('jump', 3,1);
 Change the sprite's current animation.
 
 <ul>
-  <li>name: The name of the animation.</li>
+  <li>name: {string} The name of the animation.</li>
 </ul>
 
 ```javascript
@@ -370,8 +406,8 @@ bunny.changeAnimationTo('jump');
 What to do on mouse click.
 
 <ul>
-  <li>callback: callback function to be executed when sprite is clicked</li>
-  <li>triggerOnce: falsy value - execute the callback function every time sprite is clicked. truthy value - execute callback function only once.</li>
+  <li>callback: {function} callback function to be executed when sprite is clicked</li>
+  <li>triggerOnce: {boolean} falsy value - execute the callback function every time sprite is clicked. truthy value - execute callback function only once.</li>
 </ul>
 
 ```javascript
@@ -387,7 +423,7 @@ bunny.changeAnimationTo('jump');
 What to do when mouse button is held down over object or object is touched for a sustained period of time. 
 
 <ul>
-  <li>callback: callback function to be executed when sprite is held.</li>
+  <li>callback: {function} callback function to be executed when sprite is held.</li>
 </ul>
 
 ```javascript
@@ -411,7 +447,7 @@ bunny.onHold(()=>{
 Make your sprite feel the force of gravity. Will fall unless it lands on a platform.  
 
 <ul>
-  <li>gravity: A number describing the strength of gravity. Higher number is more gravity. Default is 14. </li>
+  <li>gravity: {number} A number describing the strength of gravity. Higher number is more gravity. Default is 14. </li>
 </ul>
 
 ```javascript
@@ -432,8 +468,8 @@ rabbit.noGravity();
 Make object jump. Gravity must be enabled using the feelGravity method for the jump method to work.
 
 <ul>
-  <li>howHigh: How high to make object jump in pixels. </li>
-  <li>noDoubleJumps: Boolean. Prevent object from jumping when it is not on a platform. Default is false.</li>
+  <li>howHigh: {number} How high to make object jump in pixels. </li>
+  <li>noDoubleJumps: {boolean} Prevent object from jumping when it is not on a platform. Default is false.</li>
 </ul>
 
 ```javascript
@@ -448,7 +484,7 @@ rabbit.onClick(()=>{
 
 Make sprite into a platform. Objects with gravity will not fall through platforms. 
 <ul>
-  <li>blockify: Boolean. Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. If platform is not a block objects will be prevented from passing from above.</li>
+  <li>blockify: {boolean} Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. If platform is not a block objects will be prevented from passing from above.</li>
 </ul>
 
 ```javascript
@@ -462,7 +498,7 @@ bricks.platform(true);
 Disable the sprite as a platform.
 
 ```javascript
-rabbit.notPlatform();
+bricks.notPlatform();
 ```
 
 🌈***updateSize(howMuch)***
