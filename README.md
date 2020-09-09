@@ -26,7 +26,7 @@ import s from './s2pd/s2pd.js';
 ```
 ### OR
 
-There are also two minified versions of s2pd available.<a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.js">**s2pd.js**</a>  can be imported into your project as an es6 module. Alternatively, <a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.glob.js"> **s2pd.glob.js**</a> can be included in the head section of your html file.
+There are also two minified versions of s2pd available.<a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.js">**s2pd.js**</a>  can be imported into your project as an es6 module. Alternatively, <a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.glob.js"> **s2pd.glob.js**</a> can be included in the head section of your html file. It is recommended, however, that you use a non-minified version in development to see code hints in your text editor.
 
 ```html
   <script src="s2pd.glob.js" defer></script>
@@ -559,7 +559,7 @@ Remove all references to sprite.
 ---
 The tile class shares all methods and parameters with the <a href="#sprites">Sprite class</a>.
   
-  🌈***Additional background parameters***
+  🌈***Additional tile parameters***
   
   In addition to the parameters the Tile class shares with the <a href="#sprites">Sprite class</a>, the Tile class has a few unique parameters.
   
