@@ -533,10 +533,53 @@ Remove all references to sprite.
 
 <div id="tiles"><h1>Tiles</h1></div>
 
+**Note:** Like <a href="#sprites">sprite sheets</a> , tile animations must be laid out in a single horizontal row with each frame equally sized. The Tile class automatically creates a repeated image for a specified number of times both vertically and horizontally. There are a lot of fun things you can do with the Tile class❣️
+
+🌈***constructor(source, xPos, yPos, repeatX, repeatY, numberOfFrames, animationSpeed)***
+<ul>
+   <li>source: {string} Source file of your tile. </li>
+  <li>xPos: {number} Optional. Initial x position of your tile. Default is 0. </li>
+  <li>yPos: {number} Optional. Initial y position of your tile. Default is 0. </li>
+  <li>repeatX: {number} Optional. How many times to repeat the image on the x axis. Default is to repeat for the entire width of the canvas. </li>
+  <li>repeatY: {number} How many times to repeat the image on the y axis. Default is to repeat for the entire height of the canvas.</li>
+  <li>numberOfFrames: {number} Optional. The number of frames in your sprite sheet. Leave blank if your tile is a single frame. </li>
+  <li>animationSpeed: {number} Optional. Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. Leave blank if your tile is a single frame. </li>
+  </ul>
+  
+  ```javascript
+  const backgroundTile = new s.Tile('./stars.png');
+  // creates a tile background that covers the entire width and height of the canvas.
+  const ground = new s.Tile('./ground.png', 50,100, 5, 1);
+  // creates a tile at coordinates 50,100 that repeats 5 times along the x-axis.
+  const animatedTileBackground = new s.Tile('./cool-animation.png',false,false,false,false, 10, 4)
+  // creates an animated tile background that covers the entire width and height of the canvas.
+  ```
+  
+  🌈***Methods***
+---
+The tile class shares all methods and parameters with the <a href="#sprites">Sprite class</a>.
+  
+  🌈***Additional background parameters***
+  
+  In addition to the parameters the Tile class shares with the <a href="#sprites">Sprite class</a>, the Tile class has a few unique parameters.
+  
+  <ul>
+  <li>innerX: {number} - x position of images within the Tile objects boundaries.</li>
+  <li>innerY: {number} - y position of images within the Tile objects boundaries.</li>
+  <li>innerVelX: {number} - velocity of images within the Tile objects boundaries along the x axis.</li>
+  <li>innerVelY: {number} - velocity of images within the Tile objects boundaries along the y axis.</li>
+</ul>
+
+```javascript
+const hearts = new s.Tile('./hearts.png', 100,100);
+hearts.innerVelX = 3;
+// make hearts appear to move 3 pixels to the right within the boundaries of their frame every tick of the loop.
+```
+See an example of innerVelX and innerVelY in action 👉 <a href="">Click me!</a>
+  
 <div id="backgrounds"><h1>Backgrounds</h1></div>
 
-**Note: Like** <a href="#sprites">sprite sheets</a> **, background animations must be laid out in a single horizontal row with each frame equally sized **
-The Background class automatically creates an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)! Takes the hard work out of creating scrolling backgrounds and parralax effects.
+**Note:** Like <a href="#sprites">sprite sheets</a> , background animations must be laid out in a single horizontal row with each frame equally sized. The Background class automatically creates an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)! Takes the hard work out of creating scrolling backgrounds and parralax effects.
 
 🌈***constructor(source, numberOfFrames, animationSpeed)***
 
