@@ -1,5 +1,3 @@
-# UNDER CONSTRUCTION 😇
-
 # s2pd
 
 Hi! 👋🌈  
@@ -372,7 +370,8 @@ const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
 //creates a bunny sprite in the center of the canvas. Sprite sheet has four frames. Frame will change every four times through loop. 🐰
 ```
 
-*Methods*
+***Methods***
+---
 
 🌈***addAnimation(name, startFrame, numberOfFrames)***
 
