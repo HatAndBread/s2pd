@@ -557,7 +557,7 @@ Remove all references to sprite.
   
   🌈***Methods***
 ---
-The tile class shares all methods and parameters with the <a href="#sprites">Sprite class</a>.
+The tile class shares all methods and parameters with the <a href="#sprites">Sprite class</a>, with the exception of updateSize.
   
   🌈***Additional tile parameters***
   
