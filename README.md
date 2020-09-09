@@ -420,7 +420,7 @@ bunny.changeAnimationTo('jump');
   
 🌈***onHold(callback)***
 
-What to do when mouse button is held down over object or object is touched for a sustained period of time. 
+What to do when mouse button is held down over object or object is touched for a sustained period of time. Callback will execute each tick of the loop while object is held.
 
 <ul>
   <li>callback: {function} callback function to be executed when sprite is held.</li>
@@ -732,7 +732,7 @@ myCircle.onClick(()=>{
   
 🌈***onHold(callback)***
 
-What to do when mouse button is held down over shape or shape is touched for a sustained period of time. 
+What to do when mouse button is held down over shape or shape is touched for a sustained period of time. Callback will execute each tick of the loop while object is held.
 
 <ul>
   <li>callback: {function} callback function to be executed when shape is held.</li>
@@ -754,6 +754,10 @@ myRectangle.onHold(()=>{
 });
 ```
 
+🌈***destroy()***
+
+Remove all references to object.
+
 🌈***Additional shape parameters***
 
 <ul>
@@ -766,10 +770,12 @@ myRectangle.onHold(()=>{
 
 🌈***constructor(color, xPos, yPos, text, font, size, thickness, innerColor)***
 
+Prints text to the canvas. Text may be printed on multiple lines by inserting '\n' into the text parameter.
+
 <ul>
   <li>color: {string} Any valid css color. </li>
-  <li>xPos: {number or string} Position of text on x axis. Enter 'center' to center on x axis.</li>
-  <li>yPos: {number or string} Position of text on y axis. Enter 'center' to center on y axis.</li>
+  <li>xPos: {number or string} Position of text on x axis. xPos of text descibes leftmost point of text. Enter string 'center' to center on x axis.</li>
+  <li>yPos: {number or string} Position of text on y axis. yPos of text describes uppermost point of text. Enter string 'center' to center on y axis.</li>
   <li>text: {string} The text to be displayed on screen.</li>
   <li>font: {string} Any valid font.</li>
   <li>size: {number} Size of font in pixels.</li>
@@ -778,11 +784,147 @@ myRectangle.onHold(()=>{
   </ul>
   
 ```javascript
-const someText = new s.Text('red', 'center', 'center', 'HELLO! 👋 ', 'sans-serif', 28, 3, 'green');
-// prints 'HELLO! 👋' in the center of the canvas with a red outline and green inner-color.
+const someText = new s.Text('red', 'center', 'center', 'HELLO! 👋 \n I ❤️ you', 'sans-serif', 28, 3, 'green');
+someText.center = true;
+/*
+prints...
+  HELLO!👋
+  I ❤️ you
+... with text object centered on the canvas and text alignment within the text object also centered.
+*/
 ```
 
+🌈***onClick(callback, triggerOnce)***
+
+What to do on mouse click.
+
+<ul>
+  <li>callback: {function} callback function to be executed when text is clicked</li>
+  <li>triggerOnce: {boolean} falsy value - execute the callback function every time the text is clicked. truthy value - execute callback function only once.</li>
+</ul>
+
+```javascript
+myText.onClick(()=>{
+  myText.center = false;
+}, false);
+// Will uncenter text alignment (align to left) on mouse click.
+```
+  
+🌈***onHold(callback)***
+
+What to do when mouse button is held down over shape or shape is touched for a sustained period of time. Callback will execute each tick of the loop while object is held.
+
+<ul>
+  <li>callback: {function} callback function to be executed when shape is held.</li>
+</ul>
+
+```javascript
+myText.onHold(()=>{
+  myText.text = Math.floor(Math.random()*10000)) 
+});
+// sets text to a new random number every tick of the loop while text object is held.
+```
+
+🌈***drag()***
+
+Drag and drop the shape. Must be triggered in onHold method.
+
+```javascript
+myText.onHold(()=>{
+  myText.drag(); // drag and drop myText.
+});
+```
+
+🌈***destroy()***
+
+Remove all references to object.
+
+🌈***Additional text parameters***
+
+<ul>
+  <li>opacity: {number} - A number between 0 and 1.</li>
+  <li>velX: {number} - Velocity along the x-axis.</li>
+  <li>velY: {number} - Velocity along the y-axis.</li>
+  <li>center: {boolean} - True 👉 Set text alignment to centered. False 👉 Set text alignment to left.</li>
+  <li>leading: {number} - Leading increases space between rows. 1.1 is default. Example 👉 *** myText.leading = 2; *** Double spaces text</li>
+</ul>
+
 <div id="sound"><h1>Sound</h1></div>
+
+**A note on using web audio** 
+
+<ul>
+  <li>Most web browsers will throw an error if you try to load or play audio before the user has interacted with the site.</li>
+  <li>Best practice when using audio is to solicit a mouse click or touch from the user before creating an audio context and loading audio.</li>
+  <li>If you load s2pd through a script tag in your html file's head most features of s2pd are available without a development server, but using audio will require you to be connected to a server.</li>
+  <li>For more info on web audio 👉　https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API</li>
+  </ul>
+  
+🌈***constructorconstructor(source, volume, loop, playbackRate)***
+
+<ul>
+  <li>source: {string} Audio source file path. </li>
+  <li>volume: {number} Playback volume. A number between 0 and 1. Default is 0.5</li>
+  <li>loop: {boolean} True 👉 Loop at end of playback. False 👉 Don't loop at end of playback.</li>
+  <li>playbackRate: {number} Speed of playback. 1 is nomrmal speed. 0.5 is half normal speed. 2 is twice normal speed etc. Changing playback rate will also affect pitch on most browsers. Default is 1. </li>
+  </ul>
+  
+  ```javascript
+  const mySound = new s.Sound('./niceMusic.mp3', 0.3, true, 1);
+  const startButton = new s.Text('red', 'center', 'center', 'START', 'sans-serif', 32);
+  startButton.onClick(()=>{
+    s.loadAudio(); // loads all audio files associated with the Sound class.
+    mySound.play(); // mySound will begin playing when it is loaded.
+  }, true //trigger once);
+  
+  s.loop(function(){
+    if (s.percentLoaded < 100) { 
+    //loading screen while audio files load.
+    }else{
+    // game loop. mySound will start playing.
+    };
+  });
+  ```
+  
+***Methods***
+---
+
+🌈***s.loadAudio()***
+Global method to load ALL audio files. 
+Percent of audio files (and image files) loaded can be retrieved through the global variable 👉 s.percentLoaded
+See above example for usage.
+
+🌈***play()***
+
+Plays audio file.
+
+```javascript
+mySound.play();
+```
+
+🌈***stop()***
+
+Stops audio file.
+
+```javascript
+mySound.stop();
+```
+
+🌈***pause()***
+
+Pause audio file. Will resume where it left off when play is called again.
+
+```javascript
+mySound.pause();
+```
+
+🌈***Additional sound parameters***
+
+<ul>
+  <li>loaded: {boolean} Is file loaded or not. </li>  
+  <li>stopped: {boolean} Is file stopped or not. </li>  
+</ul>
+
 
 <div id="mouse"><h1>Mouse</h1></div>
 
