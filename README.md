@@ -535,7 +535,7 @@ Remove all references to sprite.
 
 <div id="backgrounds"><h1>Backgrounds</h1></div>
 
-**Note: Like** <a href="sprites">sprite sheets</a>**, background animations must be laid out in a single horizontal row with each frame equally sized **
+**Note: Like** <a href="#sprites">sprite sheets</a> **, background animations must be laid out in a single horizontal row with each frame equally sized **
 The Background class automatically creates an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)! Takes the hard work out of creating scrolling backgrounds and parralax effects.
 
 🌈***constructor(source, numberOfFrames, animationSpeed)***
