@@ -220,6 +220,16 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 
 <div id="canvas"><h1>Canvas</h1></div>
 
+🌈***ezSetup()***
+
+Sets your project up quickly with default settings.
+Creates canvas element with id 'canvas', sizes canvas to 900x600 on larger screens, sizes to window width and window height on mobile screens, automatically resizes on mobile orientation change, and prevents window movement on canvas touch and use of keyboard arrow keys.
+ * ezSetup is not recommended for integration with existing projects as it is likely to change the flow of your document in unexpected ways.
+
+```javascript
+s.ezSetup();
+```
+
 🌈***createCanvas(id, width, height)***
 
 Create a new html5 canvas element.
@@ -266,9 +276,9 @@ s.stillCanvas('keyboard');
 
 <div id="loop"><h1>Loop</h1></div>
 
-🌈***loop(game)***
+🌈***loop(callback)***
 
-Create a game loop or animation loop. All animations require a loop. The computer will run through the loop roughly 60 times per second, calling the callback function (game) each time. The callback function should contain all tasks that you wanted carried out each go around of the loop.
+Creates a game loop or animation loop. The loop function is an essential element of most applications. Without it only static images are possible. The computer will run through the loop roughly 60 times per second, executing the callback function each time through. The callback function should contain all tasks that you wanted carried out each go around of the loop.
 
 ```javascript
  s.loop(function(){
@@ -277,8 +287,100 @@ Create a game loop or animation loop. All animations require a loop. The compute
  }
 }
 ```
+🌈***stopLoop()***
+
+Stops the loop. 
+```javascript
+s.stopLoop();
+}
+```
+
+
+
+🌈***clear()***
+
+Clears the canvas at the beginning of the loop. If clear is not called the image drawn to the canvas during the previous go through of the loop will remain.
+```javascript
+s.clear();
+```
+
+🌈***dontClear()***
+
+Undoes the clear() method. Prevents the image drawn to the canvas during the previous go through of the loop from being cleared.
+```javascript
+let randomNumber = Math.floor(Math.random()*10)
+randomNumber === 0 ? s.clear() : s.dontClear()
+// clears the canvas if random number is 0, otherwise prevents the canvas from being cleared.
+```
+
 
 <div id="sprites"><h1>Sprites</h1></div>
+
+**Note: Sprite sheets must be laid out in a single horizontal row with each frame equally sized.**
+Example ↓
+
+<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
+
+🌈***constructor(xPos, yPos, source, numberOfFrames, animationSpeed)***
+
+<ul>
+  <li>xPos: Initial x position of your sprite. </li>
+  <li>yPos: Initial y position of your sprite.</li>
+  <li>source: Source file of your sprite sheet. </li>
+  <li>numberOfFrames: The number of frames in your sprite sheet. </li>
+  <li>animationSpeed: Speed of animation. 1 is the fastest possible speed. A speed of 1 will change frames every time through the loop. A speed of 2 will change frames every two times through the loop, etc. </li>
+  </ul>
+  
+```javascript
+const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
+//creates a bunny sprite in the center of the canvas. Sprite sheet has four frames. Frame will change every four times through loop. 🐰
+```
+
+**Methods**
+
+🌈***addAnimation(name, startFrame, numberOfFrames)***
+
+<ul>
+  <li>name: a string to call the animation by when changing animations.</li>
+  <li>startFrame: the frame in the sprite sheet where the animation begins.</li>
+  <li>numberOfFrames: the number of frames the animation continues for.</li>
+</ul>
+
+```javascript
+const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
+bunny.addAnimation('jump', 3,1);
+// Creates a two frame animation called 'jump'. Begins on frame 3 and continues for 1 frame (until frame 4).
+```
+
+🌈***changeAnimationTo(name)***
+
+Change the sprite's current animation.
+
+<ul>
+  <li>name: The name of the animation.</li>
+</ul>
+
+```javascript
+bunny.changeAnimationTo('jump');
+//changes current animation to 'jump'.
+```
+
+🌈***onClick(callback, triggerOnce)***
+
+<ul>
+  <li>callback: callback function to be executed when sprite is clicked</li>
+  <li>triggerOnce: falsy value - execute the callback function every time sprite is clicked. truthy value - execute callback function only once.</li>
+</ul>
+
+```javascript
+bunny.onClick(()=>{
+  bunny.jump(200);
+}, false)
+// bunny will jump 200 pixels high each time iot is clicked. 
+```
+  
+
+
 
 <div id="tiles"><h1>Tiles</h1></div>
 
