@@ -3,7 +3,8 @@
 Hi! 👋🌈  
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
-It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art.
+I originally created s2pd as a library for programming my own simple games and canvas animations, but it quickly got out of hand and took on a life of its own as a full-fledged (although still bare-bones) game library. It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art. Although there are a vast number of great JavaScript game/canvas libraries out there, I hope s2pd can find its humble place among them as a dumber, uglier, yet lighter-weight and more beginner-friendly sibling. 
+
 <h2>Contents</h2>
   <ul>
     <li><a href="#install">Installation<a/></li>
@@ -26,7 +27,7 @@ import s from './s2pd/s2pd.js';
 ```
 ### OR
 
-There are also two minified versions of s2pd available.<a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.js">**s2pd.js**</a>  can be imported into your project as an es6 module. Alternatively, <a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.glob.js"> **s2pd.glob.js**</a> can be included in the head section of your html file. It is recommended, however, that you use a non-minified version in development to see code hints in your text editor.
+There are also two minified versions of s2pd available.<a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.js">**s2pd.js**</a>  can be imported into your project as an es6 module. Alternatively, <a href="https://github.com/HatAndBread/s2pd/blob/master/dist/s2pd.glob.js"> **s2pd.glob.js**</a> can be included in the head section of your html file. It is recommended, however, that you use a non-minified version in development so that you can see code hints in your text editor.
 
 ```html
   <script src="s2pd.glob.js" defer></script>
@@ -214,7 +215,8 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#mouse">Mouse</a></li>
 <li><a href="#touch">Touch</a></li>
 <li><a href="#keyboard">Keyboard</a></li>
-<li><a href="#methods">Methods</a></li>
+<li><a href="#collision">Collision Detection</a></li>
+<li><a href="#methods">Useful Methods for Lazy People</a></li>
 </ul>
 
 <div id="canvas"><h1>Canvas</h1></div>
@@ -319,6 +321,7 @@ Creates a game loop or animation loop. The loop function is an essential element
  }
 }
 ```
+
 🌈***stopLoop()***
 
 Stops the loop. 
@@ -327,8 +330,6 @@ Stops the loop.
 s.stopLoop();
 }
 ```
-
-
 
 🌈***clear()***
 
@@ -929,12 +930,200 @@ mySound.pause();
 
 <div id="mouse"><h1>Mouse</h1></div>
 
+Mouse methods. Sprites, tiles, and shapes all have their own mouse methods. Refer to Sprite, Tile, and Shape sections of the API to see mouse methods for each individual class.
+
+🌈***onClick(callback, triggerOnce)***
+
+What to do on mouse click. Works for "touch clicks" too. 
+
+<ul>
+  <li> callback: {function}  - a callback to be execruted on any mouse click.</li>
+ <li> triggerOnce: {boolean} - Truthy value to trigger callback only one time, or falsy value to trigger on every click.
+  </ul>
+  
+  ```javascript
+    s.onClick(()=>{
+      console.log('🐧');
+    })
+    //prints a penguin to the console every time user clicks mouse.
+  ```
+  
+  🌈***mouse variables***
+ 
+ <ul>
+  <li>s.mouseX: current x position of mouse.</li>
+  <li>s.mouseY: current y position of mouse.</li>
+  </ul>
+  
+
+
 <div id="touch"><h1>Touch</h1></div>
+
+🌈***onTouch(callback)***
+
+What to do when user is touching screen. For a touch click use s.onClick() method.
+
+<ul>
+  <li> callback: {function}  - a callback to be executed every tick of the loop while user is touching screen.</li>
+  </ul>
+  
+  ```javascript
+  const mySprite = new s.Sprite(100, 100, 'cool-image.png');
+    s.onTouch(()=>{
+      mySprite.xPos = s.touchMoveX;
+      mySprite.yPos = s.touchMoveY;
+    })
+    //move sprite to touch coordinates everytime user moves their finger.
+  ```
+
+  🌈***touch variables***
+ 
+ <ul>
+  <li>s.touchX: current x position of touch.</li>
+  <li>s.touchY: current y position of touch.</li>
+  <li>s.touchEndX: x position of last touch end.</li>
+  <li>s.touchEndY: y position of last touch end.</li>
+  <li>s.touchMoveX: x position of touch updated every time user moves finger</li>
+  <li>s.touchMoveY: y position of touch updated every time user moves finger</li>
+  </ul>
 
 <div id="keyboard"><h1>Keyboard</h1></div>
 
-<div id="methods"><h1>Methods</h1></div>
+ 🌈***keyDown(key, callback, triggerOnce)***
+ 
+ What to do when user is holding keyboard key down.
+ 
+ <ul>
+  <li>key: {string or number} JS keycode (number) or a string. Example strings →　'space' for space key. ',' for comma. 'left' for left arrow. 'g' for g. '1' for 1. etc.</li>
+  <li>callback:{function} function to be called on key down.</li>
+  <li>triggerOnce: {boolean} Optional! Default is false. Trigger callback once while key is down (true), or trigger callback every tick while key is down(false).</li>
+  </ul>
+  
+  ```javascript
+  s.keyDown('right', ()=>{
+    mySprite.xPos += 2;
+  })
+  //make sprite move 2 pixels to the right every tick that right arrow key is held down.
+  ```
+  
+   🌈***keyUp(key, callback)***
+ 
+ What to do when keyboard key is released.
+ 
+ <ul>
+  <li>key: {string or number} JS keycode (number) or a string. Example strings →　'space' for space key. ',' for comma. 'left' for left arrow. 'g' for g. '1' for 1. etc.</li>
+  <li>callback:{function} function to be called when key is up.</li>
+  </ul>
+  
+  ```javascript
+  s.keyUp('space', ()=>{
+    mySprite.jump(200);
+  })
+  //make sprite jump 200 pixels high when space key is lifted.
+  ```
+  
+<div id="collision"><h1>Collision Detection</h1></div>
+
+🌈***onCollision(obj1, obj2, triggerOnce, callback)***
+
+Triggers a callback function when two game objects collide.
+
+ <ul>
+  <li>obj1: Any s2pd game object. </li>
+  <li>obj2: Any s2pd game object.</li>
+  <li>triggerOnce: {boolean} Trigger callback once while true, or trigger continually while true.</li>
+  <li>callback: {function} A callback function that will be exectued every time object 1 and object 2 collide.</li>
+  </ul>
+
+```javascript
+s.onCollision(mySprite, myOtherSprite, true, ()=>{
+  myOtherSprite.destroy();
+});
+//destroy myOtherSprite on collision with mySprite.
+```
+
+<div id="methods"><h1>Methods for Lazy People</h1></div>
+
+*Random numbers*
+
+Random numbers are an essential part of game development and digital art. Here are some useful methods for obtaining them. ⬇︎
+
+🌈***choose(option1, option2)***
+
+Randomly choose between option 1 and 2. 
+
+<ul>
+  <li>option1: {any}</li> 
+  <li>option2: {any}</li>  
+</ul>
+
+```javascript
+s.choose(thisSprite, thatSprite);
+// returns either thisSprite or thatSprite randomly.
+```
+
+🌈***randomBetween(min, max)***
+
+Returns a random integer between and including min and max.
+
+```javascript
+  s.randomBetween(-1,1);
+  // will return either -1, 0, or 1
+```
+
+🌈***randomNoRepeat(arr)***
+
+Creates an object that will return random selections from a list without repeating any previous selections until all items in the list have been selected. After all items have selected the object will start from the beginning again. get() method returns an item.
+
+<ul>
+  <li>arr: {array} An array containing items you want returned to you in a randomized order without repetition.
+  </ul>
+
+```javascript
+const fruits = ['🍌','🍎','🍓','🍊','🍈','🍉'];
+const getFruits = new s.RandomNoRepeat(fruits);
+for (let i = 0; i < 12; i++){
+  console.log(getFruits.get());
+}
+// prints to the console...
+// ["🍌"]
+// ["🍈"]
+// ["🍓"]
+// ["🍉"]
+// ["🍎"]
+// ["🍊"]
+// ["🍌"]
+// ["🍓"]
+// ["🍈"]
+// ["🍊"]
+// ["🍎"]
+// ["🍉"]
+```
+
+🌈***getRandomColor()***
+
+Will return a random color in rgb format.
+
+```javascript
+console.log(s.getRandomColor());
+// in the console 👉 'rgb(29, 201, 144)'
+```
+
+🌈***roundToDecimals(num, howManyDecimals)***]
+
+Returns inputed number rounded to decimals.
+
+<ul>
+  <li>num: {number} The number you want rounded. </li>
+  <li>howManyDecimals: {number} How many decimal places to round the number.</li>
+</ul>
+
+```javascript
+ s.roundToDecimals(10/3, 3);
+ // returns 3.333
+```
 
 
 
-## Table of contents
+
+
