@@ -1,5 +1,3 @@
-<script src="https://raw.githubusercontent.com/HatAndBread/s2pd/master/dist/s2pd.glob.js"></script>
-
 
 # s2pd
 
