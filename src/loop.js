@@ -64,6 +64,7 @@ function checkOverlap(a, b) {
 
 function checkPlatforms() {
   for (let i = 0; i < s2pd.gravity.length; i++) {
+
     if (s2pd.platforms.length === 0) {
       s2pd.gravity[i].landed = false;
     }

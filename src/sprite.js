@@ -205,6 +205,7 @@ export default class Sprite {
    * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. 
    */
   platform(blockify) {
+    this.hitDetect();
     blockify ? this.block = true : this.block = false;
     s2pd.platforms.push(this)
   }
@@ -222,7 +223,7 @@ export default class Sprite {
    * @param {number=} gravity - Amount of gravity. Higher number is more gravity. Default is 14. 
    */
   feelGravity(gravity) {
-
+    this.hitDetect();
     if (s2pd.gravity.includes(this)) {
       this.gravity = true;
       this.accelerating = 0;
@@ -269,6 +270,7 @@ export default class Sprite {
    * sprite.jump(200,true) 
    */
   jump(howHigh, noDoubleJumps) {
+    this.hitDetect();
     if (this.gravity) {
       this.accelerating = 0;
       noDoubleJumps ? this.noDoubleJumps = true : this.noDoubleJumps = false;

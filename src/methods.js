@@ -145,9 +145,9 @@ export function onCollision(obj1, obj2, triggerOnce, callback) {
     obj2.hitDetect();
   }
   if (typeof callback !== 'function') {
-    console.error(`@onCollision: Callback function required.`)
+    console.error(`👮‍♀️@onCollision: Callback function required.`)
   } else if (!s2pd.hitDetectObjects.includes(obj1) || !s2pd.hitDetectObjects.includes(obj2)) {
-    console.error('@onCollision: Objects must be valid game objects (sprites, tiles, or shapes) ⬇︎', obj1, obj2)
+    console.error('👮‍♀️@onCollision: Objects must be valid game objects (sprites, tiles, or shapes) ⬇︎', obj1, obj2)
   } else {
     s2pd.collisions.push({ obj1: obj1, obj2: obj2, callback: callback, triggerOnce: triggerOnce, triggered: false })
   }

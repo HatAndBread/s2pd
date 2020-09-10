@@ -86,16 +86,20 @@ const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4);
 This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every time the program goes through the loop. A speed of 2 every will change frames every two ticks, etc.
 <br><br>
 Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 8 and continues for three frames after that, so...
+
 ```javascript
 sprite.addAnimation('blinking-right', 8,3);
 ```
+
 The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would look weird, so let's set the current animation to **'blinking-right'**.
+
 ```javascript
 sprite.changeAnimationTo('blinking-right');
 ```
 And now we have an animated sprite!
 
 Let's add one more animation and make our sprite turn to the left or right and walk when the left or right arrow keys on the keyboard are pressed.
+
 ```javascript
 sprite.addAnimation('blinking-left', 12 ,3);
 s.keyDown('right', ()=>{
@@ -111,6 +115,7 @@ s.keyDown('left', ()=>{
 <a href = "https://cranky-bell-0ea677.netlify.app/">**Here is the result**</a>
 
 Our sprite is floating in the sky. That's strange. Let's make if feel the force of gravity. 
+
 ```javascript
 sprite.feelGravity(12); 
 /* A range from about 5 to 20 is good.
@@ -118,8 +123,10 @@ sprite.feelGravity(12);
 30 is Jupiterish. 14 is default.
 */
 ```
+
 Oh no! <a href="https://playcode.io/667791/">Our sprite is falling!</a> Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
-<br>
+
+
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
 
 ```javacript
@@ -143,7 +150,7 @@ s.keyUp('space', ()=>{
 }); // passing a truthy value as the second arguement in jump method will disable "double jumps", i.e. sprite won't be able to jump again until the jump is complete.
 ```
 
-Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's make a flying circle that will destroy our sprite if they collide.
+<a href="https://suspicious-franklin-91075b.netlify.app/">Here's what we have</a>. Not bad! But a little boring. Let's make our game more game-like. We need some kind of obstacle...🤔 Let's make a flying circle that will destroy our sprite when they collide.
 
 ```javascript
 const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))

@@ -56,7 +56,7 @@ class Sound {
    *   backgroundMusic.pause();
    * })
    */
-  constructor(source, volume, loop, playbackRate, ) {
+  constructor(source, volume, loop, playbackRate) {
     s2pd.objectsToLoad.push(this);
     this.source = source;
     this.volume = volume;
