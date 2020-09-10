@@ -78,7 +78,7 @@ Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an im
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
 <br>
-Here we have 35 evenly spaced frames. Perfect! We make a sprite like this: 
+Here we have 35 evenly spaced frames. Perfect! We can make a sprite like this: 
 ```javascript
 const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); 
 // For a single frame sprite all you need is the first three arguments. 
@@ -118,7 +118,7 @@ sprite.feelGravity(12);
 30 is Jupiterish. 14 is default.
 */
 ```
-Oh no! Our sprite is falling! Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
+Oh no! <a href="https://playcode.io/667791/">Our sprite is falling!</a> Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
 
