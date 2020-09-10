@@ -636,7 +636,7 @@ Remove all references to sprite.
 
 <div id="tiles"><h1>Tiles</h1></div>
 
-**Note:** Like <a href="#sprites">sprite sheets</a> , tile animations must be laid out in a single horizontal row with each frame equally sized. The Tile class automatically creates a repeated image for a specified number of times both vertically and horizontally. There are a lot of fun things you can do with the Tile class❣️ Here is an example 　👉　https://playcode.io/667957/
+**Note:** Like <a href="#sprites">sprite sheets</a> , tile animations must be laid out in a single horizontal row with each frame equally sized. The Tile class automatically creates a repeated image for a specified number of times both vertically and horizontally. There are a lot of fun things you can do with the Tile class❣️
 
 🌈***constructor(source, xPos, yPos, repeatX, repeatY, numberOfFrames, animationSpeed)***
 <ul>
@@ -678,7 +678,7 @@ const hearts = new s.Tile('./hearts.png', 100,100);
 hearts.innerVelX = 3;
 // make hearts appear to move 3 pixels to the right within the boundaries of their frame every tick of the loop.
 ```
-See an example of innerVelX and innerVelY in action 👉 <a href="">Click me!</a>
+See an example of innerVelX and innerVelY in action 👉 <a href="https://playcode.io/667957/">Click me!</a>
   
 <div id="backgrounds"><h1>Backgrounds</h1></div>
 
