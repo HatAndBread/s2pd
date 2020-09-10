@@ -1,5 +1,7 @@
 # s2pd
 
+<script src="https://raw.githubusercontent.com/HatAndBread/s2pd/master/dist/s2pd.glob.js"></script>
+
 Hi! 👋🌈  
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
