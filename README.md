@@ -16,7 +16,7 @@ I originally created s2pd as a library for programming my own simple games and c
 <div id="install"></div>
 
 # Installation 
-The easiest way to get started is to <a href="https://playcode.io/667927/">play with s2pd on CodeSandbox</a>.
+The easiest way to get started is to <a href="https://playcode.io/667974/">play with s2pd on CodeSandbox</a>.
 The next easiest way to start is to download the <a href="https://github.com/HatAndBread/s2pd/blob/master/boiler-plate.zip">boiler-plate.zip</a> file, and start editing main.js right away. You will need to have a development server running to open index.html. 
 
 ***Otherwise...***

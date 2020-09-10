@@ -208,7 +208,9 @@ export default function loop(game) {
       if (typeof s2pd.firstTimeCallback === 'function') {
         s2pd.firstTimeCallback();
       } else {
-        console.error('👮‍♀️@onFirstTime: Type error. Callback function required.')
+        if (s2pd.firstTimeCallback) {
+          console.error('👮‍♀️@onFirstTime: Type error. Callback function required.')
+        }
       }
       s2pd.firstTimeThroughLoop = false;
     }
