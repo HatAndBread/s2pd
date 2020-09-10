@@ -17,7 +17,7 @@ I originally created s2pd as a library for programming my own simple games and c
 
 # Installation 
 The easiest way to get started is to <a href="https://playcode.io/667974/">play with s2pd on CodeSandbox</a>.
-The next easiest way to start is to download the <a href="https://github.com/HatAndBread/s2pd/blob/master/boiler-plate.zip">boiler-plate.zip</a> file, and start editing main.js right away. You will need to have a development server running to open index.html. 
+The next easiest way to start is to download <a href="https://github.com/HatAndBread/s2pd/blob/master/boiler-plate.zip">boiler-plate.zip</a> and start editing main.js right away. You will need to have a development server running to open index.html. 
 
 ***Otherwise...***
 
@@ -260,6 +260,7 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 # API
 
 <ul>
+<li><a href="#variables">s2pd Variables</a></li>
 <li><a href="#canvas">Canvas</a></li>
  <li><a href="#loop">Loop</a></li>
 <li><a href="#sprites">Sprites</a></li>
@@ -273,6 +274,24 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 <li><a href="#keyboard">Keyboard</a></li>
 <li><a href="#collision">Collision Detection</a></li>
 <li><a href="#methods">Useful Methods for Lazy People</a></li>
+</ul>
+
+<div id="variables"><h1>s2pd Variables</h1></div>
+
+<ul>
+<li>s.width - width of the canvas in pixels</li>
+<li>s.height - height of the canvas in pixels</li>
+<li>s.percentLoaded - percent of assets (image and audio files) loaded</li>
+<li>s.percentImagesLoaded - percent of image files loaded</li>
+<li>s.percentSoundLoaded - percent of audio files loaded</li>
+<li>s.mouseX - current x position of mouse</li>
+<li>s.mouseY - current y position of mouse</li>
+<li>s.touchX - current x position of touch</li>
+<li>s.touchY - current y position of touch</li>
+<li>s.touchMoveX - current x position of touch updated every time touch movement detected</li>
+<li>s.touchMoveY - current y position of touch updated every time touch movement detected</li>
+<li>s.touchEndX - last x position of touch</li>
+<li>s.touchEndY - last y position of touch</li>
 </ul>
 
 <div id="canvas"><h1>Canvas</h1></div>
@@ -370,8 +389,8 @@ Creates a game loop or animation loop. The loop function is an essential element
 
 ```javascript
  s.loop(function(){
-   if (mySprite.xPos >= s.width){
-     mySprite.xPos = 0;
+   if (mySprite.xPos >= s.width){ // if sprite's x position is greater than width of canvas
+     mySprite.xPos = 0; // send it back to the far left side.
  }
 }
 ```
