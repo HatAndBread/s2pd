@@ -1090,9 +1090,9 @@ Returns a random integer between and including min and max.
   // will return either -1, 0, or 1
 ```
 
-🌈***randomNoRepeat(arr)***
+🌈***RandomNoRepeat(arr)***
 
-Creates an object that will return random selections from a list without repeating any previous selections until all items in the list have been selected. After all items have selected the object will start from the beginning again. get() method returns an item.
+RandomNoRepeat is a class that creates an object that will return random selections from a list without repeating any previous selections until all items in the list have been selected. After all items have been selected the object will start from the beginning again. get() method returns an item.
 
 <ul>
   <li>arr: {array} An array containing items you want returned to you in a randomized order without repetition.
