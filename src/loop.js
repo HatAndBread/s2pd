@@ -137,10 +137,11 @@ export default function loop(game) {
   if (s2pd.percentLoaded === Infinity) {
     s2pd.percentLoaded = 0;
   }
-  updateGlobals()
-  if (s2pd.firstTimeThroughLoop) {
-    s2pd.firstTimeThroughLoop = false;
+  if (s2pd.objectsToLoad.length === 0) {
+    s2pd.percentLoaded = 100;
   }
+
+  updateGlobals()
 
   if (s2pd.clear) {
     s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
@@ -196,10 +197,26 @@ export default function loop(game) {
   //END KEYBOARD
   checkPlatforms()
 
-
-  if (game) {
-    game()
+  if (s2pd.percentLoaded < 100) {
+    if (typeof s2pd.loadingCallback === 'function') {
+      updateGlobals()
+      s2pd.loadingCallback();
+    }
+  } else {
+    updateGlobals();
+    if (s2pd.firstTimeThroughLoop) {
+      if (typeof s2pd.firstTimeCallback === 'function') {
+        s2pd.firstTimeCallback();
+      } else {
+        console.error('👮‍♀️@onFirstTime: Type error. Callback function required.')
+      }
+      s2pd.firstTimeThroughLoop = false;
+    }
+    if (game) {
+      game();
+    }
   }
+
 
 
   if (s2pd.hitDetectObjects.length > 1) {

@@ -74,6 +74,20 @@ const onTouch = (callback) => {
   }
 
 }
+/**
+ * What to do while assets are being loaded. 
+ * @param {function} callback - a function that will be executed every tick of the loop while assets such as image files and audio files are being loaded.
+ */
+function whileLoading(callback) {
+  s2pd.loadingCallback = callback;
+}
+/**
+ * 
+ * @param {function} callback - a callback that will be executed the first time and only the first time through the loop after all assets are loaded. 
+ */
+function onFirstTime(callback) {
+  s2pd.firstTimeCallback = callback;
+}
 
 /**
  * clear the canvas
@@ -179,6 +193,8 @@ export {
   loadAudio,
   s2pd,
   ezSetup,
+  whileLoading,
+  onFirstTime,
   cancelDraw,
   uncancelDraw,
   loop,

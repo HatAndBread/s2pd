@@ -49,21 +49,25 @@ Now we have an empty canvas element. Let's give it a background using this image
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/clouds.png" width="200">
 <br>
 The Background class will automatically create an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)!
+
 ```javascript
 const clouds = new s.Background('./clouds.png');
 ```
 Now let's make the clouds appear to move. We can use the background's velX property (velocity along the x axis) to make the clouds drift to the left.
+
 ```javascript
 clouds.velX = -2; //clouds move -2 pixels along the x axis each call of the animation loop. We can use velY to make things move along the y axis.
 ```
 If we try to run the program now we will only see a stationary image.😭
 To complete the animation we need to create an animation loop! The animation loop will be called roughly 60 times per second. 
+
 ```javascript
 s.loop(function(){
   // Everything in this function will be called each tick of the loop.
 })
 ```
 All together we have...
+
 ```javascript
 import s from './s2pd/s2pd.js';
 s.ezSetup(); 
@@ -129,7 +133,7 @@ Oh no! <a href="https://playcode.io/667791/">Our sprite is falling!</a> Let's pu
 
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
 
-```javacript
+```javascript
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
 ```
 
@@ -347,7 +351,7 @@ s.stillCanvas('keyboard');
 Creates a game loop or animation loop. The loop function is an essential element of most applications. Without it only static images are possible. The computer will run through the loop roughly 60 times per second, executing the callback function each time through. The callback function should contain all tasks that you wanted carried out each go around of the loop.
 
 <ul>
-  <li>callback: {function} a callback function that will be executed every time through the loop.</li>
+  <li>callback: {function} a callback function that will be executed every tick of the loop after all assets have loaded.</li>
 </ul>
 
 ```javascript
@@ -356,6 +360,54 @@ Creates a game loop or animation loop. The loop function is an essential element
      mySprite.xPos = 0;
  }
 }
+```
+
+🌈***whileLoading(callback)***
+
+Task to be carried out while assets (image/audio files) are being loaded. Callback will be called every tick of the loop until loading is completed.
+
+<ul>
+  <li>callback: {function} a callback function that will be executed every tick of the loop while assets are loading.</li>
+</ul>
+
+```javascript
+const loadingInfo = new s.Text('red', 'center', 'center', `${s.percentLoaded}%`, 'sans-serif', 32);
+s.whileLoading(()=>{
+  // this function will be called every tick of the loop before all loading is completed.
+  // this function is optional!
+  loadingInfo.text = `${s.percentLoaded}%`; // continually set text to current percent loaded.
+});
+
+function game(){
+  // do some fun stuff.
+  // this function will be called every tick of the loop after all loading is completed.
+}
+s.loop(game);
+```
+
+🌈***onFirstTime(callback)***
+
+Tasks to be carried out the first time through the loop after all assets have been loaded.
+
+<ul>
+  <li>callback: {function} A callback that will be executed the first time and only the first time through the loop after all assets are loaded. </li>
+</ul>
+
+```javascript
+const loadingInfo = new s.Text('red', 'center', 'center', `${s.percentLoaded}%`, 'sans-serif', 32);
+s.whileLoading(()=>{
+  loadingInfo.text = `${s.percentLoaded}%`; 
+});
+
+s.onFirstTime(()=>{
+  loadingInfo.destroy(); // destroy loading screen after all assets loaded. 
+});
+
+function game(){
+  // do some cool stuff.
+};
+
+s.loop(game);
 ```
 
 🌈***stopLoop()***
