@@ -20,11 +20,15 @@ s.keyUp('space', () => {
     sprite.jump(200, true);
 });
 const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
-evilCircle.velX = 8;
+
 
 s.onCollision(evilCircle, sprite, true, () => {
     ground.notPlatform();
     evilCircle.destroy();
+});
+
+s.onFirstTime(() => {
+    evilCircle.velX = 8;
 });
 
 s.loop(function () {

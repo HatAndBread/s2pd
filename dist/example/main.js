@@ -168,71 +168,73 @@ function keepFromGoingTooFast(obj, min, max, newVel) {
   obj.velX < min || obj.velX > max ? obj.velX = newVel : undefined;
 }
 
+s.whileLoading(() => {
+  loadButton.xPos += s.randomBetween(-2, 2);
+  loadButton.yPos += s.randomBetween(-2, 2);
+  loadingScreen.width = s.width;
+  loadingScreen.height = s.height;
+  loadingText.text = `${Math.floor(s.percentLoaded)}% loaded ☠️`;
+})
+
+s.onFirstTime(() => {
+  loadingScreen.opacity = 0;
+  loadingText.opacity = 0;
+})
+
 function game() {
-  if (s.percentLoaded < 100) { // loading screen
-    loadButton.xPos += s.randomBetween(-2, 2);
-    loadButton.yPos += s.randomBetween(-2, 2);
-    loadingScreen.width = s.width;
-    loadingScreen.height = s.height;
-    loadingText.text = `${Math.floor(s.percentLoaded)}% loaded ☠️`;
+  if (!gameStarted) { // keep objects in position in case of window resize.
+    centerObjects();
   }
-  else {
-    loadingScreen.opacity = 0;
-    loadingText.opacity = 0;
-    if (!gameStarted) { // keep objects in position in case of window resize.
-      centerObjects();
-    }
-    lava.yPos = s.height - 16;//keep in position in case of window resize.
-    time.xPos = s.width - 150;
-    clouds.xPos -= 2;
-    fire.xPos = bat.xPos;
-    fire.yPos = bat.yPos - bat.height / 2;
-    ellipse.rotation += 0.3;
-    ellipse2.rotation += 0.3;
-    if (gameStarted && !gameOver) {
-      gameTime = s.roundToDecimals((Date.now() - startTime) * 0.001, 2);
-      time.text = `Time: ${gameTime}`;
-      if (bat.yPos < 0) {
-        bat.jumping = false;
-      }
-      if (bat.xPos < 0) {
-        bat.xPos += 10
-      }
-      if (bat.xPos > s.width - bat.width) {
-        bat.xPos -= 10
-      }
-      randomizeDirection(circle, square, ellipse, ellipse2);
-      keepFromGoingTooFast(circle, -10, 0, -7);
-      keepFromGoingTooFast(ellipse2, -6, 0, -4);
-      keepFromGoingTooFast(square, 0, 10, 7);
-      keepFromGoingTooFast(ellipse, 0, 6, 4);
-      if (circle.xPos < -30) {
-        shuffle(circle);
-      }
-      if (square.xPos > s.width + 30) {
-        shuffle(square);
-      }
-      if (ellipse.xPos > s.width + 30) {
-        shuffle(ellipse);
-      }
-      if (ellipse2.xPos < -30) {
-        shuffle(ellipse2)
-      }
-    }
-    if (hearts.repeatX === 0) {
-      if (!gameOver) { // prevent from playing repeatedly;
-        gameOverMusic.play();
-        bgm.stop(); // calling stop more than once will throw an error in safari. 
-      }
-      gameOver = true;
-      start.text = '☠️GAME OVER☠️\nPlay again?😇'
-      start.center = true;
-      start.opacity = 1;
-      directionBatFacing === 'left' ? bat.changeAnimationTo('deadLeft') : bat.changeAnimationTo('deadRight');
-      lava.notPlatform();
+  lava.yPos = s.height - 16;//keep in position in case of window resize.
+  time.xPos = s.width - 150;
+  clouds.xPos -= 2;
+  fire.xPos = bat.xPos;
+  fire.yPos = bat.yPos - bat.height / 2;
+  ellipse.rotation += 0.3;
+  ellipse2.rotation += 0.3;
+  if (gameStarted && !gameOver) {
+    gameTime = s.roundToDecimals((Date.now() - startTime) * 0.001, 2);
+    time.text = `Time: ${gameTime}`;
+    if (bat.yPos < 0) {
       bat.jumping = false;
-      bat.velY = 0.1, bat.velX = 0.1;
     }
+    if (bat.xPos < 0) {
+      bat.xPos += 10
+    }
+    if (bat.xPos > s.width - bat.width) {
+      bat.xPos -= 10
+    }
+    randomizeDirection(circle, square, ellipse, ellipse2);
+    keepFromGoingTooFast(circle, -10, 0, -7);
+    keepFromGoingTooFast(ellipse2, -6, 0, -4);
+    keepFromGoingTooFast(square, 0, 10, 7);
+    keepFromGoingTooFast(ellipse, 0, 6, 4);
+    if (circle.xPos < -30) {
+      shuffle(circle);
+    }
+    if (square.xPos > s.width + 30) {
+      shuffle(square);
+    }
+    if (ellipse.xPos > s.width + 30) {
+      shuffle(ellipse);
+    }
+    if (ellipse2.xPos < -30) {
+      shuffle(ellipse2)
+    }
+  }
+  if (hearts.repeatX === 0) {
+    if (!gameOver) { // prevent from playing repeatedly;
+      gameOverMusic.play();
+      bgm.stop(); // calling stop more than once will throw an error in safari. 
+    }
+    gameOver = true;
+    start.text = '☠️GAME OVER☠️\nPlay again?😇'
+    start.center = true;
+    start.opacity = 1;
+    directionBatFacing === 'left' ? bat.changeAnimationTo('deadLeft') : bat.changeAnimationTo('deadRight');
+    lava.notPlatform();
+    bat.jumping = false;
+    bat.velY = 0.1, bat.velX = 0.1;
   }
 }
 s.loop(game)

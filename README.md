@@ -17,12 +17,18 @@ I originally created s2pd as a library for programming my own simple games and c
 
 # Installation 
 
+For a very quick start download the <a href="">boiler-plate.zip</a> file, fire up a development server, and start editing main.js right away.
+
+***Otherwise...***
+
 On the command line.
+
 ```
 git clone https://github.com/HatAndBread/s2pd.git
 ```
 
 In your JavaScript file.
+
 ```javascript
 import s from './s2pd/s2pd.js';
 ```
@@ -34,6 +40,7 @@ There are also two minified versions of s2pd available.<a href="https://github.c
   <script src="s2pd.glob.js" defer></script>
   <script src="my-game.js" defer></script>
 ```
+
 <div id="tutorial"></div>
 
 # Quick tutorial
@@ -44,28 +51,35 @@ Let's make a stupidly simple game! First, let's create a canvas.
 import s from './s2pd/s2pd.js';
 s.ezSetup(); // Basic setup for games. For more advanced options see API.
 ```
+
 Now we have an empty canvas element. Let's give it a background using this image file: 
+
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/clouds.png" width="200">
 <br>
+
 The Background class will automatically create an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)!
 
 ```javascript
 const clouds = new s.Background('./clouds.png');
 ```
+
 Now let's make the clouds appear to move. We can use the background's velX property (velocity along the x axis) to make the clouds drift to the left.
 
 ```javascript
 clouds.velX = -2; //clouds move -2 pixels along the x axis each call of the animation loop. We can use velY to make things move along the y axis.
 ```
+
 If we try to run the program now we will only see a stationary image.😭
 To complete the animation we need to create an animation loop! The animation loop will be called roughly 60 times per second. 
 
 ```javascript
 s.loop(function(){
   // Everything in this function will be called each tick of the loop.
-})
+});
+
 ```
+
 All together we have...
 
 ```javascript
@@ -416,7 +430,6 @@ Stops the loop.
 
 ```javascript
 s.stopLoop();
-}
 ```
 
 🌈***clear()***
@@ -969,13 +982,17 @@ Remove all references to object.
     s.loadAudio(); // loads all audio files associated with the Sound class.
     mySound.play(); // mySound will begin playing when it is loaded.
   }, true); //trigger once
+
+  s.whileLoading(()=>{
+    console.log(s.percentLoaded) // print percent of assets loaded to console while loading.
+  });
+
+  s.onFirstTime(()=>{
+   mySound.play(); // play audio after assets are loaded and loop begins.
+  });
   
   s.loop(function(){
-    if (s.percentLoaded < 100) { 
-    //loading screen while audio files load.
-    }else{
-    // game loop. mySound will start playing.
-    };
+    //do some cool stuff.
   });
   ```
   
