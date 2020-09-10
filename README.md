@@ -79,7 +79,8 @@ Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an im
 <br>
 Here we have 35 evenly spaced frames. Perfect! We make a sprite like this: 
 ```javascript
-const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); // For a single frame sprite all you need is the first three arguments. 
+const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); 
+// For a single frame sprite all you need is the first three arguments. 
 ```
 This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every time the program goes through the loop. A speed of 2 every will change frames every two ticks, etc.
 <br><br>
@@ -110,35 +111,51 @@ s.keyDown('left', ()=>{
 
 Our sprite is floating in the sky. That's strange. Let's make if feel the force of gravity. 
 ```javascript
-sprite.feelGravity(12); // A range from about 5 to 20 is good. 5 is moonish gravity. 14 is Earthish. 30 is Jupiterish. 14 is default.
+sprite.feelGravity(12); 
+/* A range from about 5 to 20 is good.
+5 is moonish gravity. 14 is Earthish. 
+30 is Jupiterish. 14 is default.
+*/
 ```
 Oh no! Our sprite is falling! Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
+
 ```javacript
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
 ```
+
 This will create a tile centered horizontally, 3/4ths the height of the canvas vertically, repeating 2 times on the x axis and 1 time on the y axis. Now let's make the tile into a platform so our sprite won't fall through it.
+
 ```javascript
-ground.platform(true); // passing a truthy value as an argument will make the object into a block, meaning that objects with gravity will not be able to pass through them from any direction (from above, below, left, or right).
+ground.platform(true); 
+/*passing a truthy value as an argument will make the object into a block.
+That means that objects with gravity will not be able to pass through it from any direction (from above, below, left, or right).
+*/
 ```
+
 Yay! Our sprite has a platform to stand on. Now let's give it the ability to jump. 
+
 ```javascript
 s.keyUp('space', ()=>{
   sprite.jump(200, true); // will make sprite jump 200 pixels.
 }); // passing a truthy value as the second arguement in jump method will disable "double jumps", i.e. sprite won't be able to jump again until the jump is complete.
 ```
+
 Here's what we have. Not bad! But a little boring. Let's gameify our game. Let's make a flying circle that will destroy our sprite if they collide.
+
 ```javascript
 const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
-// Make a randomly colored circle 30 pixels off to the leftt of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
+// Make a randomly colored circle 30 pixels off to the left of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
 evilCircle.velX = 8; // Make the circle travel horitontally 8 pixels per frame.
 s.onCollision(evilCircle, sprite, true, ()=>{　// A truthy third argument will trigger the callback function only once while objects are colliding.
   ground.notPlatform(); // Ground is no longer a platform so our sprite will fall. 😢
   evilCircle.destroy(); // Delete all references to evilCircle.
 });
 ```
+
 In our loop callback let's add this code. 
+
 ```javascript
 s.loop(function () {
    if (evilCircle.xPos + evilCircle.radius > s.width) { // if evil circle goes beyond width of canvas...
@@ -151,7 +168,9 @@ s.loop(function () {
     }
 });
 ```
+
 All together...
+
 ```javascript
 import s from './s2pd/s2pd.js';
 
