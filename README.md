@@ -636,7 +636,7 @@ Remove all references to sprite.
 
 <div id="tiles"><h1>Tiles</h1></div>
 
-**Note:** Like <a href="#sprites">sprite sheets</a> , tile animations must be laid out in a single horizontal row with each frame equally sized. The Tile class automatically creates a repeated image for a specified number of times both vertically and horizontally. There are a lot of fun things you can do with the Tile class❣️
+**Note:** Like <a href="#sprites">sprite sheets</a> , tile animations must be laid out in a single horizontal row with each frame equally sized. The Tile class automatically creates a repeated image for a specified number of times both vertically and horizontally. There are a lot of fun things you can do with the Tile class❣️ Here is an example 　👉　https://playcode.io/667957/
 
 🌈***constructor(source, xPos, yPos, repeatX, repeatY, numberOfFrames, animationSpeed)***
 <ul>
