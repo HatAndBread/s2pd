@@ -409,7 +409,7 @@ const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
 //creates a bunny sprite in the center of the canvas. Sprite sheet has four frames. Frame will change every four times through loop. 🐰
 ```
 
-***Methods***
+***Sprite Methods***
 ---
 
 🌈***addAnimation(name, startFrame, numberOfFrames)***
@@ -593,7 +593,7 @@ Remove all references to sprite.
   // creates an animated tile background that covers the entire width and height of the canvas.
   ```
   
-  🌈***Methods***
+  🌈***Tile Methods***
 ---
 The tile class shares all methods and parameters with the <a href="#sprites">Sprite class</a>, with the exception of updateSize.
   
@@ -632,7 +632,7 @@ const sky = new s.Background('./sky.png', 10,4);
 // creates an animated background with 10 frames and a speed of four.
 ```
 
-***Methods***
+***Background Methods***
 ---
 
 🌈***addAnimation(name, startFrame, numberOfFrames)***
@@ -747,7 +747,7 @@ const myCircle = new s.Circle('rgb(1,2,3)', s.width/2,s.height/2,30,3);
   // Creates a 3 pixel-wide vertical line stretching from coordinates (100,100) to (100, 300).
   ```
   
-  ***Methods***
+  ***Shape Methods***
 ---
 
 **Note: all members of the Shapes super class share the same methods.**
@@ -820,7 +820,7 @@ Prints text to the canvas. Text may be printed on multiple lines by inserting '\
   <li>thickness: {number} Optional! Width of font outline.</li>
   <li>size: {number} Optional! Inner color of text if an outline is present. Any valid css color. </li>
   </ul>
-  
+
 ```javascript
 const someText = new s.Text('red', 'center', 'center', 'HELLO! 👋 \n I ❤️ you', 'sans-serif', 28, 3, 'green');
 someText.center = true;
@@ -831,6 +831,9 @@ prints...
 ... with text object centered on the canvas and text alignment within the text object also centered.
 */
 ```
+
+  ***Text Methods***
+---
 
 🌈***onClick(callback, triggerOnce)***
 
@@ -924,7 +927,7 @@ Remove all references to object.
   });
   ```
   
-***Methods***
+***Sound Methods***
 ---
 
 🌈***s.loadAudio()***
@@ -965,7 +968,7 @@ mySound.pause();
 </ul>
 
 
-<div id="mouse"><h1>Mouse</h1></div>
+<div id="mouse"><h1>Mouse Methods</h1></div>
 
 Mouse methods. Sprites, tiles, and shapes all have their own mouse methods. Refer to Sprite, Tile, and Shape sections of the API to see mouse methods for each individual class.
 
@@ -994,7 +997,7 @@ What to do on mouse click. Works for "touch clicks" too.
   
 
 
-<div id="touch"><h1>Touch</h1></div>
+<div id="touch"><h1>Touch Methods</h1></div>
 
 🌈***onTouch(callback)***
 
@@ -1024,7 +1027,7 @@ What to do when user is touching screen. For a touch click use s.onClick() metho
   <li>s.touchMoveY: y position of touch updated every time user moves finger</li>
   </ul>
 
-<div id="keyboard"><h1>Keyboard</h1></div>
+<div id="keyboard"><h1>Keyboard Methods</h1></div>
 
  🌈***keyDown(key, callback, triggerOnce)***
  
