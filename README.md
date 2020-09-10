@@ -1,9 +1,10 @@
+
 # s2pd
 
 Hi! 👋🌈  
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
 
-I originally created s2pd as a library for programming my own simple games and canvas animations, but it quickly got out of hand and took on a life of its own as a full-fledged (although still bare-bones) game library. It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art. Although there are a vast number of great JavaScript game/canvas libraries out there, I hope s2pd can find its humble place among them as a dumber, uglier, yet lighter-weight and more beginner-friendly sibling. 
+I originally created s2pd as a library for programming my own simple games and canvas animations, but it quickly got out of hand and took on a life of its own as a full-fledged (although bare-bones) game library. It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art. Although there are a vast number of great JavaScript game and canvas libraries out there, I hope s2pd can find its humble place among them as a dumber, uglier, lighter-weight and more beginner-friendly sibling. 
 
 <h2>Contents</h2>
   <ul>
@@ -77,7 +78,7 @@ Now let's add a sprite. Making a sprite is simple in s2pd. All you need is an im
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
 <br>
-Here we have 35 evenly spaced frames. Perfect! We make a sprite like this: 
+Here we have 35 evenly spaced frames. Perfect! We can make a sprite like this: 
 ```javascript
 const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4); 
 // For a single frame sprite all you need is the first three arguments. 
@@ -117,7 +118,7 @@ sprite.feelGravity(12);
 30 is Jupiterish. 14 is default.
 */
 ```
-Oh no! Our sprite is falling! Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
+Oh no! <a href="https://playcode.io/667791/">Our sprite is falling!</a> Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image: 
 <br>
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
 
