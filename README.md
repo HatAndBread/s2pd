@@ -153,13 +153,24 @@ s.keyUp('space', ()=>{
 <a href="https://suspicious-franklin-91075b.netlify.app/">Here's what we have</a>. Not bad! But a little boring. Let's make our game more game-like. We need some kind of obstacle...🤔 Let's make a flying circle that will destroy our sprite when they collide.
 
 ```javascript
-const evilCircle = new s.Circle(s.getRandomColor(), -30, s.randomBetween(-10, s.height), s.randomBetween(20, 30))
-// Make a randomly colored circle 30 pixels off to the left of the canvas at a random height between -10 and canvas height and with a random radius between 20 and 30.
+const evilCircle = new s.Circle(s.getRandomColor(), 
+  -30, 
+  s.randomBetween(-10, s.height),
+  s.randomBetween(20, 30));
+/*
+Make a randomly colored circle 30 pixels off to the left of the canvas
+at a random height between -10 and canvas height 
+and with a random radius between 20 and 30.
+*/
 evilCircle.velX = 8; // Make the circle travel horitontally 8 pixels per frame.
-s.onCollision(evilCircle, sprite, true, ()=>{　// A truthy third argument will trigger the callback function only once while objects are colliding.
+s.onCollision(evilCircle, sprite, true, ()=>{
   ground.notPlatform(); // Ground is no longer a platform so our sprite will fall. 😢
   evilCircle.destroy(); // Delete all references to evilCircle.
 });
+/*A truthy third argument for onCollision method will trigger the callback function 
+only once per collision. A falsy value will cause the the callback function
+to be triggered every tick of the loop.
+*/
 ```
 
 In our loop callback let's add this code. 
@@ -251,8 +262,8 @@ There we have it! A working game, albeit a rather stupid one. I think you can do
 🌈***ezSetup()***
 
 Sets your project up quickly with default settings.
-Creates canvas element with id 'canvas', sizes canvas to 900x600 on larger screens, sizes to window width and window height on mobile screens, automatically resizes on mobile orientation change, and prevents window movement on canvas touch and use of keyboard arrow keys.
- * ezSetup is not recommended for integration with existing projects as it is likely to change the flow of your document in unexpected ways.
+Creates a canvas element with id 'canvas', sizes canvas to 900x600 on larger screens, sizes to window width and window height on mobile screens, automatically resizes on mobile orientation change, and prevents window movement on canvas touch and use of keyboard arrow keys.
+ * ezSetup is not recommended for integration with existing projects as it is likely to change the flow of your document in unexpected ways. 
 
 ```javascript
 s.ezSetup();
@@ -269,7 +280,7 @@ Create a new html5 canvas element.
 </ul>
 
 ```javascript
-  s.createCanvas('canvas',900,600)
+  s.createCanvas('canvas', 900, 600);
   // creates a 900x600 canvas
 ```
 
@@ -284,7 +295,7 @@ Add canvas context to an existing html5 canvas element.
 </ul>
 
 ```javascript
-  s.addCanvas('someCanvasElementAlreadyInYourProject',900,600)
+  s.addCanvas('someCanvasElementAlreadyExistingInYourProject', 900, 600);
   // adds context to canvas and size 900x600
 ```
 
@@ -298,7 +309,6 @@ Change background color of canvas.
 
 ```javascript
   s.backgroundColor('rgb(140,224,98)');
-  // color parameter: any valid css color
 ```
 
 🌈***canvasOpacity(opacity)***
@@ -311,7 +321,6 @@ Change opacity of canvas.
 
 ```javascript
 s.canvasOpacity(0.5)
-// opacity parameter: a number between 0 and 1
 ```
 
 🌈***stillCanvas(how)***
@@ -380,6 +389,7 @@ randomNumber === 0 ? s.clear() : s.dontClear()
 <div id="sprites"><h1>Sprites</h1></div>
 
 **Note: Sprite sheets must be laid out in a single horizontal row with each frame equally sized.**
+
 Example ↓
 
 <img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
@@ -442,7 +452,7 @@ What to do on mouse click.
 bunny.onClick(()=>{
 bunny.changeAnimationTo('jump');
   bunny.jump(200);
-}, false)
+}, false);
 // bunny will jump 200 pixels high each time iot is clicked. 
 ```
   
@@ -715,7 +725,7 @@ const myCircle = new s.Circle('rgb(1,2,3)', s.width/2,s.height/2,30,3);
   </ul>
   
   ```javascript
-  const myRectangle = new s.Rectangle('rgb(1,2,3)', s.width/2,w.height/2,100,100);
+  const myRectangle = new s.Rectangle('rgb(1,2,3)', s.width/2, w.height/2, 100, 100);
   // creates a 100x100 square with the square's upper-left point in the center of the canvas.
   ```
   
@@ -828,13 +838,13 @@ What to do on mouse click.
 
 <ul>
   <li>callback: {function} callback function to be executed when text is clicked</li>
-  <li>triggerOnce: {boolean} falsy value - execute the callback function every time the text is clicked. truthy value - execute callback function only once.</li>
+  <li>triggerOnce: {boolean} Optional! falsy value - execute the callback function every time the text is clicked. truthy value - execute callback function only once. Default is false.</li>
 </ul>
 
 ```javascript
 myText.onClick(()=>{
   myText.center = false;
-}, false);
+});
 // Will uncenter text alignment (align to left) on mouse click.
 ```
   
@@ -848,7 +858,7 @@ What to do when mouse button is held down over shape or shape is touched for a s
 
 ```javascript
 myText.onHold(()=>{
-  myText.text = Math.floor(Math.random()*10000)) 
+  myText.text = Math.floor(Math.random()*10000)); 
 });
 // sets text to a new random number every tick of the loop while text object is held.
 ```
@@ -903,7 +913,7 @@ Remove all references to object.
   startButton.onClick(()=>{
     s.loadAudio(); // loads all audio files associated with the Sound class.
     mySound.play(); // mySound will begin playing when it is loaded.
-  }, true //trigger once);
+  }, true); //trigger once
   
   s.loop(function(){
     if (s.percentLoaded < 100) { 

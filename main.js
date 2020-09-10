@@ -1,36 +1,23 @@
 import s from './s2pd.js'
 
 s.ezSetup();
-s.backgroundColor(s.getRandomColor())
-
-const notJoe = new s.Circle('red', 200, 300, 200)
-const joe = new s.Sprite(120, 100, './hero.png', 35, 2);
-joe.feelGravity(12);
-const ground = new s.Tile('./ground.png', 100, s.height - 100, 1, 1);
-ground.platform(true);
 
 
+const mySound = new s.Sound('./bgm.mp3', 0.3, true, 1);
+const startButton = new s.Text('red', 'center', 'center', 'START', 'sans-serif', 32);
+startButton.onClick(() => {
+  s.loadAudio(); // loads all audio files associated with the Sound class.
+  mySound.play(); // mySound will begin playing when it is loaded.
+}, true); //trigger once);
 
-s.keyDown('left', () => {
-  ground.innerX -= 2
-  joe.xPos -= 2;
-})
-s.keyDown('right', () => {
-  ground.innerX += 2
-  joe.xPos += 2;
-})
-s.keyDown('up', () => {
-  ground.innerY -= 2
-})
-s.keyDown('down', () => {
-  ground.innerY += 2
-})
-s.keyUp('space', () => {
-  joe.jump(200);
-})
+s.loop(function () {
+  if (s.percentLoaded < 100) {
+    //loading screen while audio files load.
+  } else {
+    // game loop. mySound will start playing.
+  };
+});
 
-function game() {
-}
-s.loop(game);
+
 
 
