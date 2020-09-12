@@ -103,10 +103,10 @@ const sprite = new s.Sprite(s.width / 2, s.height/2, './hero.png', 35, 4);
 ```
 This will create an animated sprite in the center of the canvas. 35 is the number of frames in the image and 4 is animation speed. An animation speed of 1 will change frames every time the program goes through the loop. A speed of 2 every will change frames every two ticks, etc.
 <br><br>
-Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 8 and continues for three frames after that, so...
+Since our sprite file contains multiple animations we need to define where our animations begin and end. (There is no need to do this step if your sprite only has one animation). Let's animate our sprite blinking while facing to the right. The blink begins on frame 7 (starting from 0) and is four frames long, so...
 
 ```javascript
-sprite.addAnimation('blinking-right', 8,3);
+sprite.addAnimation('blinking-right', 7,4);
 ```
 
 The default animation for sprites is to run through every frame of the entire image file. Since our sprite has multiple animations that would look weird, so let's set the current animation to **'blinking-right'**.
@@ -119,7 +119,7 @@ And now we have an animated sprite!
 Let's add one more animation and make our sprite turn to the left or right and walk when the left or right arrow keys on the keyboard are pressed.
 
 ```javascript
-sprite.addAnimation('blinking-left', 12 ,3);
+sprite.addAnimation('blinking-left', 11 ,4);
 s.keyDown('right', ()=>{
   sprite.changeAnimationTo('blinking-right');
   sprite.xPos += 2; // will increase sprite's position on x axis by 2 pixels
@@ -215,9 +215,9 @@ s.ezSetup();
 const clouds = new s.Background('./clouds.png');
 clouds.velX = -2;
 const sprite = new s.Sprite(s.width / 2, s.height / 2, './hero.png', 35, 4);
-sprite.addAnimation('blinking-right', 8, 3);
+sprite.addAnimation('blinking-right', 7, 4);
 sprite.changeAnimationTo('blinking-right');
-sprite.addAnimation('blinking-left', 12, 3);
+sprite.addAnimation('blinking-left', 11, 4);
 s.keyDown('right', () => {
     sprite.changeAnimationTo('blinking-right');
     sprite.xPos += 2;
@@ -493,6 +493,12 @@ const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
 //creates a bunny sprite in the center of the canvas. Sprite sheet has four frames. Frame will change every four times through loop. 🐰
 ```
 
+***Additional Parameters***
+
+<ul>
+<li>sprite.playedOnce {boolean} - true if animation has played all the way through once.</li>
+</ul>
+
 ***Sprite Methods***
 ---
 
@@ -500,8 +506,8 @@ const bunny = new s.Sprite(s.width/2, s.height/2, './bunny.png', 4,4);
 
 <ul>
   <li>name: {string} a string to call the animation by when changing animations.</li>
-  <li>startFrame: {number} the frame in the sprite sheet where the animation begins.</li>
-  <li>numberOfFrames: {number} the number of frames the animation continues for.</li>
+  <li>startFrame: {number} the frame in the sprite sheet where the animation begins (starting with 0 for first frame in sprite sheet).</li>
+  <li>numberOfFrames: {number} the number of frames in the animation.</li>
 </ul>
 
 ```javascript
@@ -686,6 +692,8 @@ The tile class shares all methods and parameters with the <a href="#sprites">Spr
   In addition to the parameters the Tile class shares with the <a href="#sprites">Sprite class</a>, the Tile class has a few unique parameters.
   
   <ul>
+  <li>repeatX: {number} - the number of times the tile repeats along the x-axis.</li>
+  <li>repeatY: {number} - the number of times the tile repeats along the y-axis.</li>
   <li>innerX: {number} - x position of images within the Tile objects boundaries.</li>
   <li>innerY: {number} - y position of images within the Tile objects boundaries.</li>
   <li>innerVelX: {number} - velocity of images within the Tile objects boundaries along the x axis.</li>

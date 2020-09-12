@@ -2,9 +2,9 @@ s.ezSetup();
 const clouds = new s.Background('./clouds.png');
 clouds.velX = -2;
 const sprite = new s.Sprite(s.width / 2, (s.height / 2) - 100, './hero.png', 35, 4);
-sprite.addAnimation('blinking-right', 8, 3);
+sprite.addAnimation('blinking-right', 7, 4);
 sprite.changeAnimationTo('blinking-right');
-sprite.addAnimation('blinking-left', 12, 3);
+sprite.addAnimation('blinking-left', 11, 4);
 s.keyDown('right', () => {
     sprite.changeAnimationTo('blinking-right');
     sprite.xPos += 2;

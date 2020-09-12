@@ -20,13 +20,13 @@ function executeCollision(collision) {
 
 function findCollisionFunction(obj1, obj2, colliding) {
   for (let i = 0; i < s2pd.collisions.length; i++) {
-    if (s2pd.collisions[i].obj1 === obj1 && s2pd.collisions[i].obj2 === obj2) {
+    if (s2pd.collisions[i].obj1.id === obj1.id && s2pd.collisions[i].obj2.id === obj2.id) {
       if (colliding) {
         executeCollision(s2pd.collisions[i])
       } else {
         s2pd.collisions[i].triggered = false;
       }
-    } else if (s2pd.collisions[i].obj1 === obj2 && s2pd.collisions[i].obj2 === obj1) {
+    } else if (s2pd.collisions[i].obj1.id === obj2.id && s2pd.collisions[i].obj2.id === obj1.id) {
       if (colliding) {
         executeCollision(s2pd.collisions[i])
       } else {
@@ -49,16 +49,18 @@ function distanceFromLine(a, b) {
 }
 
 function checkOverlap(a, b) {
-  if (
-    a.hitBoxX <=
-    b.hitBoxX + b.hitBoxWidth &&
-    a.hitBoxX + a.hitBoxWidth >=
-    b.hitBoxX &&
-    a.hitBoxY <=
-    b.hitBoxY + b.hitBoxHeight &&
-    a.hitBoxY + a.hitBoxHeight >= b.hitBoxY
-  ) {
-    return true;
+  if (a && b) { // prevent objects that have already been removed from throwing annoying errors
+    if (
+      a.hitBoxX <=
+      b.hitBoxX + b.hitBoxWidth &&
+      a.hitBoxX + a.hitBoxWidth >=
+      b.hitBoxX &&
+      a.hitBoxY <=
+      b.hitBoxY + b.hitBoxHeight &&
+      a.hitBoxY + a.hitBoxHeight >= b.hitBoxY
+    ) {
+      return true;
+    }
   }
 }
 

@@ -36,7 +36,8 @@ export default class Sprite {
       this.animationSpeed = animationSpeed;
       this.refreshRate = 60 / animationSpeed;
     }
-    this.id = s2pd.getId()
+    this.id = s2pd.getId();
+    this.playedOnce = false;
     this.velX = 0;
     this.velY = 0;
     this.loopLength = 0;
@@ -71,6 +72,8 @@ export default class Sprite {
     this.hitBoxWidth = this.width;
     this.hitBoxHeight = this.height;
     let heightOfFrame = this.theImage.height;
+
+
     let widthOfFrame = this.theImage.width / this.numberOfFrames;
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
@@ -88,6 +91,7 @@ export default class Sprite {
         this.animations[this.currentAnimation].numberOfFrames
       ) {
         this.currentFrame = 0;
+        this.playedOnce = true;
       }
     }
     s2pd.ctx.globalAlpha = this.opacity;
@@ -318,6 +322,11 @@ export default class Sprite {
             }
           }
         }
+      }
+    }
+    for (let i = 0; i < s2pd.collisions.length; i++) {
+      if (s2pd.collisions[i].obj1.id === this.id || s2pd.collisions[i].obj2.id === this.id) {
+        s2pd.collisions.splice(i, 1);
       }
     }
     searchAndDestroy(s2pd.allBackgrounds);

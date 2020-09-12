@@ -99,19 +99,19 @@ class Shapes {
         }
       }
     }
+    for (let i = 0; i < s2pd.collisions.length; i++) {
+      if (s2pd.collisions[i].obj1.id === this.id || s2pd.collisions[i].obj2.id === this.id) {
+        s2pd.collisions.splice(i, 1);
+      }
+    }
     searchAndDestroy(s2pd.allBackgrounds);
     searchAndDestroy(s2pd.allGameObjects);
     searchAndDestroy(s2pd.hitDetectObjects);
     searchAndDestroy(s2pd.holdableObjects);
     searchAndDestroy(s2pd.gravity);
-    searchAndDestroy(s2pd.platforms)
+    searchAndDestroy(s2pd.platforms);
     s2pd.delete(this);
   }
-
-
-
-
-
 
 
 }

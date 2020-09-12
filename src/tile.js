@@ -39,6 +39,7 @@ class Tile {
         !animationSpeed ? this.animationSpeed = 1 : this.animationSpeed = animationSpeed;
         this.imageWidth;
         this.imageHeight;
+        this.playedOnce = false;
         if (!numberOfFrames) {
             this.numberOfFrames = 1;
         } else {
@@ -128,6 +129,7 @@ class Tile {
                 this.animations[this.currentAnimation].numberOfFrames
             ) {
                 this.currentFrame = 0;
+                this.playedOnce = true;
             }
         }
         s2pd.ctx.globalAlpha = this.opacity;
@@ -922,6 +924,11 @@ class Tile {
                         }
                     }
                 }
+            }
+        }
+        for (let i = 0; i < s2pd.collisions.length; i++) {
+            if (s2pd.collisions[i].obj1.id === this.id || s2pd.collisions[i].obj2.id === this.id) {
+                s2pd.collisions.splice(i, 1);
             }
         }
         searchAndDestroy(s2pd.allBackgrounds);
