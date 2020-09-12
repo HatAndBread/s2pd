@@ -57,6 +57,14 @@ class Text extends Shapes {
 
   }
   updatePos() {
+    if (typeof this.xPos !== 'number') {
+      this.xPos = s2pd.width / 2 - (this.size * this.text.length / 4);
+      this.centerHorizontal = true;
+    }
+    if (typeof this.yPos !== 'number') {
+      this.yPos = s2pd.height / 2 - (this.size / 2);
+      this.centerVertical = true;
+    }
 
     this.lineBreaks = this.text.split('\n');
 

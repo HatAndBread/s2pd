@@ -81,5 +81,8 @@ window.addEventListener('resize', () => {
     s2pd.canvas.width = window.innerWidth;
     s2pd.canvas.height = window.innerHeight;
   }
+  if (typeof s2pd.onResize === 'function') {
+    s2pd.onResize();
+  }
 })
 export { createCanvas, addCanvas, stillCanvas, backgroundColor, canvasOpacity };

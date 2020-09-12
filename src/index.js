@@ -163,6 +163,18 @@ function ezSetup() {
   stillCanvas();
 }
 
+/**
+ * What to do on window resize.
+ * @param {function} callback - A callback function to be called when window is resized or orientation is changed. 
+ */
+function onResize(callback) {
+  if (typeof callback === 'function') {
+    s2pd.onResize = callback;
+  } else {
+    console.error('👮‍♀️@onResize: Type error. Callback must be a function.')
+  }
+}
+
 
 touchListeners();
 mouseListeners();
@@ -185,6 +197,7 @@ export {
   percentSoundLoaded,
   onClick,
   onTouch,
+  onResize,
   updateGlobals,
   resize,
   clear,

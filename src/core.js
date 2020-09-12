@@ -37,6 +37,7 @@ const s2pd = {
   enableDragAndDrop: true,
   firstTimeThroughLoop: true,
   canvas: null,
+  onResize: null,
   ctx: null,
   jump: function (who, howHigh) {
     if (!(who instanceof Line)) {
