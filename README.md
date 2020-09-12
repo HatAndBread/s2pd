@@ -377,6 +377,14 @@ s.stillCanvas('keyboard');
 // prevents window from moving when arrow keys are used only.
 ```
 
+🌈***onResize(callback)***
+
+What to do on window resize or orientation change.
+
+<ul>
+  <li>callback: {function} - A function to be executed every time window is resized.</li>
+</ul>
+
 <div id="loop"><h1>Loop</h1></div>
 
 🌈***loop(callback)***
