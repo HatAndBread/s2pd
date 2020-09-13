@@ -5,8 +5,8 @@ import s2pd from './core.js';
 class Background {
   /**
    * Creates a scrollable background.
-   * @param {string} source - source of image file. 
-   * @param {number=} numberOfFrames - (Only if background is an animation)👉 Total number of animation frames in the source image file. 
+   * @param {string} source - source of image file.
+   * @param {number=} numberOfFrames - (Only if background is an animation)👉 Total number of animation frames in the source image file.
    * @param {number=} animationSpeed - (Only if background is an animation)👉 Number of ticks before the next frame is displayed
    */
   constructor(source, numberOfFrames, animationSpeed) {
@@ -30,7 +30,7 @@ class Background {
     this.negFarXPos = 0;
     this.velX = 0;
     this.velY = 0;
-    this.id = s2pd.getId()
+    this.id = s2pd.getId();
     this.source = source;
     this.scrolling = false;
     this.loopLength = 0;
@@ -45,34 +45,32 @@ class Background {
       this.theImage.src = source;
       this.theImage.addEventListener('load', resolve, { once: true });
       this.theImage.addEventListener('error', reject, { once: true });
-    }).then(() => {
-      this.height = this.theImage.height;
-      this.width = this.theImage.width / this.numberOfFrames;
-      this.farXpos = this.width;
-      this.loaded = true;
-      s2pd.loadedImages += 1;
-      this.updatePos();
     })
+      .then(() => {
+        this.height = this.theImage.height;
+        this.width = this.theImage.width / this.numberOfFrames;
+        this.farXpos = this.width;
+        this.loaded = true;
+        s2pd.loadedImages += 1;
+        this.updatePos();
+      })
       .catch((err) => {
         console.error(`Background was unable to load.`);
         console.error(err);
       });
   }
   updatePos() {
-    this.autoSize()
+    this.autoSize();
     s2pd.ctx.globalAlpha = this.opacity;
     this.heightOfFrame = this.theImage.height;
     this.widthOfFrame = this.theImage.width / this.numberOfFrames;
 
     this.loopLength = this.refreshRate * this.animations[this.currentAnimation].numberOfFrames;
-
+    this.currentAnimationName = this.animations[this.currentAnimation].name;
     if (this.timeThroughLoop === this.animationSpeed) {
       this.currentFrame += 1;
       this.timeThroughLoop = 0;
-      if (
-        this.currentFrame >=
-        this.animations[this.currentAnimation].numberOfFrames
-      ) {
+      if (this.currentFrame >= this.animations[this.currentAnimation].numberOfFrames) {
         this.currentFrame = 0;
       }
     }
@@ -86,7 +84,7 @@ class Background {
       }
       if (this.xPos > 0) {
         for (let i = 0; i < Math.ceil(s2pd.width / this.width); i++) {
-          this.drawImage(this.xPos - i * this.width)
+          this.drawImage(this.xPos - i * this.width);
         }
       }
       if (this.xPos < -this.width) {
@@ -95,7 +93,6 @@ class Background {
       }
 
       if (this.negFarXPos >= -this.width) {
-
         this.xPos = 0;
       }
     }
@@ -116,7 +113,6 @@ class Background {
           this.xPos = 0;
           this.drawImage(this.xPos);
         }
-
       }
     }
     ///If width of image file is bigger than canvas.
@@ -124,7 +120,6 @@ class Background {
       this.farXpos = this.xPos + this.width;
 
       this.drawImage(this.xPos);
-
 
       if (this.farXpos <= s2pd.width) {
         this.drawImage(this.farXpos);
@@ -183,10 +178,10 @@ class Background {
     );
     if (this.bottom()) {
       if (this.yPos <= this.height * -1) {
-        this.drawY(xPos, this.yPos + this.height)
+        this.drawY(xPos, this.yPos + this.height);
         this.yPos = 0;
       } else {
-        this.drawY(xPos, this.yPos + this.height)
+        this.drawY(xPos, this.yPos + this.height);
       }
     }
     if (this.top()) {
@@ -210,7 +205,6 @@ class Background {
       this.width + 1,
       this.height
     );
-
   }
   bottom() {
     if (this.yPos < 0) {
@@ -227,9 +221,9 @@ class Background {
     }
   }
   /**
- * Remove all references to object. 
- * 
- */
+   * Remove all references to object.
+   *
+   */
   destroy() {
     const searchAndDestroy = (arr) => {
       for (let i = arr.length; i >= 0; i--) {
@@ -241,16 +235,15 @@ class Background {
           }
         }
       }
-    }
+    };
     searchAndDestroy(s2pd.allBackgrounds);
     searchAndDestroy(s2pd.allGameObjects);
     searchAndDestroy(s2pd.hitDetectObjects);
     searchAndDestroy(s2pd.holdableObjects);
     searchAndDestroy(s2pd.gravity);
-    searchAndDestroy(s2pd.platforms)
+    searchAndDestroy(s2pd.platforms);
     s2pd.delete(this);
   }
 }
-
 
 export default Background;

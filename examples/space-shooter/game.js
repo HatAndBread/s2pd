@@ -1,4 +1,4 @@
-import s from './s2pd.js'
+import s from './s2pd.js';
 
 s.ezSetup();
 s.backgroundColor('black');
@@ -14,7 +14,14 @@ const buttonBack = new s.Rectangle('purple', s.width / 2 - 100, s.height / 2 - 4
 buttonBack.changeCursor(); //change cursor to pointer over button.
 const startButton = new s.Text('snow', 'center', 'center', 'LOAD GAME', 'monospace', 28);
 const restartButton = new s.Text('snow', 'center', 'center', 'Play again?', 'monospace', 28);
-const instructions = new s.Text('snow', 'center', startButton.yPos + 50, '🎮INSTRUCTIONS🎮\nPC: LEFT AND RIGHT ARROW KEYS TO MOVE\nSPACE TO SHOOT\nTOUCHSCREEN: TOUCH LEFT OR RIGHT SIDE OF SCREEN TO MOVE\nTOUCH SPACESHIP TO SHOOT', 'monospace', s.width * .025)
+const instructions = new s.Text(
+  'snow',
+  'center',
+  startButton.yPos + 50,
+  '🎮INSTRUCTIONS🎮\nPC: LEFT AND RIGHT ARROW KEYS TO MOVE\nSPACE TO SHOOT\nTOUCHSCREEN: TOUCH LEFT OR RIGHT SIDE OF SCREEN TO MOVE\nTOUCH SPACESHIP TO SHOOT',
+  'monospace',
+  s.width * 0.025
+);
 instructions.center = true;
 restartButton.opacity = 0;
 const rightController = new s.Rectangle('pink', s.width / 2, 0, s.width / 2, s.height);
@@ -28,7 +35,6 @@ const explosionSound = new s.Sound('./assets/explodify5.wav');
 const laser = new s.Sound('./assets/laser2.wav', 0.07);
 const hitEnemy = new s.Sound('./assets/collect2.wav', 0.07);
 const overMusic = new s.Sound('./assets/gameover2.mp3', 0.3);
-
 
 //Game variables
 timeBonusText.opacity = 0;
@@ -72,8 +78,9 @@ for (let i = 0; i < 6; i++) {
 // It is possible to destroy sprites and create new ones,
 // however this means the program will have to reload the image file
 // each time the sprite is needed.
-// This can dramatically affect the performance of games. 
-function getExplosion(x, y) { // 
+// This can dramatically affect the performance of games.
+function getExplosion(x, y) {
+  //
   let newExplosion = explosions[currentExplosion];
   newExplosion.xPos = x;
   newExplosion.yPos = y;
@@ -88,20 +95,28 @@ function getExplosion(x, y) { //
 }
 
 for (let i = 0; i < 10; i++) {
-  const bullet = new s.Circle(`rgb(${s.randomBetween(200, 255)},${s.randomBetween(0, 130)},${s.randomBetween(0, 130)})`, player.xPos + 32, player.yPos - 5, 5);
+  const bullet = new s.Circle(
+    `rgb(${s.randomBetween(200, 255)},${s.randomBetween(0, 130)},${s.randomBetween(0, 130)})`,
+    player.xPos + 32,
+    player.yPos - 5,
+    5
+  );
   bullet.opacity = 0;
   unusedBullets.push(bullet);
 }
 function locateToPlayer() {
   for (let i = 0; i < unusedBullets.length; i++) {
-    unusedBullets[i].xPos = player.xPos + 32
+    unusedBullets[i].xPos = player.xPos + 32;
     unusedBullets[i].yPos = player.yPos - 5;
   }
 }
 
-
 for (let i = 0; i < 10; i++) {
-  const enemy = new s.Sprite(s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2), -50, './assets/enemy.png');
+  const enemy = new s.Sprite(
+    s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2),
+    -50,
+    './assets/enemy.png'
+  );
   s.onCollision(enemy, player, true, () => {
     getExplosion(enemy.xPos + 16, enemy.yPos);
     enemy.yPos = -60;
@@ -113,7 +128,7 @@ for (let i = 0; i < 10; i++) {
     setTimeout(() => {
       enemy.velY = s.randomBetween(2, 5);
       enemy.velX = s.randomBetween(-2, 2);
-    }, 1000)
+    }, 1000);
   });
   for (let j = 0; j < unusedBullets.length; j++) {
     const bullet = unusedBullets[j];
@@ -131,7 +146,7 @@ for (let i = 0; i < 10; i++) {
           enemy.inPrison = false;
           enemy.velY = s.randomBetween(2, 5);
           enemy.velX = s.randomBetween(-2, 2);
-        }, 3000)
+        }, 3000);
       }
     });
   }
@@ -139,12 +154,14 @@ for (let i = 0; i < 10; i++) {
 }
 
 for (let i = 0; i < 10; i++) {
-  const enemyBullet = new s.Circle(`rgb(${s.randomBetween(100, 255)},
+  const enemyBullet = new s.Circle(
+    `rgb(${s.randomBetween(100, 255)},
       ${s.randomBetween(0, 130)},
       ${s.randomBetween(200, 255)})`,
     -1000,
     -1000,
-    5);
+    5
+  );
   s.onCollision(enemyBullet, player, true, () => {
     getExplosion(enemyBullet.xPos, enemyBullet.yPos);
     hearts.repeatX -= 1;
@@ -161,6 +178,7 @@ for (let i = 0; i < 10; i++) {
         enemyBullet.velX = 0;
         enemyBullet.velY = 0;
         enemyBullet.yPos = -1000;
+        score += 20;
       }
     });
   }
@@ -183,7 +201,7 @@ function returnBullets() {
       returnBullet.velY = 0;
       returnBullet.opacity = 0;
       firedBullets.splice(i, 1);
-      unusedBullets.push(returnBullet)
+      unusedBullets.push(returnBullet);
     }
   }
   for (let i = 0; i < enemyBullets.length; i++) {
@@ -215,6 +233,25 @@ s.keyUp('space', () => {
   }
 });
 
+s.keyUp('_', () => {
+  if (unusedBullets.length > 0 && firstTimeGameOver) {
+    let newBullet = unusedBullets.shift();
+    newBullet.opacity = 1;
+    newBullet.velY = -10;
+    firedBullets.push(newBullet);
+    laser.play();
+  }
+});
+
+s.keyUp('up', () => {
+  if (unusedBullets.length > 0 && firstTimeGameOver) {
+    let newBullet = unusedBullets.shift();
+    newBullet.opacity = 1;
+    newBullet.velY = -10;
+    firedBullets.push(newBullet);
+    laser.play();
+  }
+});
 
 player.onClick(() => {
   if (unusedBullets.length > 0 && firstTimeGameOver && time) {
@@ -226,7 +263,6 @@ player.onClick(() => {
   }
 });
 
-
 function moveEnemies(howMuch) {
   for (let i = 0; i < enemies.length; i++) {
     enemies[i].xPos += howMuch;
@@ -234,36 +270,47 @@ function moveEnemies(howMuch) {
 }
 leftController.onHold(() => {
   if (time) {
-    if (typeof s.touchMoveX === 'number' && s.touchMoveX > player.xPos && s.touchMoveX < player.xPos + player.width && s.touchMoveY > player.yPos && s.touchMoveY < player.yPos + player.height) {
+    if (
+      typeof s.touchMoveX === 'number' &&
+      s.touchMoveX > player.xPos &&
+      s.touchMoveX < player.xPos + player.width &&
+      s.touchMoveY > player.yPos &&
+      s.touchMoveY < player.yPos + player.height
+    ) {
     } else {
       stars.innerX += 1;
-      player.xPos >= 0 ? player.xPos -= 2 : moveEnemies(2);
+      player.xPos >= 0 ? (player.xPos -= 2) : moveEnemies(2);
     }
   }
 });
 rightController.onHold(() => {
   if (time) {
-    if (typeof s.touchMoveX === 'number' && s.touchMoveX > player.xPos && s.touchMoveX < player.xPos + player.width && s.touchMoveY > player.yPos && s.touchMoveY < player.yPos + player.height) {
+    if (
+      typeof s.touchMoveX === 'number' &&
+      s.touchMoveX > player.xPos &&
+      s.touchMoveX < player.xPos + player.width &&
+      s.touchMoveY > player.yPos &&
+      s.touchMoveY < player.yPos + player.height
+    ) {
     } else {
       stars.innerX -= 1;
-      player.xPos < s.width - 64 ? player.xPos += 2 : moveEnemies(-2);
+      player.xPos < s.width - 64 ? (player.xPos += 2) : moveEnemies(-2);
     }
   }
 });
 
-
 s.keyDown('left', () => {
   if (firstTimeGameOver) {
     stars.innerX += 1;
-    player.xPos >= 0 ? player.xPos -= 2 : moveEnemies(2);
+    player.xPos >= 0 ? (player.xPos -= 2) : moveEnemies(2);
   }
-})
+});
 s.keyDown('right', () => {
   if (firstTimeGameOver) {
     stars.innerX -= 1;
-    player.xPos < s.width - 64 ? player.xPos += 2 : moveEnemies(-2);
+    player.xPos < s.width - 64 ? (player.xPos += 2) : moveEnemies(-2);
   }
-})
+});
 
 s.onResize(() => {
   windowResized = true;
@@ -277,10 +324,10 @@ s.whileLoading(() => {
   buttonBack.xPos = startButton.xPos - 20;
   buttonBack.yPos = startButton.yPos - startButton.height;
   if (startButtonClicked) {
-    startButton.text = `${Math.floor(s.percentSoundLoaded)}% loaded...`
+    startButton.text = `${Math.floor(s.percentSoundLoaded)}% loaded...`;
   }
-  let ranNum = s.randomBetween(-3, 3)
-  let ranNum2 = s.randomBetween(-3, 3)
+  let ranNum = s.randomBetween(-3, 3);
+  let ranNum2 = s.randomBetween(-3, 3);
   startButton.xPos += ranNum;
   startButton.yPos += ranNum2;
 });
@@ -291,18 +338,20 @@ s.onFirstTime(() => {
   stars.innerVelY = 1;
   startTime = Date.now();
   buttonBack.xPos = -1000;
-})
+});
 
 s.loop(() => {
   if (hearts.repeatX > 0) {
-    time = s.roundToDecimals((Date.now() - startTime) * .001, 2);
+    time = s.roundToDecimals((Date.now() - startTime) * 0.001, 2);
     if (Math.floor(time) % 15 === 0 && !preventBonus && time > 1) {
       preventBonus = true;
       score += bonus;
-      timeBonusText.text = `TIME BONUS!\n+${bonus} POINTS!`
-      let stringBo = Math.floor(bonus * 1.3).toString().split('')
-      stringBo[stringBo.length - 1] = "0";
-      bonus = parseInt(stringBo.join(''))
+      timeBonusText.text = `TIME BONUS!\n+${bonus} POINTS!`;
+      let stringBo = Math.floor(bonus * 1.3)
+        .toString()
+        .split('');
+      stringBo[stringBo.length - 1] = '0';
+      bonus = parseInt(stringBo.join(''));
       timeBonusText.increasingOpa = true;
       timeBonusText.bonusTime = true;
       timeBonusText.opacity = 0;
@@ -333,26 +382,26 @@ s.loop(() => {
       leftController.xPos = 0;
       leftController.width = s.width / 2;
       leftController.height = s.height;
-    };
+    }
 
     returnBullets();
     returnEnemies();
     locateToPlayer();
     removeFinishedExplosions();
-    ammoText.text = `Ammo: ${unusedBullets.length}\nScore: ${score}\nTime: ${time}`
+    ammoText.text = `Ammo: ${unusedBullets.length}\nScore: ${score}\nTime: ${time}`;
     let randomNumber = s.randomBetween(0, 30);
     if (randomNumber === 0) {
       const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
       if (!randomEnemy.inPrison) {
         randomEnemy.velY = s.randomBetween(2, 5);
         randomEnemy.velX = s.randomBetween(-2, 2);
-        const randomBullet = enemyBullets[Math.floor(Math.random() * enemyBullets.length)]
+        const randomBullet = enemyBullets[Math.floor(Math.random() * enemyBullets.length)];
         if (randomBullet.velY === 0) {
           randomBullet.xPos = randomEnemy.xPos + 16;
           randomBullet.yPos = randomEnemy.yPos + 32;
-          let xSpeed = ((player.xPos - randomBullet.xPos) * 0.1) + s.randomBetween(-1, 1);
-          xSpeed > 10 ? xSpeed = xSpeed * 0.1 : undefined;
-          xSpeed < -10 ? xSpeed = xSpeed * 0.1 : undefined;
+          let xSpeed = (player.xPos - randomBullet.xPos) * 0.1 + s.randomBetween(-1, 1);
+          xSpeed > 10 ? (xSpeed = xSpeed * 0.1) : undefined;
+          xSpeed < -10 ? (xSpeed = xSpeed * 0.1) : undefined;
           randomBullet.velX = xSpeed;
           randomBullet.velY = s.randomBetween(4, 7);
         }
@@ -373,7 +422,7 @@ s.loop(() => {
     }
     buttonBack.xPos = restartButton.xPos - 20;
     buttonBack.yPos = restartButton.yPos - restartButton.height + 3;
-    buttonBack.width = restartButton.width + 40
+    buttonBack.width = restartButton.width + 40;
     let ranNum = s.randomBetween(-3, 3);
     let ranNum2 = s.randomBetween(-3, 3);
     restartButton.xPos += ranNum;

@@ -1,13 +1,13 @@
 {
   "name": "s2pd",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "Hi! 👋🌈   s2pd is a simple HTML5 canvas and web audio library for making art and 2D games in JavaScript.",
-  "main": "index.js",
+  "main": "s2pd.js",
   "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "nodemon server.js",
-    "build": "webpack && node es6ify.js",
+    "build": "webpack && node es6ify",
     "jsdoc": "jsdoc-md"
   },
   "repository": {
@@ -24,7 +24,6 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "jsdoc-md": "^7.0.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   }

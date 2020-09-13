@@ -709,6 +709,7 @@ Remove all references to sprite.
   <li>velX: {number} - The object's velocity along the x-axis.</li>
   <li>velY: {number} - The object's velocity along the y-axis.</li>
   <li>currentFrame: {number} - The frame of the animation currently being displayed.</li>
+  <li>currentAnimationName: {string} - The name of the current animation.</li>
   <li>opacity: {number} - A number between 0 and 1.</li>
   <li>width: {number} - *read-only*</li>
   <li>height: {number} - *read-only*</li>

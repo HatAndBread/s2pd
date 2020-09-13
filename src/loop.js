@@ -1,12 +1,10 @@
 import s2pd from './core.js';
-import { keyDownEvents, keyUpEvents } from './input/keyboard.js'
-import Line from './shapes/line.js'
-import { Sound } from './audio/audio.js'
-import { updateGlobals } from './index.js'
-
+import { keyDownEvents, keyUpEvents } from './input/keyboard.js';
+import Line from './shapes/line.js';
+import { Sound } from './audio/audio.js';
+import { updateGlobals } from './index.js';
 
 function executeCollision(collision) {
-
   if (collision.triggerOnce) {
     if (!collision.triggered) {
       collision.triggered = true;
@@ -17,18 +15,17 @@ function executeCollision(collision) {
   }
 }
 
-
 function findCollisionFunction(obj1, obj2, colliding) {
   for (let i = 0; i < s2pd.collisions.length; i++) {
     if (s2pd.collisions[i].obj1.id === obj1.id && s2pd.collisions[i].obj2.id === obj2.id) {
       if (colliding) {
-        executeCollision(s2pd.collisions[i])
+        executeCollision(s2pd.collisions[i]);
       } else {
         s2pd.collisions[i].triggered = false;
       }
     } else if (s2pd.collisions[i].obj1.id === obj2.id && s2pd.collisions[i].obj2.id === obj1.id) {
       if (colliding) {
-        executeCollision(s2pd.collisions[i])
+        executeCollision(s2pd.collisions[i]);
       } else {
         s2pd.collisions[i].triggered = false;
       }
@@ -38,25 +35,23 @@ function findCollisionFunction(obj1, obj2, colliding) {
 }
 
 function distanceFromLine(a, b) {
-  let bX = b.hitBoxX + (b.hitBoxWidth / 2)
-  let bY = b.hitBoxY + (b.hitBoxY / 2)
-  let d = a.distanceFromMe(bX, bY)
+  let bX = b.hitBoxX + b.hitBoxWidth / 2;
+  let bY = b.hitBoxY + b.hitBoxY / 2;
+  let d = a.distanceFromMe(bX, bY);
   if (d < a.thickness * 0.1) {
-    findCollisionFunction(a, b, true)
+    findCollisionFunction(a, b, true);
   } else {
-    findCollisionFunction(a, b, false)
+    findCollisionFunction(a, b, false);
   }
 }
 
 function checkOverlap(a, b) {
-  if (a && b) { // prevent objects that have already been removed from throwing annoying errors
+  if (a && b) {
+    // prevent objects that have already been removed from throwing annoying errors
     if (
-      a.hitBoxX <=
-      b.hitBoxX + b.hitBoxWidth &&
-      a.hitBoxX + a.hitBoxWidth >=
-      b.hitBoxX &&
-      a.hitBoxY <=
-      b.hitBoxY + b.hitBoxHeight &&
+      a.hitBoxX <= b.hitBoxX + b.hitBoxWidth &&
+      a.hitBoxX + a.hitBoxWidth >= b.hitBoxX &&
+      a.hitBoxY <= b.hitBoxY + b.hitBoxHeight &&
       a.hitBoxY + a.hitBoxHeight >= b.hitBoxY
     ) {
       return true;
@@ -66,7 +61,6 @@ function checkOverlap(a, b) {
 
 function checkPlatforms() {
   for (let i = 0; i < s2pd.gravity.length; i++) {
-
     if (s2pd.platforms.length === 0) {
       s2pd.gravity[i].landed = false;
     }
@@ -75,20 +69,26 @@ function checkPlatforms() {
       let b = s2pd.gravity[i]; // B = SPRITES
 
       if (checkOverlap(a, b)) {
-        if (a.block) { //prevent sprite from going through solid object
+        if (a.block) {
+          //prevent sprite from going through solid object
 
-          if (b.yPos < a.hitBoxY && b.xPos > a.hitBoxX - b.hitBoxWidth / 1.2 && b.xPos < a.hitBoxX + a.hitBoxWidth / 1.2) {
+          if (
+            b.yPos < a.hitBoxY &&
+            b.xPos > a.hitBoxX - b.hitBoxWidth / 1.2 &&
+            b.xPos < a.hitBoxX + a.hitBoxWidth / 1.2
+          ) {
             b.landed = true;
             b.velY = 0;
             b.yPos = a.hitBoxY - b.hitBoxHeight;
             b.accelerating = 0;
+            break;
           } else if (b.xPos <= a.xPos) {
             if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
               b.jumping = false;
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              b.xPos = a.hitBoxX - b.hitBoxWidth - 1
+              b.xPos = a.hitBoxX - b.hitBoxWidth - 1;
             }
           } else if (b.xPos >= a.xPos) {
             if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
@@ -96,7 +96,7 @@ function checkPlatforms() {
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              b.xPos = a.hitBoxX + a.hitBoxWidth + 1
+              b.xPos = a.hitBoxX + a.hitBoxWidth + 1;
             }
           }
         } else {
@@ -115,7 +115,7 @@ function checkPlatforms() {
 function isNotAudio() {
   let num = 0;
   for (let i = 0; i < s2pd.objectsToLoad.length; i++) {
-    !(s2pd.objectsToLoad[i] instanceof Sound) ? num += 1 : undefined;
+    !(s2pd.objectsToLoad[i] instanceof Sound) ? (num += 1) : undefined;
   }
   return num;
 }
@@ -135,7 +135,7 @@ export default function loop(game) {
   s2pd.height = s2pd.canvas.height;
   s2pd.percentLoaded = ((s2pd.loadedImages + s2pd.loadedAudio) / s2pd.objectsToLoad.length) * 100;
   s2pd.percentImagesLoaded = (s2pd.loadedImages / isNotAudio()) * 100;
-  s2pd.percentSoundLoaded = s2pd.loadedAudio / (s2pd.objectsToLoad.length - isNotAudio()) * 100;
+  s2pd.percentSoundLoaded = (s2pd.loadedAudio / (s2pd.objectsToLoad.length - isNotAudio())) * 100;
   if (s2pd.percentLoaded === Infinity) {
     s2pd.percentLoaded = 0;
   }
@@ -143,7 +143,7 @@ export default function loop(game) {
     s2pd.percentLoaded = 100;
   }
 
-  updateGlobals()
+  updateGlobals();
 
   if (s2pd.clear) {
     s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
@@ -159,7 +159,6 @@ export default function loop(game) {
       s2pd.allBackgrounds[i].updatePos();
       s2pd.allBackgrounds[i].autoSize();
     }
-
   }
   for (let i = 0; i < s2pd.allGameObjects.length; i++) {
     if (s2pd.allGameObjects[i].loaded) {
@@ -167,9 +166,8 @@ export default function loop(game) {
     }
   }
 
-
   if (s2pd.heldObject) {
-    s2pd.heldObject.holdFunction()
+    s2pd.heldObject.holdFunction();
   }
   // KEYBOARD
   if (s2pd.keyDown.length > 0) {
@@ -177,11 +175,10 @@ export default function loop(game) {
       if (keyDownEvents[el].triggerOnce && !keyDownEvents[el].triggered) {
         keyDownEvents[el].callback();
         keyDownEvents[el].triggered = true;
+      } else if (!keyDownEvents[el].triggerOnce) {
+        keyDownEvents[el].callback();
       }
-      else if (!keyDownEvents[el].triggerOnce) {
-        keyDownEvents[el].callback()
-      }
-    })
+    });
   }
   if (s2pd.keyUp.length > 0) {
     for (let i = 0; i < s2pd.keyUp.length; i++) {
@@ -197,11 +194,11 @@ export default function loop(game) {
     }
   }
   //END KEYBOARD
-  checkPlatforms()
+  checkPlatforms();
 
   if (s2pd.percentLoaded < 100) {
     if (typeof s2pd.loadingCallback === 'function' && !s2pd.loadingFinishedOnce) {
-      updateGlobals()
+      updateGlobals();
       s2pd.loadingCallback();
     }
   } else {
@@ -212,7 +209,7 @@ export default function loop(game) {
         s2pd.loadingFinishedOnce = true; // PREVENT RELOADING IF OBJECTS ADDED MID-GAME
       } else {
         if (s2pd.firstTimeCallback) {
-          console.error('👮‍♀️@onFirstTime: Type error. Callback function required.')
+          console.error('👮‍♀️@onFirstTime: Type error. Callback function required.');
         }
       }
       s2pd.firstTimeThroughLoop = false;
@@ -222,8 +219,6 @@ export default function loop(game) {
     }
   }
 
-
-
   if (s2pd.hitDetectObjects.length > 1) {
     for (let i = 0; i < s2pd.hitDetectObjects.length; i++) {
       for (let j = 0; j < s2pd.hitDetectObjects.length; j++) {
@@ -231,20 +226,20 @@ export default function loop(game) {
           let a = s2pd.hitDetectObjects[i];
           let b = s2pd.hitDetectObjects[j];
           if (a instanceof Line && !(b instanceof Line)) {
-            distanceFromLine(a, b)
+            distanceFromLine(a, b);
           } else if (b instanceof Line && !(a instanceof Line)) {
-            distanceFromLine(b, a)
+            distanceFromLine(b, a);
           } else if (a instanceof Line && b instanceof Line) {
             if (a.intersect(a.startX, a.startY, a.endX, a.endY, b.startX, b.startY, b.endX, b.endY)) {
-              findCollisionFunction(a, b, true)
+              findCollisionFunction(a, b, true);
             } else {
-              findCollisionFunction(a, b, false)
+              findCollisionFunction(a, b, false);
             }
           } else {
             if (checkOverlap(a, b)) {
-              findCollisionFunction(a, b, true) // if overlapping 'true' to call collision function
+              findCollisionFunction(a, b, true); // if overlapping 'true' to call collision function
             } else {
-              findCollisionFunction(a, b, false) // if not overlapping 'false' to reset 'triggerOnce' 
+              findCollisionFunction(a, b, false); // if not overlapping 'false' to reset 'triggerOnce'
             }
           }
         }
@@ -254,7 +249,6 @@ export default function loop(game) {
   if (s2pd.cancelDraw) {
     s2pd.ctx.clearRect(0, 0, s2pd.width, s2pd.height);
   }
-
 
   if (!s2pd.exit) {
     requestAnimationFrame(function () {

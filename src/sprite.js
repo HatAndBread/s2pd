@@ -13,10 +13,10 @@ export default class Sprite {
    * const rabbit = new s.Sprite(300, 300, './rabbit.png', 20,3);
    * // will create a sprite with 20 frames, with the frame changing every three ticks of the loop.
    * // To use multiple animations in the same sprite sheet ⬇︎
-   * rabbit.addAnimation('jump',3,10); 
+   * rabbit.addAnimation('jump',3,10);
    * rabbit.changeAnimationTo('jump');
    * //// creates an animation starting at frame 3 and continues for 10 frames.
-   * 
+   *
    */
   constructor(xPos, yPos, source, numberOfFrames, animationSpeed) {
     s2pd.objectsToLoad.push(this);
@@ -64,7 +64,6 @@ export default class Sprite {
         console.error(`Sprite was unable to load.`);
         console.error(err);
       });
-
   }
   updatePos() {
     this.hitBoxX = this.xPos;
@@ -72,24 +71,21 @@ export default class Sprite {
     this.hitBoxWidth = this.width;
     this.hitBoxHeight = this.height;
     let heightOfFrame = this.theImage.height;
-
+    this.currentAnimationName = this.animations[this.currentAnimation].name;
 
     let widthOfFrame = this.theImage.width / this.numberOfFrames;
     if (this.jumping) {
       s2pd.jump(this, this.jumpHeight, this.jumpLength);
     }
     if (this.gravity) {
-      this.onGravity()
+      this.onGravity();
     }
     this.loopLength = this.refreshRate * this.animations[this.currentAnimation].numberOfFrames;
 
     if (this.timeThroughLoop === this.animationSpeed) {
       this.currentFrame += 1;
       this.timeThroughLoop = 0;
-      if (
-        this.currentFrame >=
-        this.animations[this.currentAnimation].numberOfFrames
-      ) {
+      if (this.currentFrame >= this.animations[this.currentAnimation].numberOfFrames) {
         this.currentFrame = 0;
         this.playedOnce = true;
       }
@@ -109,7 +105,12 @@ export default class Sprite {
 
     s2pd.ctx.globalAlpha = 1;
     if (this.cursor) {
-      if (s2pd.mouseX > this.xPos && s2pd.mouseX < this.xPos + this.width && s2pd.mouseY > this.yPos && s2pd.mouseY < this.yPos + this.height) {
+      if (
+        s2pd.mouseX > this.xPos &&
+        s2pd.mouseX < this.xPos + this.width &&
+        s2pd.mouseY > this.yPos &&
+        s2pd.mouseY < this.yPos + this.height
+      ) {
         s2pd.canvas.style.cursor = 'pointer';
         this.changedCursor = true;
       } else {
@@ -120,7 +121,13 @@ export default class Sprite {
       }
     }
     if (this.mouseOverFunction) {
-      if (s2pd.mouseX > this.xPos && s2pd.mouseX < this.xPos + this.width && s2pd.mouseY > this.yPos && s2pd.mouseY < this.yPos + this.height && typeof this.mouseOverFunction === 'function') {
+      if (
+        s2pd.mouseX > this.xPos &&
+        s2pd.mouseX < this.xPos + this.width &&
+        s2pd.mouseY > this.yPos &&
+        s2pd.mouseY < this.yPos + this.height &&
+        typeof this.mouseOverFunction === 'function'
+      ) {
         if (!this.mouseOverTriggeredOnce) {
           this.mouseOverTriggeredOnce = true;
           this.mouseOverFunction();
@@ -151,30 +158,30 @@ export default class Sprite {
       this.hitBoxHeight = this.height;
     }
 
-
     this.timeThroughLoop += 1;
   }
 
   /**
-  *
-  * @param {string} name - A name to call the animation by.
-  * @param {number} startFrame - Frame in the sprite sheet at which the animation should start.
-  * @param {number} numberOfFrames - The number of frames the animation should last for.
-  * @example
-  * rabbit.addAnimation('jump', 3,9)
-  * // creates a 9 frame animation starting at frame 3.
-  */
+   *
+   * @param {string} name - A name to call the animation by.
+   * @param {number} startFrame - Frame in the sprite sheet at which the animation should start.
+   * @param {number} numberOfFrames - The number of frames the animation should last for.
+   * @example
+   * rabbit.addAnimation('jump', 3,9)
+   * // creates a 9 frame animation starting at frame 3.
+   */
   addAnimation(name, startFrame, numberOfFrames) {
     this.animations.push({ name: name, startFrame: startFrame, numberOfFrames: numberOfFrames });
   }
   /**
-  *
-  * @param {string} name - Change to a new animation. Animation must first be declared with addAnimation().
-  * @example
-  * rabbit.addAnimation('jump', 3,9)
-  * rabbit.changeAnimationTo('jump')
-  */
+   *
+   * @param {string} name - Change to a new animation. Animation must first be declared with addAnimation().
+   * @example
+   * rabbit.addAnimation('jump', 3,9)
+   * rabbit.changeAnimationTo('jump')
+   */
   changeAnimationTo(name) {
+    this.currentFrame = 0;
     for (let i = 0; i < this.animations.length; i++) {
       if (this.animations[i].name === name) {
         this.currentAnimation = i;
@@ -187,11 +194,10 @@ export default class Sprite {
       s2pd.hitDetectObjects.push(this);
       this.detectHit = true;
     }
-
   }
   /**
    * @param {function} callback - What to do when object is clicked.
-   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time. 
+   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time.
    * @example
    * circle.onClick(()=>{
    *   circle.color = 'rgb(1,2,3)'
@@ -204,14 +210,14 @@ export default class Sprite {
     }
   }
   /**
- * What to do when mouse is over object.
- * @param {function} callback - A callback function to be called whenever mouse is over object.
- * @param  {boolean} triggerOnce - Trigger once while true or every tick of the loop.
- * @example
- * circle.onMouseOver()=>{
- *   circle.color = s.getRandomColor()
- * })
- */
+   * What to do when mouse is over object.
+   * @param {function} callback - A callback function to be called whenever mouse is over object.
+   * @param  {boolean} triggerOnce - Trigger once while true or every tick of the loop.
+   * @example
+   * circle.onMouseOver()=>{
+   *   circle.color = s.getRandomColor()
+   * })
+   */
   onMouseOver(callback, triggerOnce) {
     if (typeof callback === 'function') {
       this.mouseOverFunction = callback;
@@ -224,11 +230,11 @@ export default class Sprite {
   }
 
   /**
-  * Change the cursor style when mouse is over object.
-  * @param {string} type - Type of cursor to use when mouse is over object. Default is 'pointer'
-  */
+   * Change the cursor style when mouse is over object.
+   * @param {string} type - Type of cursor to use when mouse is over object. Default is 'pointer'
+   */
   changeCursor(type) {
-    !type ? this.cursor = 'pointer' : this.cursor = type;
+    !type ? (this.cursor = 'pointer') : (this.cursor = type);
   }
 
   /**
@@ -242,7 +248,7 @@ export default class Sprite {
   onHold(callback) {
     this.holdFunction = callback;
     if (!s2pd.holdableObjects.includes(this)) {
-      s2pd.holdableObjects.push(this)
+      s2pd.holdableObjects.push(this);
     }
   }
   /**
@@ -256,13 +262,13 @@ export default class Sprite {
     this.dragging = true;
   }
   /**
-   * Make sprite into a platform. Objects with gravity will not fall through platforms. 
-   * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. 
+   * Make sprite into a platform. Objects with gravity will not fall through platforms.
+   * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides.
    */
   platform(blockify) {
     this.hitDetect();
-    blockify ? this.block = true : this.block = false;
-    s2pd.platforms.push(this)
+    blockify ? (this.block = true) : (this.block = false);
+    s2pd.platforms.push(this);
   }
   /**
    * Disable the sprites as a platform.
@@ -275,25 +281,24 @@ export default class Sprite {
   }
   /**
    * Give the object gravity. Will fall unless it lands on a platform.
-   * @param {number=} gravity - Amount of gravity. Higher number is more gravity. Default is 14. 
+   * @param {number=} gravity - Amount of gravity. Higher number is more gravity. Default is 14.
    */
   feelGravity(gravity) {
     this.hitDetect();
     if (s2pd.gravity.includes(this)) {
       this.gravity = true;
       this.accelerating = 0;
-      !gravity ? this.gravityLevel = 14 : this.gravityLevel = gravity;
+      !gravity ? (this.gravityLevel = 14) : (this.gravityLevel = gravity);
       this.originalGravityLevel = this.gravityLevel;
-      this.accelerationRate = this.originalGravityLevel * .05;
+      this.accelerationRate = this.originalGravityLevel * 0.05;
     } else {
       s2pd.gravity.push(this);
       this.gravity = true;
       this.accelerating = 0;
-      !gravity ? this.gravityLevel = 14 : this.gravityLevel = gravity;
+      !gravity ? (this.gravityLevel = 14) : (this.gravityLevel = gravity);
       this.originalGravityLevel = this.gravityLevel;
-      this.accelerationRate = this.originalGravityLevel * .05;
+      this.accelerationRate = this.originalGravityLevel * 0.05;
     }
-
   }
   /**
    * turns of gravity on object.
@@ -322,22 +327,24 @@ export default class Sprite {
    * @param {boolean=} noDoubleJumps - Optional! Prevent object from jumping when it is not on a platform. Default is false.
    * @example
    * sprite.feelGravity(10);
-   * sprite.jump(200,true) 
+   * sprite.jump(200,true)
    */
   jump(howHigh, noDoubleJumps) {
     this.hitDetect();
     if (this.gravity) {
-      this.accelerating = 0;
-      noDoubleJumps ? this.noDoubleJumps = true : this.noDoubleJumps = false;
+      noDoubleJumps ? (this.noDoubleJumps = true) : (this.noDoubleJumps = false);
       if (!this.noDoubleJumps) {
-        this.accelerationRate = this.originalGravityLevel * .05;
+        this.accelerating = 0;
+        this.accelerationRate = this.originalGravityLevel * 0.05;
         this.velY = 0;
         this.jumpStart = this.yPos;
         this.jumpHeight = howHigh;
         this.jumping = true;
       } else {
         if (this.landed) {
-          this.accelerationRate = this.originalGravityLevel * .05;
+          //this is your problem
+          this.accelerating = 0;
+          this.accelerationRate = this.originalGravityLevel * 0.05;
           this.velY = 0;
           this.jumpStart = this.yPos;
           this.jumpHeight = howHigh;
@@ -345,15 +352,15 @@ export default class Sprite {
         }
       }
     } else {
-      console.warn('object.feelGravity() must be called for jump to work. 😇')
+      console.warn('object.feelGravity() must be called for jump to work. 😇');
     }
   }
   /**
    * increase sprites size
-   * @param {number} howMuch - Increase or decrease sprite's size. 0.5 for half current size. 2 for twice current size, etc. 
+   * @param {number} howMuch - Increase or decrease sprite's size. 0.5 for half current size. 2 for twice current size, etc.
    */
   updateSize(howMuch) {
-    howMuch = Math.abs(howMuch)
+    howMuch = Math.abs(howMuch);
     this.width *= howMuch;
     this.height *= howMuch;
     this.hitBoxHeight = this.height;
@@ -367,14 +374,15 @@ export default class Sprite {
     if (typeof which === 'number') {
       this.currentFrame = which;
     } else {
-      console.error(`@goToFrame: ${which} not a valid argument.`)
+      console.error(`@goToFrame: ${which} not a valid argument.`);
     }
   }
   /**
-   * Remove all references to object. 
-   * 
+   * Remove all references to object.
+   *
    */
   destroy() {
+    s2pd.canvas.style.cursor = 'initial';
     const searchAndDestroy = (arr) => {
       for (let i = arr.length; i >= 0; i--) {
         if (arr[i]) {
@@ -385,7 +393,7 @@ export default class Sprite {
           }
         }
       }
-    }
+    };
     for (let i = 0; i < s2pd.collisions.length; i++) {
       if (s2pd.collisions[i].obj1.id === this.id || s2pd.collisions[i].obj2.id === this.id) {
         s2pd.collisions.splice(i, 1);
@@ -396,8 +404,7 @@ export default class Sprite {
     searchAndDestroy(s2pd.hitDetectObjects);
     searchAndDestroy(s2pd.holdableObjects);
     searchAndDestroy(s2pd.gravity);
-    searchAndDestroy(s2pd.platforms)
+    searchAndDestroy(s2pd.platforms);
     s2pd.delete(this);
   }
-
 }
