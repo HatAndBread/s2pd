@@ -537,6 +537,14 @@ bunny.changeAnimationTo('jump');
 //changes current animation to 'jump'.
 ```
 
+🌈***goToFrame(which)***
+
+Change current animation frame.
+
+<ul>
+  <li>which: {number} Which animation frame do you want to go to.</li>
+</ul>
+
 🌈***onClick(callback, triggerOnce)***
 
 What to do on mouse click.
@@ -577,6 +585,22 @@ bunny.onHold(()=>{
   bunny.drag(); 
 });
 ```
+
+🌈***onMouseOver(callback, triggerOnce)***
+ 
+ What to do when mouse is over object.
+
+<ul>
+<li>callback - {function} A callback function to be called whenever mouse is over object.</li>
+<li>triggerOnce - {boolean} Trigger once while true or trigger continually while true.</li>
+</ul>
+
+```javascript
+ sprite.onMouseOver()=>{
+    sprite.updateSize(0.9);
+ })
+```
+
 
 🌈***feelGravity(gravity)***
 
@@ -642,8 +666,16 @@ bricks.notPlatform();
  Increase or decrease sprite's size. 
  
 <ul>
-  <li>howMuch: 0.5 for half current size. 2 for twice current size, etc.</li>
+  <li>howMuch: {number} 0.5 for half current size. 2 for twice current size, etc.</li>
 </ul>  
+
+ 🌈***changeCursor(type)***
+
+ Change mouse cursor style when mouse is over object.
+
+ <ul>
+  <li>type: {string} Any valid css cursor style. No arguments will change cursor to 'pointer'.</li>
+</ul>
 
 ```javascript
 rabbit.updateSize(0.5);
@@ -659,6 +691,7 @@ Remove all references to sprite.
 <ul>
   <li>velX: {number} - The object's velocity along the x-axis.</li>
   <li>velY: {number} - The object's velocity along the y-axis.</li>
+  <li>currentFrame: {number} - The frame of the animation currently being displayed.</li>
   <li>opacity: {number} - A number between 0 and 1.</li>
   <li>width: {number} - *read-only*</li>
   <li>height: {number} - *read-only*</li>
@@ -891,6 +924,29 @@ myRectangle.onHold(()=>{
   myRectangle.drag(); // drag and drop myRectangle. 
 });
 ```
+
+🌈***onMouseOver(callback, triggerOnce)***
+ 
+ What to do when mouse is over object.
+
+<ul>
+<li>callback - {function} A callback function to be called whenever mouse is over object.</li>
+<li>triggerOnce - {boolean} Trigger once while true or trigger continually while true.</li>
+</ul>
+
+```javascript
+ circle.onMouseOver()=>{
+    circle.color = s.getRandomColor();
+ })
+```
+
+ 🌈***changeCursor(type)***
+ 
+ Change mouse cursor style when mouse is over object.
+
+ <ul>
+  <li>type: {string} Any valid css cursor style. No arguments will change cursor to 'pointer'.</li>
+</ul>
 
 🌈***destroy()***
 

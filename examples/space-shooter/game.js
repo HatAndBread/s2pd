@@ -1,13 +1,17 @@
 import s from './s2pd.js'
-window.s = s.s2pd;
+
 s.ezSetup();
 s.backgroundColor('black');
-document.body.style.background = 'black'
-const stars = new s.Tile('./dev-assets/stars.png');
-const player = new s.Sprite(s.width / 2 - 32, s.height - 100, './dev-assets/player.png');
+
+document.body.style.background = 'black';
+
+//DECLARE GAME OBJECTS IN Z-ORER YOU WANT THEM TO APPEAR ON SCREEN
+const stars = new s.Tile('./assets/stars.png');
+const player = new s.Sprite(s.width / 2 - 32, s.height - 100, './assets/player.png');
 const ammoText = new s.Text('red', 0, 50, 'Ammo: 10\nScore: 0\nTime: 0.00', 'monospace', 28);
-const hearts = new s.Tile('./dev-assets/heart.png', s.width - 200, 10, 5, 1);
+const hearts = new s.Tile('./assets/heart.png', s.width - 200, 10, 5, 1);
 const buttonBack = new s.Rectangle('purple', s.width / 2 - 100, s.height / 2 - 43, 200, 40);
+buttonBack.changeCursor(); //change cursor to pointer over button.
 const startButton = new s.Text('snow', 'center', 'center', 'LOAD GAME', 'monospace', 28);
 const restartButton = new s.Text('snow', 'center', 'center', 'Play again?', 'monospace', 28);
 const instructions = new s.Text('snow', 'center', startButton.yPos + 50, '🎮INSTRUCTIONS🎮\nPC: LEFT AND RIGHT ARROW KEYS TO MOVE\nSPACE TO SHOOT\nTOUCHSCREEN: TOUCH LEFT OR RIGHT SIDE OF SCREEN TO MOVE\nTOUCH SPACESHIP TO SHOOT', 'monospace', s.width * .025)
@@ -18,23 +22,27 @@ const leftController = new s.Rectangle('green', 0, 0, s.width / 2, s.height);
 leftController.opacity = 0;
 rightController.opacity = 0;
 const timeBonusText = new s.Text('red', 'center', 200, 'TIME BONUS!\n+50 POINTS!', 'monospace', 24);
-const bgm = new s.Sound('./dev-assets/retrobgm.mp3', 0.3, true);
-const ouch = new s.Sound('./dev-assets/ouch.wav', 0.2);
-const explosionSound = new s.Sound('./dev-assets/explodify5.wav');
-const laser = new s.Sound('./dev-assets/laser2.wav', 0.07);
-const hitEnemy = new s.Sound('./dev-assets/collect2.wav', 0.07);
-const overMusic = new s.Sound('./dev-assets/gameover2.mp3', 0.3);
+const bgm = new s.Sound('./assets/retrobgm.mp3', 0.3, true);
+const ouch = new s.Sound('./assets/ouch.wav', 0.2);
+const explosionSound = new s.Sound('./assets/explodify5.wav');
+const laser = new s.Sound('./assets/laser2.wav', 0.07);
+const hitEnemy = new s.Sound('./assets/collect2.wav', 0.07);
+const overMusic = new s.Sound('./assets/gameover2.mp3', 0.3);
 
 
-buttonBack.changeCursor();
-
+//Game variables
 timeBonusText.opacity = 0;
 timeBonusText.center = true;
 let score = 0;
 let startTime;
 let time;
+let currentExplosion = 0;
 let windowResized = false;
 const explosions = [];
+const unusedBullets = [];
+const firedBullets = [];
+const enemies = [];
+const enemyBullets = [];
 let preventBonus = false;
 let bonus = 50;
 let firstTimeGameOver = true;
@@ -42,10 +50,10 @@ let startButtonClicked;
 
 buttonBack.onClick(() => {
   if (firstTimeGameOver && !time) {
+    s.loadAudio(); // load audio after user interaction!
     startButtonClicked = 1;
     buttonBack.opacity = 0;
     buttonBack.changeCursor('initial');
-    s.loadAudio();
     bgm.play();
   } else {
     if (!firstTimeGameOver) {
@@ -54,16 +62,36 @@ buttonBack.onClick(() => {
   }
 });
 
+// Create explosion sprites.
+// Hint✨- The best way to make numerous copies of the same sprite is to keep them in an array.
+for (let i = 0; i < 6; i++) {
+  const explosion = new s.Sprite(-1000, -1000, './assets/explosion.png', 6, 4);
+  explosions.push(explosion);
+}
+// And then recycle them when they are no longer needed.
+// It is possible to destroy sprites and create new ones,
+// however this means the program will have to reload the image file
+// each time the sprite is needed.
+// This can dramatically affect the performance of games. 
+function getExplosion(x, y) { // 
+  let newExplosion = explosions[currentExplosion];
+  newExplosion.xPos = x;
+  newExplosion.yPos = y;
+  newExplosion.goToFrame(0);
+  if (currentExplosion < 5) {
+    currentExplosion += 1;
+    return newExplosion;
+  } else {
+    currentExplosion = 0;
+    return newExplosion;
+  }
+}
 
-const unusedBullets = [];
-const firedBullets = [];
 for (let i = 0; i < 10; i++) {
   const bullet = new s.Circle(`rgb(${s.randomBetween(200, 255)},${s.randomBetween(0, 130)},${s.randomBetween(0, 130)})`, player.xPos + 32, player.yPos - 5, 5);
   bullet.opacity = 0;
   unusedBullets.push(bullet);
 }
-
-
 function locateToPlayer() {
   for (let i = 0; i < unusedBullets.length; i++) {
     unusedBullets[i].xPos = player.xPos + 32
@@ -72,14 +100,10 @@ function locateToPlayer() {
 }
 
 
-const enemies = [];
-const enemyBullets = [];
-
 for (let i = 0; i < 10; i++) {
-  const enemy = new s.Sprite(s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2), -50, './dev-assets/enemy.png');
+  const enemy = new s.Sprite(s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2), -50, './assets/enemy.png');
   s.onCollision(enemy, player, true, () => {
-    const explosion = new s.Sprite(enemy.xPos + 16, enemy.yPos + 16, './dev-assets/explosion.png', 6, 4);
-    explosions.push(explosion);
+    getExplosion(enemy.xPos + 16, enemy.yPos);
     enemy.yPos = -60;
     s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2);
     enemy.velX = 0;
@@ -96,8 +120,7 @@ for (let i = 0; i < 10; i++) {
     s.onCollision(enemy, bullet, true, () => {
       if (!enemy.inPrison && bullet.opacity === 1) {
         score += 10;
-        const explosion = new s.Sprite(enemy.xPos + 16, enemy.yPos + 16, './dev-assets/explosion.png', 6, 4);
-        explosions.push(explosion);
+        getExplosion(enemy.xPos + 16, enemy.yPos);
         enemy.yPos = -60;
         s.randomBetween(player.xPos - s.width / 2, player.xPos + s.width / 2);
         enemy.velX = 0;
@@ -123,8 +146,7 @@ for (let i = 0; i < 10; i++) {
     -1000,
     5);
   s.onCollision(enemyBullet, player, true, () => {
-    const explosion = new s.Sprite(enemyBullet.xPos, enemyBullet.yPos, './dev-assets/explosion.png', 6, 4);
-    explosions.push(explosion);
+    getExplosion(enemyBullet.xPos, enemyBullet.yPos);
     hearts.repeatX -= 1;
     enemyBullet.velX = 0;
     enemyBullet.velY = 0;
@@ -135,8 +157,7 @@ for (let i = 0; i < 10; i++) {
     const bullet = unusedBullets[j];
     s.onCollision(enemyBullet, bullet, true, () => {
       if (bullet.opacity === 1) {
-        const explosion = new s.Sprite(enemyBullet.xPos, enemyBullet.yPos, './dev-assets/explosion.png', 6, 4);
-        explosions.push(explosion);
+        getExplosion(enemyBullet.xPos, enemyBullet.yPos);
         enemyBullet.velX = 0;
         enemyBullet.velY = 0;
         enemyBullet.yPos = -1000;
@@ -177,9 +198,8 @@ function returnBullets() {
 function removeFinishedExplosions() {
   if (explosions.length > 0) {
     for (let i = 0; i < explosions.length; i++) {
-      if (explosions[i].playedOnce) {
-        explosions[i].destroy();
-        explosions.splice(i, 1);
+      if (explosions[i].currentFrame >= 5) {
+        explosions[i].yPos = -1000;
       }
     }
   }
@@ -212,12 +232,9 @@ function moveEnemies(howMuch) {
     enemies[i].xPos += howMuch;
   }
 }
-
-
 leftController.onHold(() => {
   if (time) {
     if (typeof s.touchMoveX === 'number' && s.touchMoveX > player.xPos && s.touchMoveX < player.xPos + player.width && s.touchMoveY > player.yPos && s.touchMoveY < player.yPos + player.height) {
-      console.log(s.touchMoveX)
     } else {
       stars.innerX += 1;
       player.xPos >= 0 ? player.xPos -= 2 : moveEnemies(2);
@@ -227,7 +244,6 @@ leftController.onHold(() => {
 rightController.onHold(() => {
   if (time) {
     if (typeof s.touchMoveX === 'number' && s.touchMoveX > player.xPos && s.touchMoveX < player.xPos + player.width && s.touchMoveY > player.yPos && s.touchMoveY < player.yPos + player.height) {
-      console.log(s.touchMoveX)
     } else {
       stars.innerX -= 1;
       player.xPos < s.width - 64 ? player.xPos += 2 : moveEnemies(-2);
@@ -263,7 +279,6 @@ s.whileLoading(() => {
   if (startButtonClicked) {
     startButton.text = `${Math.floor(s.percentSoundLoaded)}% loaded...`
   }
-
   let ranNum = s.randomBetween(-3, 3)
   let ranNum2 = s.randomBetween(-3, 3)
   startButton.xPos += ranNum;
@@ -278,14 +293,11 @@ s.onFirstTime(() => {
   buttonBack.xPos = -1000;
 })
 
-
-
 s.loop(() => {
   if (hearts.repeatX > 0) {
     time = s.roundToDecimals((Date.now() - startTime) * .001, 2);
     if (Math.floor(time) % 15 === 0 && !preventBonus && time > 1) {
       preventBonus = true;
-      console.log('Time Bonus')
       score += bonus;
       timeBonusText.text = `TIME BONUS!\n+${bonus} POINTS!`
       let stringBo = Math.floor(bonus * 1.3).toString().split('')
@@ -313,9 +325,16 @@ s.loop(() => {
     if (windowResized) {
       player.xPos = s.width / 2 - 32;
       windowResized = false;
+      hearts.xPos = s.width - 200;
+      player.yPos = s.height - 100;
+      rightController.xPos = s.width / 2;
+      rightController.width = s.width / 2;
+      rightController.height = s.height;
+      leftController.xPos = 0;
+      leftController.width = s.width / 2;
+      leftController.height = s.height;
     };
-    hearts.xPos = s.width - 200;
-    player.yPos = s.height - 100;
+
     returnBullets();
     returnEnemies();
     locateToPlayer();
@@ -360,10 +379,8 @@ s.loop(() => {
     restartButton.xPos += ranNum;
     restartButton.yPos -= ranNum2;
     removeFinishedExplosions();
-
   }
 });
-
 
 /*
 game art courtesy of Bert-o-Naught

@@ -1,7 +1,11 @@
 node_modules/
+dev-assets/
+index.html
+dev-tester.js
 .DS_Store
 ./src/.DS_Store
 ./dist/.DS_Store
 ./src/shapes/.DS_Store
 ./src/input/.DS_Store
 ./src/audio/.DS_Store
+
