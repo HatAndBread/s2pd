@@ -695,7 +695,7 @@ Remove all references to sprite.
   <li>opacity: {number} - A number between 0 and 1.</li>
   <li>width: {number} - *read-only*</li>
   <li>height: {number} - *read-only*</li>
-  <li>gravity: {number} - *read-only*</li>
+  <li>gravity: {number} - *read-only*</li>echo {}> .prettierrc.json
   <li>dragging: {boolean} - *read-only* -  is currently being dragged.</li>
   <li>jumping: {boolean} - *read-only* - is currently jumping.</li>
 </ul>

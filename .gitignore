@@ -3,6 +3,8 @@ dev-assets/
 index.html
 dev-tester.js
 .DS_Store
+.prettierrc.json
+.prettierignore
 ./src/.DS_Store
 ./dist/.DS_Store
 ./src/shapes/.DS_Store
