@@ -74,7 +74,7 @@ s.ezSetup(); // Basic setup for games. For more advanced options see API.
 Now we have an empty canvas element. Let's give it a background using this image file:
 
 <br>
-<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/clouds.png" width="200">
+<img src="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/clouds.png" width="200">
 <br>
 
 The Background class will automatically create an infinitely repeating tile background taking up the entire width and height of your canvas (and infinitely beyond)!
