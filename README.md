@@ -165,7 +165,7 @@ sprite.feelGravity(12);
 
 Oh no! <a href="https://playcode.io/667791/">Our sprite is falling!</a> Let's put some ground below it. This time let's use the Tile class. The tile class is similar to the Background class, except it won't necessarily take up the entire background. Let's use this image:
 
-<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/ground.png">
+<img src="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/ground.png">
 
 ```javascript
 const ground = new s.Tile('./ground.png', s.width / 2, s.height * 0.75, 2, 1);
