@@ -34,7 +34,7 @@ Here are a few hastily thrown together examples of the kind of things you can bu
 
 # Installation
 
-The easiest way to get started is to <a href="https://playcode.io/667974/">play with s2pd on CodeSandbox</a>.
+The easiest way to get started is to <a href="https://playcode.io/669592/">play with s2pd on CodeSandbox</a>.
 The next easiest way to start is to download <a href="https://github.com/HatAndBread/s2pd/blob/master/boiler-plate.zip">boiler-plate.zip</a> and start editing main.js right away. You will need to have a development server running to open index.html.
 
 **_Otherwise..._**
