@@ -502,7 +502,7 @@ randomNumber === 0 ? s.clear() : s.dontClear();
 
 Example ↓
 
-<img src="https://github.com/HatAndBread/s2pd/blob/master/dist/example/hero.png" width="1000">
+<img src="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/hero.png" width="1000">
 
 🌈**_constructor(xPos, yPos, source, numberOfFrames, animationSpeed)_**
 
