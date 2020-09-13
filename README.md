@@ -1324,7 +1324,7 @@ console.log(s.getRandomColor());
 // in the console 👉 'rgb(29, 201, 144)'
 ```
 
-🌈**_roundToDecimals(num, howManyDecimals)_**]
+🌈**_roundToDecimals(num, howManyDecimals)_**
 
 Returns inputed number rounded to decimals.
 
