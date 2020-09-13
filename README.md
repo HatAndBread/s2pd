@@ -1,6 +1,7 @@
 # s2pd
 
-Hi! 👋🌈  
+Hi! 👋🌈
+
 s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript.
 
 I originally created s2pd as a library for programming my own simple games and canvas animations, but it quickly got out of hand and took on a life of its own as a full-fledged (although bare-bones) game library. It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art. Although there are a vast number of great JavaScript game and canvas libraries out there, I hope s2pd can find its humble place among them as a dumber, uglier, lighter-weight and more beginner-friendly sibling.
