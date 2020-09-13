@@ -1,7 +1,7 @@
 # s2pd
 
 Hi! 👋🌈  
-s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript. As an example of what you can do with s2pd, here is a game thrown together in about an hour: <a href = "https://s2pd-example.netlify.app/">CLICK HERE TO PLAY EXAMPLE GAME🌈</a>
+s2pd is a stupidly simple HTML5 canvas and web audio library for making 2D games and art in JavaScript.
 
 I originally created s2pd as a library for programming my own simple games and canvas animations, but it quickly got out of hand and took on a life of its own as a full-fledged (although bare-bones) game library. It is my hope that s2pd is easy and intuitive enough to be used by beginners, students, and anyone else who is curious about delving into the world of digital art. Although there are a vast number of great JavaScript game and canvas libraries out there, I hope s2pd can find its humble place among them as a dumber, uglier, lighter-weight and more beginner-friendly sibling.
 
@@ -13,11 +13,11 @@ Here are a few hastily thrown together examples of the kind of things you can bu
 <td>Source</td>
 </tr>
 <tr>
-<td><a href="https://s2pdspace.netlify.app/">Space Invaders(ish) clone</a></td>
+<td><a href="https://s2pdspace.netlify.app/">👾Space Invaders(ish) clone👾</a></td>
 <td><a href="https://github.com/HatAndBread/s2pd/blob/master/examples/space-shooter/game.js">Source code</a></td>
 </tr>
 <tr>
-<td><a href="https://s2pd-example.netlify.app/">Flappy Birds(ish) clone</a></td>
+<td><a href="https://s2pd-example.netlify.app/">👾Flappy Birds(ish) clone👾</a></td>
 <td><a href="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/main.js">Source code</a></td>
 </tr>
 </table>
@@ -1170,7 +1170,6 @@ What to do on mouse click. Works for "touch clicks" too.
   <li>s.mouseX: current x position of mouse.</li>
   <li>s.mouseY: current y position of mouse.</li>
   </ul>
-
 
 <div id="touch"><h1>Touch Methods</h1></div>
 
