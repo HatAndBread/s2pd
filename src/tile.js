@@ -96,7 +96,7 @@ class Tile {
   updatePos() {
     this.hitBoxX = this.xPos;
     this.hitBoxY = this.yPos;
-    this.hitBoxWidth = this.width;
+    this.autoResizeX ? (this.hitBoxWidth = this.width * 1.2) : (this.hitBoxWidth = this.width);
     this.hitBoxHeight = this.height;
     this.heightOfFrame = this.theImage.height;
     this.widthOfFrame = this.theImage.width / this.numberOfFrames;
@@ -705,7 +705,7 @@ class Tile {
 
       this.hitBoxX = this.xPos;
       this.hitBoxY = this.yPos;
-      this.hitBoxWidth = this.width;
+      this.autoResizeX ? (this.hitBoxWidth = this.width * 1.2) : (this.hitBoxWidth = this.width);
       this.hitBoxHeight = this.height;
     }
 

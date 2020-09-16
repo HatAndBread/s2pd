@@ -69,40 +69,43 @@ function checkPlatforms() {
       let b = s2pd.gravity[i]; // B = SPRITES
 
       if (checkOverlap(a, b)) {
+        let trimmedBottom;
+        b.customHitBox ? (trimmedBottom = b.customHitBox.bottom) : (trimmedBottom = 0);
         if (a.block) {
           //prevent sprite from going through solid object
 
           if (
-            b.yPos < a.hitBoxY &&
-            b.xPos > a.hitBoxX - b.hitBoxWidth / 1.2 &&
-            b.xPos < a.hitBoxX + a.hitBoxWidth / 1.2
+            b.hitBoxY < a.hitBoxY &&
+            b.hitBoxX > a.hitBoxX - b.hitBoxWidth / 1.2 &&
+            b.hitBoxX < a.hitBoxX + a.hitBoxWidth / 1.2
           ) {
             b.landed = true;
+
             b.velY = 0;
-            b.yPos = a.hitBoxY - b.hitBoxHeight;
+            b.yPos = a.hitBoxY - b.height + trimmedBottom;
             b.accelerating = 0;
             break;
-          } else if (b.xPos <= a.xPos) {
-            if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
+          } else if (b.hitBoxX <= a.hitBoxX) {
+            if (b.hitBoxY > a.hitBoxY + a.hitBoxHeight / 1.2) {
               b.jumping = false;
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              b.xPos = a.hitBoxX - b.hitBoxWidth - 1;
+              b.xPos = a.hitBoxX - b.width - 1; /////
             }
-          } else if (b.xPos >= a.xPos) {
-            if (b.yPos > a.hitBoxY + a.hitBoxHeight / 1.2) {
+          } else if (b.hitBoxX >= a.hitBoxX) {
+            if (b.hitBoxY > a.hitBoxY + a.hitBoxHeight / 1.2) {
               b.jumping = false;
               b.landed = false;
               b.gravityLevel = b.originalGravityLevel;
             } else {
-              b.xPos = a.hitBoxX + a.hitBoxWidth + 1;
+              b.xPos = a.hitBoxX + a.width + 1; //////
             }
           }
         } else {
           b.landed = true;
           b.velY = 0;
-          b.yPos = a.hitBoxY - b.hitBoxHeight;
+          b.yPos = a.hitBoxY - b.height + trimmedBottom;
           b.accelerating = 0;
         }
       } else {

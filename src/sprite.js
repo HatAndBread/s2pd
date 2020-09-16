@@ -15,7 +15,7 @@ export default class Sprite {
    * // To use multiple animations in the same sprite sheet ⬇︎
    * rabbit.addAnimation('jump',3,10);
    * rabbit.changeAnimationTo('jump');
-   * //// creates an animation starting at frame 3 and continues for 10 frames.
+   * //// creates an animation starting at frame 3 and continues for 10 frames. (Start counting at frame 0!)
    *
    */
   constructor(xPos, yPos, source, numberOfFrames, animationSpeed) {
@@ -66,10 +66,6 @@ export default class Sprite {
       });
   }
   updatePos() {
-    this.hitBoxX = this.xPos;
-    this.hitBoxY = this.yPos;
-    this.hitBoxWidth = this.width;
-    this.hitBoxHeight = this.height;
     let heightOfFrame = this.theImage.height;
     this.currentAnimationName = this.animations[this.currentAnimation].name;
 
@@ -152,10 +148,17 @@ export default class Sprite {
     this.xPos += this.velX;
     this.yPos += this.velY;
     if (this.detectHit) {
-      this.hitBoxX = this.xPos;
-      this.hitBoxY = this.yPos;
-      this.hitBoxWidth = this.width;
-      this.hitBoxHeight = this.height;
+      if (!this.customHitBox) {
+        this.hitBoxX = this.xPos;
+        this.hitBoxY = this.yPos;
+        this.hitBoxWidth = this.width;
+        this.hitBoxHeight = this.height;
+      } else {
+        this.hitBoxX = this.xPos + this.customHitBox.left;
+        this.hitBoxY = this.yPos + this.customHitBox.top;
+        this.hitBoxWidth = this.width - this.customHitBox.left - this.customHitBox.right;
+        this.hitBoxHeight = this.height - this.customHitBox.top - this.customHitBox.bottom;
+      }
     }
 
     this.timeThroughLoop += 1;
@@ -168,7 +171,7 @@ export default class Sprite {
    * @param {number} numberOfFrames - The number of frames the animation should last for.
    * @example
    * rabbit.addAnimation('jump', 3,9)
-   * // creates a 9 frame animation starting at frame 3.
+   * // creates a 9 frame animation starting at frame 3 (start counting from 0!).
    */
   addAnimation(name, startFrame, numberOfFrames) {
     this.animations.push({ name: name, startFrame: startFrame, numberOfFrames: numberOfFrames });
@@ -354,6 +357,24 @@ export default class Sprite {
     } else {
       console.warn('object.feelGravity() must be called for jump to work. 😇');
     }
+  }
+  /**
+   * Reduces object's hit box (the area around the sprite used to detect collisions).
+   * By default a sprite's hit box is a rectangle having the width and height of the current animation frame.
+   * trimHitBox allows you to reduce that size for improved collision detection.
+   *
+   * @param {number} left - pixels to trim on left side
+   * @param {number} right - pixels to trim on right side
+   * @param {number} top - pixels to trim on top
+   * @param {number} bottom - pixels to trim on bottom
+   */
+  trimHitBox(left, right, top, bottom) {
+    this.customHitBox = {
+      left: Math.abs(left),
+      right: Math.abs(right),
+      top: Math.abs(top),
+      bottom: Math.abs(bottom)
+    };
   }
   /**
    * increase sprites size
