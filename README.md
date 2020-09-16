@@ -21,6 +21,10 @@ Here are a few hastily thrown together examples of the kind of things you can bu
 <td><a href="https://s2pd-example.netlify.app/">👾Flappy Birds(ish) clone👾</a></td>
 <td><a href="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/main.js">Source code</a></td>
 </tr>
+<tr>
+<td><a href="https://nervous-kirch-5d22e7.netlify.app/">👾Very hastily built platform example👾</a></td>
+<td><a href="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/main.js">Source code</a></td>
+</tr>
 </table>
 
 <h2>Contents</h2>
@@ -677,6 +681,18 @@ Disable the sprite as a platform.
 ```javascript
 bricks.notPlatform();
 ```
+
+🌈**_trimHitBox(left, right, top, bottom)_**
+
+Reduces a sprite's hitbox. The hitbox is the area around the sprite used for detecting collisions and clicks.
+By default a sprite's hitbox is the size of a single animation frame. This can be reduced using trimHitBox for more precise collision detection.
+
+<ul>
+  <li>Right: {number} the number of pixels to remove from the sprite's right side.</li>
+  <li>Left: {number} the number of pixels to remove from the sprite's left side.</li>
+  <li>Top: {number} the number of pixels to remove from the sprite's top side.</li>
+  <li>Bottom: {number} the number of pixels to remove from the sprite's bottom side.</li>
+</ul>
 
 🌈**_updateSize(howMuch)_**
 
