@@ -238,8 +238,32 @@ function returnKeyCode(key) {
       return 109;
     case 'minus':
       return 109;
-    case '-':
+    case 'hyphen':
       return 109;
+    case '_':
+      return 189;
+    case 'underscore':
+      return 189;
+    case 'under-score':
+      return 189;
+    case 'under score':
+      return 189;
+    case 'lodash':
+      return 189;
+    case 'lowdash':
+      return 189;
+    case 'low-dash':
+      return 189;
+    case 'low dash':
+      return 189;
+    case 'underdash':
+      return 189;
+    case 'under-dash':
+      return 189;
+    case 'underline':
+      return 189;
+    case 'under-line':
+      return 189;
     default:
       console.error('unknown keycode: ' + key);
       break;
@@ -286,21 +310,27 @@ function keyDown(key, callback, triggerOnce) {
 }
 
 function keyDownHandler(event) {
-  let a = keyDownEvents[event.keyCode]
+  let a = keyDownEvents[event.keyCode];
   if (s2pd.preventDefaultKeyboard) {
-    if (event.code === 'ArrowRight' || event.code === 'ArrowLeft' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
-      event.preventDefault()
+    if (
+      event.code === 'ArrowRight' ||
+      event.code === 'ArrowLeft' ||
+      event.code === 'ArrowUp' ||
+      event.code === 'ArrowDown'
+    ) {
+      event.preventDefault();
     }
   }
   if (a && !s2pd.looping) {
     if (a.triggerOnce && !a.triggered) {
-      a.callback()
+      a.callback();
       a.triggered = true;
     } else {
       a.callback();
     }
   }
-  if (a && s2pd.looping) { // if string isn't recognized use JS keycode.
+  if (a && s2pd.looping) {
+    // if string isn't recognized use JS keycode.
     if (!s2pd.keyDown.includes(event.keyCode)) {
       s2pd.keyDown.push(event.keyCode);
     }
@@ -309,21 +339,24 @@ function keyDownHandler(event) {
 
 function keyUpHandler(event) {
   if (s2pd.preventDefaultKeyboard) {
-    if (event.code === 'ArrowRight' || event.code === 'ArrowLeft' || event.code === 'ArrowUp' || event.code === 'ArrowDown') {
-      event.preventDefault()
+    if (
+      event.code === 'ArrowRight' ||
+      event.code === 'ArrowLeft' ||
+      event.code === 'ArrowUp' ||
+      event.code === 'ArrowDown'
+    ) {
+      event.preventDefault();
     }
   }
   keyDownEvents.forEach((el) => {
     if (el.triggered) {
       el.triggered = false;
-      s2pd.keyDown.splice(0, s2pd.keyDown.length)
+      s2pd.keyDown.splice(0, s2pd.keyDown.length);
     }
-  })
-
+  });
 
   if (keyUpEvents[event.keyCode] && !s2pd.looping) {
-    keyUpEvents[event.keyCode]()
-
+    keyUpEvents[event.keyCode]();
   }
   if (s2pd.looping) {
     s2pd.keyUp.push(event.keyCode);

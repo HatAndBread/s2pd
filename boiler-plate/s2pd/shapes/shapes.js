@@ -7,7 +7,7 @@ class Shapes {
    * @param {number} yPos
    */
   constructor(color, xPos, yPos) {
-    this.id = s2pd.getId()
+    this.id = s2pd.getId();
     this.color = color;
     this.xPos = xPos;
     this.yPos = yPos;
@@ -20,19 +20,18 @@ class Shapes {
   hitDetect() {
     this.detectHit = true;
     s2pd.hitDetectObjects.push(this);
-
   }
   /**
    * Change the cursor style when mouse is over object.
    * @param {string} type - Type of cursor to use when mouse is over object. Default is 'pointer'
    */
   changeCursor(type) {
-    !type ? this.cursor = 'pointer' : this.cursor = type;
+    !type ? (this.cursor = 'pointer') : (this.cursor = type);
   }
 
   /**
    * @param {function} callback - What to do when object is clicked.
-   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time. 
+   * @param {boolean} triggerOnce - Truthy value to only trigger callback one time.
    * @example
    * circle.onClick(()=>{
    *   circle.color = 'rgb(1,2,3)'
@@ -45,7 +44,7 @@ class Shapes {
     }
   }
   /**
-   * 
+   *
    * @param {function} callback - What to do when mouse is held down over object or object is touched.
    * @example
    * circle.onHold(()=>{
@@ -56,7 +55,7 @@ class Shapes {
     if (typeof callback === 'function') {
       this.holdFunction = callback;
       if (!s2pd.holdableObjects.includes(this)) {
-        s2pd.holdableObjects.push(this)
+        s2pd.holdableObjects.push(this);
       }
     } else {
       console.error('@onHold: typeerror');
@@ -64,14 +63,14 @@ class Shapes {
   }
 
   /**
- * What to do when mouse is over object.
- * @param {function} callback - A callback function to be called whenever mouse is over object.
- * @param  {boolean} triggerOnce - Trigger once while true or every tick of the loop.
- * @example
- * circle.onMouseOver()=>{
- *   circle.color = s.getRandomColor()
- * })
- */
+   * What to do when mouse is over object.
+   * @param {function} callback - A callback function to be called whenever mouse is over object.
+   * @param  {boolean} triggerOnce - Trigger once while true or every tick of the loop.
+   * @example
+   * circle.onMouseOver()=>{
+   *   circle.color = s.getRandomColor()
+   * })
+   */
   onMouseOver(callback, triggerOnce) {
     if (typeof callback === 'function') {
       this.mouseOverFunction = callback;
@@ -83,42 +82,43 @@ class Shapes {
     }
   }
   /**
-  * Drag when mouse is held down over the object or user is touching the object. Object will be released when mouse is up or touching stops. Only works in conjunction with onHold().
-  * @example
-  * circle.onHold(()=>{
-  *   circle.drag();
-  * });
-  */
+   * Drag when mouse is held down over the object or user is touching the object. Object will be released when mouse is up or touching stops. Only works in conjunction with onHold().
+   * @example
+   * circle.onHold(()=>{
+   *   circle.drag();
+   * });
+   */
   drag() {
     this.dragging = true;
   }
   /**
- * Make sprite into a platform. Objects with gravity will not fall through platforms. 
- * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides. 
- */
+   * Make sprite into a platform. Objects with gravity will not fall through platforms.
+   * @param {boolean=} blockify - Optional! Default value is false. If platform is a block objects with gravity will not be able to pass through it either from above, below, or to the sides.
+   */
   platform(blockify) {
     if (!this.intersect) {
-      blockify ? this.block = true : this.block = false;
-      s2pd.platforms.push(this)
+      blockify ? (this.block = true) : (this.block = false);
+      s2pd.platforms.push(this);
     } else {
-      console.warn('Lines are not supported as platforms yet. Use a rectangle instead.')
+      console.warn('Lines are not supported as platforms yet. Use a rectangle instead.');
     }
   }
   /**
-   * Disable the sprites ability to be a platform. 
+   * Disable the sprites ability to be a platform.
    */
   notPlatform() {
     this.block = false;
     for (let i = 0; i < s2pd.platforms.length; i++) {
       s2pd.platforms[i] === this ? s2pd.platforms.splice(i, 1) : undefined;
     }
-    console.log(s2pd.platforms)
+    console.log(s2pd.platforms);
   }
   /**
- * Remove all references to object. 
- * 
- */
+   * Remove all references to object.
+   *
+   */
   destroy() {
+    s2pd.canvas.style.cursor = 'initial';
     const searchAndDestroy = (arr) => {
       for (let i = arr.length; i >= 0; i--) {
         if (arr[i]) {
@@ -129,7 +129,7 @@ class Shapes {
           }
         }
       }
-    }
+    };
     for (let i = 0; i < s2pd.collisions.length; i++) {
       if (s2pd.collisions[i].obj1.id === this.id || s2pd.collisions[i].obj2.id === this.id) {
         s2pd.collisions.splice(i, 1);
@@ -143,7 +143,5 @@ class Shapes {
     searchAndDestroy(s2pd.platforms);
     s2pd.delete(this);
   }
-
-
 }
 export default Shapes;
