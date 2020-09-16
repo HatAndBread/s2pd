@@ -23,7 +23,7 @@ Here are a few hastily thrown together examples of the kind of things you can bu
 </tr>
 <tr>
 <td><a href="https://nervous-kirch-5d22e7.netlify.app/">👾Very hastily built platform example👾</a></td>
-<td><a href="https://github.com/HatAndBread/s2pd/blob/master/examples/weird%20game/main.js">Source code</a></td>
+<td><a href="https://github.com/HatAndBread/s2pd/tree/master/examples/platform-example">Source code</a></td>
 </tr>
 </table>
 
