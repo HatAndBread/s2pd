@@ -1,6 +1,6 @@
 {
   "name": "s2pd",
-  "version": "1.0.7",
+  "version": "1.1.1",
   "description": "Hi! 👋🌈   s2pd is a simple HTML5 canvas and web audio library for making art and 2D games in JavaScript.",
   "main": "s2pd.js",
   "private": false,

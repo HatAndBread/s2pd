@@ -32,6 +32,7 @@ Here are a few hastily thrown together examples of the kind of things you can bu
     <li><a href="#install">Installation<a/></li>
      <li><a href="#tutorial">Quick Tutorial<a/></li>
      <li><a href="#api">API<a/></li>
+     <li><a href="#react">Example with React<a/></li>
   </ul>
 
 <div id="install"></div>
@@ -43,7 +44,17 @@ The next easiest way to start is to download <a href="https://github.com/HatAndB
 
 **_Otherwise..._**
 
-On the command line.
+**With WebPack**
+
+```
+npm install s2pd
+```
+
+```javascript
+import s from 's2pd';
+```
+
+**Without WebPack**
 
 ```
 git clone https://github.com/HatAndBread/s2pd.git
@@ -1367,3 +1378,38 @@ Returns inputed number rounded to decimals.
 s.roundToDecimals(10 / 3, 3);
 // returns 3.333
 ```
+
+<div id="react">
+
+# Example installation with React and WebPack
+
+s2pd works with React. See the example below for usage. I haven't tried, but I think something similar is probably possible with Vue and other frameworks.
+
+```
+npm install s2pd
+```
+
+```javascript
+import React, { useRef, useEffect } from 'react';
+import s from 's2pd';
+
+export default function Canvas(props) {
+  const theRef = useRef(null);
+  useEffect(() => {
+    s.addCanvas(theRef.current, 900, 600);
+    const circle = new s.Circle('red', s.width / 2, s.height / 2, 30, 3);
+    s.listenForKeyboard();
+    s.listenForMouse();
+    s.listenForTouch();
+    s.stillCanvas();
+    s.backgroundColor('pink');
+    circle.onHold(() => {
+      circle.drag();
+    });
+    s.loop(() => {});
+  }, []);
+  return <canvas ref={theRef}></canvas>;
+}
+```
+
+</div>
