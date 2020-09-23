@@ -1166,6 +1166,10 @@ mySound.pause();
 
 Mouse methods. Sprites, tiles, and shapes all have their own mouse methods. Refer to Sprite, Tile, and Shape sections of the API to see mouse methods for each individual class.
 
+🌈**_listenForMouse()_**
+
+Creates event listeners for mouse. No need to call this method if using ezSetup()
+
 🌈**_onClick(callback, triggerOnce)_**
 
 What to do on mouse click. Works for "touch clicks" too.
@@ -1190,6 +1194,10 @@ What to do on mouse click. Works for "touch clicks" too.
   </ul>
 
 <div id="touch"><h1>Touch Methods</h1></div>
+
+🌈**_listenForTouch()_**
+
+Creates event listeners for touch. No need to call this method if using ezSetup()
 
 🌈**_onTouch(callback)_**
 
@@ -1220,6 +1228,10 @@ What to do when user is touching screen. For a touch click use s.onClick() metho
   </ul>
 
 <div id="keyboard"><h1>Keyboard Methods</h1></div>
+
+🌈**_listenForKeyboard()_**
+
+Creates event listeners for keyboard. No need to call this method if using ezSetup()
 
 🌈**_keyDown(key, callback, triggerOnce)_**
 
