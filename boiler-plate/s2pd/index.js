@@ -15,8 +15,6 @@ import { touchListeners } from './input/touch.js';
 import { keyboardListeners, keyDown, keyUp } from './input/keyboard.js';
 import { enableAudio, Sound, loadAudio } from './audio/audio.js';
 
-
-
 let mouseX = s2pd.mouseX;
 let mouseY = s2pd.mouseY;
 let touchX = s2pd.touchX;
@@ -30,7 +28,6 @@ let height = s2pd.height;
 let percentLoaded = 0;
 let percentImagesLoaded = 0;
 let percentSoundLoaded = 0;
-
 
 function updateGlobals() {
   mouseX = s2pd.mouseX;
@@ -48,7 +45,7 @@ function updateGlobals() {
   percentSoundLoaded = s2pd.percentSoundLoaded;
 }
 /**
- * 
+ *
  * @param {function} callback - a callback to be on any mouse click.
  * @param {boolean} triggerOnce - Truthy value to trigger callback only once time.
  */
@@ -59,9 +56,9 @@ const onClick = (callback, triggerOnce) => {
       s2pd.globalClickTriggerOnce = true;
     }
   } else {
-    console.error('@onClick 👉 typeerror: onClick requires a callback function.')
+    console.error('@onClick 👉 typeerror: onClick requires a callback function.');
   }
-}
+};
 /**
  *
  * @param {function} callback - a callback to be called on every touch.
@@ -70,20 +67,19 @@ const onTouch = (callback) => {
   if (typeof callback === 'function') {
     s2pd.globalTouch = callback;
   } else {
-    console.error('@onTouch 👉 typeerror: onTouch requires a callback function.')
+    console.error('@onTouch 👉 typeerror: onTouch requires a callback function.');
   }
-
-}
+};
 /**
- * What to do while assets are being loaded. 
+ * What to do while assets are being loaded.
  * @param {function} callback - a function that will be executed every tick of the loop while assets such as image files and audio files are being loaded.
  */
 function whileLoading(callback) {
   s2pd.loadingCallback = callback;
 }
 /**
- * 
- * @param {function} callback - a callback that will be executed the first time and only the first time through the loop after all assets are loaded. 
+ *
+ * @param {function} callback - a callback that will be executed the first time and only the first time through the loop after all assets are loaded.
  */
 function onFirstTime(callback) {
   s2pd.firstTimeCallback = callback;
@@ -116,7 +112,6 @@ function uncancelDraw() {
   s2pd.cancelDraw = false;
 }
 
-
 /**
  * Stop loop.
  */
@@ -131,15 +126,18 @@ function stopLoop() {
 function resize(width, height) {
   s2pd.canvas.width = width;
   s2pd.canvas.height = height;
-  s2pd.width = width;;
+  s2pd.width = width;
   s2pd.height = height;
 }
 /**
  * Set up project quickly.
- * Creates canvas element with id 'canvas', sizes to window, automatically resizes on window resize, enables audio, and prevents unwanted canvas movement on touch and keyboard input.
+ * Creates canvas element with id 'canvas', sizes to window, automatically resizes on window resize, enables audio, adds listeners for mouse, touch, and keyboard, and prevents unwanted canvas movement on touch and keyboard input.
  * Not recommended for integration with existing projects as it is likely to change the flow of your document in unexpected ways.
  */
 function ezSetup() {
+  touchListeners();
+  mouseListeners();
+  keyboardListeners();
   document.body.style.position = 'fixed';
   document.body.style.top = 0;
   document.body.style.left = 0;
@@ -171,25 +169,42 @@ function ezSetup() {
 
 /**
  * What to do on window resize.
- * @param {function} callback - A callback function to be called when window is resized or orientation is changed. 
+ * @param {function} callback - A callback function to be called when window is resized or orientation is changed.
  */
 function onResize(callback) {
   if (typeof callback === 'function') {
     s2pd.onResize = callback;
   } else {
-    console.error('👮‍♀️@onResize: Type error. Callback must be a function.')
+    console.error('👮‍♀️@onResize: Type error. Callback must be a function.');
   }
 }
 
+/**
+ * Listen for touch events.
+ */
+function listenForTouch() {
+  touchListeners();
+}
 
-touchListeners();
-mouseListeners();
-keyboardListeners();
+/**
+ * Listen for mouse events.
+ */
+function listenForMouse() {
+  mouseListeners();
+}
 
-
+/**
+ * Listen for keyboard events.
+ */
+function listenForKeyboard() {
+  keyboardListeners();
+}
 
 console.log('٩(๑^o^๑)۶', 'Welcome to s2pd!ლ(╹◡╹ლ)');
 export {
+  listenForKeyboard,
+  listenForMouse,
+  listenForTouch,
   mouseX,
   mouseY,
   touchX,

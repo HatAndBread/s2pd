@@ -349,13 +349,14 @@ s.createCanvas('canvas', 900, 600);
 Add canvas context to an existing html5 canvas element.
 
 <ul>
-  <li>id: {string} id of html5 canvas already existing in your project.</li>
+  <li>canvas: {object} An existing html5 canvas element.</li>
   <li>width: {number} width of canvas in pixels. </li>
   <li>height: {number} height of canvas in pixels. </li>
 </ul>
 
 ```javascript
-s.addCanvas('someCanvasElementAlreadyExistingInYourProject', 900, 600);
+const myCanvas = document.getElementById('myCanvas');
+s.addCanvas(myCanvas, 900, 600);
 // adds context to canvas and size 900x600
 ```
 
