@@ -19,12 +19,15 @@ function createCanvas(id, width, height) {
 }
 /**
  * Add canvas context to an existing html5 canvas element.
- * @param {string} id - id of an existing html5 canvas element.
+ * @param {object} canvas - An existing html5 canvas element.
  * @param {number} width - canvas width
  * @param {number} height - canvas height
+ * @example
+ * const myCanvas = document.getElementById('myCanvas');
+ * s.addCanvas(myCanvas, 600, 900);
  */
-function addCanvas(id, width, height) {
-  s2pd.canvas = document.getElementById(id);
+function addCanvas(canvas, width, height) {
+  s2pd.canvas = canvas;
   s2pd.canvas.width = width;
   s2pd.canvas.height = height;
   s2pd.ctx = s2pd.canvas.getContext('2d');
@@ -33,9 +36,9 @@ function addCanvas(id, width, height) {
   updateGlobals();
 }
 /**
- * Prevent canvas from unwanted movement on user interaction. 
+ * Prevent canvas from unwanted movement on user interaction.
  * @param {string=} how - 'touch': Prevent the window from moving on touch input. 'keyboard': Prevent the window from moving on keyboard input(arrow keys). No arguments: Prevent window from moving on all input.
- * @example 
+ * @example
  * s.stillCanvas('touch');
  * // prevent canvas from moving when user touches canvas on a touch device.
  * s.stillCanvas('keyboard');
@@ -48,7 +51,7 @@ function stillCanvas(how) {
     s2pd.canvas.style.touchAction = 'none';
     s2pd.preventDefaultKeyboard = true;
   } else {
-    how.toLowerCase()
+    how.toLowerCase();
     if (how === 'touch') {
       s2pd.canvas.style.touchAction = 'none';
     } else if (how === 'keyboard') {
@@ -58,7 +61,6 @@ function stillCanvas(how) {
       s2pd.preventDefaultKeyboard = true;
     }
   }
-
 }
 
 /**
@@ -84,5 +86,5 @@ window.addEventListener('resize', () => {
   if (typeof s2pd.onResize === 'function') {
     s2pd.onResize();
   }
-})
+});
 export { createCanvas, addCanvas, stillCanvas, backgroundColor, canvasOpacity };

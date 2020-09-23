@@ -202,6 +202,9 @@ function listenForKeyboard() {
 
 console.log('٩(๑^o^๑)۶', 'Welcome to s2pd!ლ(╹◡╹ლ)');
 export {
+  listenForKeyboard,
+  listenForMouse,
+  listenForTouch,
   mouseX,
   mouseY,
   touchX,
