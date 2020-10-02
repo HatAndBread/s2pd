@@ -371,6 +371,15 @@ s.addCanvas(myCanvas, 900, 600);
 // adds context to canvas and size 900x600
 ```
 
+🌈**_resize(width, height)_**
+
+Resize canvas element.
+
+<ul>
+  <li>width: {number} new width of canvas in pixels. </li>
+  <li>height: {number} new height of canvas in pixels. </li>
+</ul>
+
 🌈**_backgroundColor(color)_**
 
 Change background color of canvas.
